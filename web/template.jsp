@@ -26,7 +26,7 @@
         <i class="fa fa-close"></i>
     </a>
     <h4 class="w3-bar-item"><b>Menu</b></h4>
-    <a class="w3-bar-item w3-button w3-hover-black" href="#">Categories</a>
+    <a class="w3-bar-item w3-button w3-hover-black" href="categories.jsp">Categories</a>
     <a class="w3-bar-item w3-button w3-hover-black" href="#">Link</a>
     <a class="w3-bar-item w3-button w3-hover-black" href="#">Link</a>
     <a class="w3-bar-item w3-button w3-hover-black" href="sandbox.jsp">Sandbox</a>
