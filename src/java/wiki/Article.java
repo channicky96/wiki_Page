@@ -11,4 +11,5 @@ public class Article {
     public String name;
     public ArrayList<String> tags;
     public double rate;
+    
 }

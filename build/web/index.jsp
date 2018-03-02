@@ -1,7 +1,7 @@
 <%-- 
     Document   : index
     Created on : 2018-2-22, 10:57:45
-    Author     : placy
+    Author     : noodlesEngineering
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -11,6 +11,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <link rel="stylesheet" href="w3.css" type="text/css">
+        <!--import icons-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
         <style>
@@ -21,16 +22,22 @@
                 bottom: 0;
                 height: inherit;
             }
+            #search_input {
+                height: 43px;
+            }
         </style>
 
     </head>
     <body class="w3-light-grey">
         <!-- Navbar on top-->
         <div class="w3-top">
-            <div class="w3-bar w3-top w3-black w3-left-align w3-large">
+            <div class="w3-bar w3-top w3-black w3-large">
                 <a class="w3-bar-item w3-button w3-right w3-hide-large w3-hover-white w3-large" href="javascript:void(0)" onclick="w3_open()">
                     <i class="fa fa-bars w3-xlarge"></i>
                 </a>
+                <button class="w3-bar-item w3-button w3-black w3-right" type="submit"><i class="fa fa-search"></i></button>
+                <input id="search_input" class="w3-border w3-bar-item w3-right" type="text" placeholder="Search..">
+
                 <a href="#" class="w3-bar-item w3-button">NoodlesWiki</a>
             </div>
         </div>
@@ -40,7 +47,7 @@
                 <i class="fa fa-close"></i>
             </a>
             <h4 class="w3-bar-item"><b>Menu</b></h4>
-            <a class="w3-bar-item w3-button w3-hover-black" href="#">Link</a>
+            <a class="w3-bar-item w3-button w3-hover-black" href="#">Categories</a>
             <a class="w3-bar-item w3-button w3-hover-black" href="#">Link</a>
             <a class="w3-bar-item w3-button w3-hover-black" href="#">Link</a>
             <a class="w3-bar-item w3-button w3-hover-black" href="#">Link</a>
