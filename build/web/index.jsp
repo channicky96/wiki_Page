@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Noodles Wiki</title>
         <link rel="stylesheet" href="w3.css" type="text/css">
         <!--import icons-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -32,18 +32,20 @@
         <!-- Navbar on top-->
         <div class="w3-top">
             <div class="w3-bar w3-top w3-black w3-large">
-                <a class="w3-bar-item w3-button w3-right w3-hide-large w3-hover-white w3-large" href="javascript:void(0)" onclick="w3_open()">
+                <a href="index.jsp" class="w3-bar-item w3-button">NoodlesWiki</a>
+                <a class="w3-bar-item w3-button w3-right w3-hide-large w3-hover-white w3-large" href="javascript:void(0)" onclick="openBar()">
                     <i class="fa fa-bars w3-xlarge"></i>
                 </a>
-                <button class="w3-bar-item w3-button w3-black w3-right" type="submit"><i class="fa fa-search"></i></button>
-                <input id="search_input" class="w3-border w3-bar-item w3-right" type="text" placeholder="Search..">
+                <div class="w3-right">
+                    <button class="w3-bar-item w3-button w3-black w3-right" type="submit"><i class="fa fa-search"></i></button>
+                    <input id="search_input" class="w3-border" type="text" placeholder="Search..">
+                </div>
 
-                <a href="#" class="w3-bar-item w3-button">NoodlesWiki</a>
             </div>
         </div>
         <!-- Sidebar -->
         <nav class="w3-sidebar w3-bar-block w3-collapse w3-large w3-animate-left" id="sidebar">
-            <a href="javascript:void(0)" onclick="w3_close()" class="w3-right w3-padding-large w3-hover-black w3-hide-large" title="Close Menu">
+            <a href="javascript:void(0)" onclick="closeBar()" class="w3-right w3-padding-large w3-hover-black w3-hide-large" title="Close Menu">
                 <i class="fa fa-close"></i>
             </a>
             <h4 class="w3-bar-item"><b>Menu</b></h4>
@@ -53,7 +55,7 @@
             <a class="w3-bar-item w3-button w3-hover-black" href="#">Link</a>
         </nav>
         <!-- Overlay effect when opening sidebar on small screens -->
-        <div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+        <div class="w3-overlay w3-hide-large" onclick="closeBar()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 
         <!-- shift 200px when sidebar visible -->
         <div class="w3-main" style="margin-left:200px; margin-top:43px;">
@@ -95,30 +97,7 @@
             </div>
         </div>
 
-        <script>
-// Get the Sidebar
-            var mySidebar = document.getElementById("sidebar");
-
-// Get the DIV with overlay effect
-            var overlayBg = document.getElementById("myOverlay");
-
-// Toggle between showing and hiding the sidebar, and add overlay effect
-            function w3_open() {
-                if (mySidebar.style.display === 'block') {
-                    mySidebar.style.display = 'none';
-                    overlayBg.style.display = "none";
-                } else {
-                    mySidebar.style.display = 'block';
-                    overlayBg.style.display = "block";
-                }
-            }
-
-// Close the sidebar with the close button
-            function w3_close() {
-                mySidebar.style.display = "none";
-                overlayBg.style.display = "none";
-            }
-        </script>
+        <script src="nav.js"></script>
 
     </body>
 </html>
