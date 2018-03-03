@@ -1,4 +1,4 @@
-<%--<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>--%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page import="wiki.Category"%>
 <%-- 
     Document   : categories
@@ -23,7 +23,9 @@
         <h1 class="w3-container">Hello World!</h1>
         <ul>
             <li><% out.println("ttttt");%></li>
-
+            <c:forEach var="item" items="${cList.list}">
+            <li>${item}</li>
+            </c:forEach>
             <li><jsp:getProperty name="cList" property="name" /></li>
 
         </ul>

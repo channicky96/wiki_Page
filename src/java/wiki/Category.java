@@ -10,6 +10,7 @@ import java.util.Arrays;
 public class Category {
 
     String name = "test Category";
+    // test
     ArrayList<String> list = new ArrayList<>(Arrays.asList("xyz", "abc"));
 
     public Category() {
@@ -18,5 +19,10 @@ public class Category {
 
     public String getName() {
         return name;
+    }
+    public ArrayList<String> getList(){
+        // test
+        list.add("add");
+        return list;
     }
 }
