@@ -16,7 +16,12 @@
         <link rel="stylesheet" href="nav.css" type="text/css">
     </head>
     <body class="w3-light-grey">
+        <jsp:useBean id="list" scope="session" class="wiki.Category" />
         <%@ include file="template.jsp" %>
-        <h1>Hello World!</h1>
+        <h1 class="w3-container">Hello World!</h1>
+        <ul>
+            <li><% out.println("ttttt");%></li>
+            <li><jsp:getProperty name="list" property="name" /></li>
+        </ul>
     </body>
 </html>

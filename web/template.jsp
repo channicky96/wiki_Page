@@ -9,9 +9,14 @@
 <!-- Navbar on top-->
 <div class="w3-top">
     <div class="w3-bar w3-top w3-black w3-large">
-        <a href="index.jsp" class="w3-bar-item w3-button">NoodlesWiki</a>
-        <a class="w3-bar-item w3-button w3-right w3-hide-large w3-hover-white w3-large" href="javascript:void(0)" onclick="openBar()">
+        <a href="index.jsp" class="w3-bar-item w3-button" title="Home page">NoodlesWiki</a>
+        <a class="w3-bar-item w3-button w3-right w3-hide-large w3-hover-white" href="javascript:void(0)" onclick="openBar()">
+            <!--menu icon-->
             <i class="fa fa-bars w3-xlarge"></i>
+        </a>
+        <a class ="w3-bar-item w3-button w3-right w3-hover-white">
+            <!--user icon-->
+            <i class="fa fa-user w3-xlarge" title="Log in/Register"></i>
         </a>
         <div class="w3-right">
             <button class="w3-bar-item w3-button w3-black w3-right" type="submit"><i class="fa fa-search"></i></button>
