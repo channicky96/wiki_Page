@@ -1,0 +1,21 @@
+SMAP
+categories_jsp.java
+JSP
+*S JSP
+*F
++ 0 categories.jsp
+categories.jsp
++ 1 template.jsp
+template.jsp
+*L
+1,2:50
+7,14:52
+21:66,10
+22:76
+5#1,43:77
+22#0,3:119
+25:122,3
+26:125
+27:126,3
+28,5:129
+*E

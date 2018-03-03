@@ -1,23 +1,22 @@
 package wiki;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
  * @author btk16xmu
  */
 public class Category {
+
     String name = "test Category";
-    public Category(){
-        
+    ArrayList<String> list = new ArrayList<>(Arrays.asList("xyz", "abc"));
+
+    public Category() {
+
     }
-    public String getName(){
+
+    public String getName() {
         return name;
     }
-//    public ArrayList<String> getTest(){
-//        test.add("m");
-//        test.add("2");
-//        test.add("CCC");
-//        return test;
-//    }
 }
