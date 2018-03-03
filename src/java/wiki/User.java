@@ -13,4 +13,5 @@ public class User {
     private ArrayList<Article> favourite;
     private ArrayList<Article> basket;
     private ArrayList<Newsfeed> feed;
+    
 }
