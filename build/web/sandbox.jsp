@@ -16,7 +16,7 @@
         <link rel="stylesheet" href="nav.css" type="text/css">
 
     </head>
-    <body>
+    <body class="w3-light-grey">
         <%@ include file="template.jsp" %>
     </body>
 </html>

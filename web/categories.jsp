@@ -15,7 +15,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="nav.css" type="text/css">
     </head>
-    <body>
+    <body class="w3-light-grey">
         <%@ include file="template.jsp" %>
         <h1>Hello World!</h1>
     </body>
