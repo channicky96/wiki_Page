@@ -8,8 +8,8 @@ public class Section {
     public String title;
     public String content;
     // start new article with a title
-    public Section(String title){
-        this.title = title;
+    public Section(){
+        title = "Default Title";
         content = null;
     }
 }

@@ -10,9 +10,10 @@ public class Category {
     private String name;
     private ArrayList<Article> list; // list of articles under this category
 
-    public Category(String name) {
-        this.name = name;
+    public Category() {
         list = new ArrayList<>();
+        //debug
+        list.add(new Article("OY"));
     }
 
     public boolean addArticle(Article a) {
@@ -31,6 +32,17 @@ public class Category {
         return name;
     }
 
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    /**
+     *
+     * @return list of article objects
+     */
     public ArrayList<Article> getList() {
         return list;
     }
