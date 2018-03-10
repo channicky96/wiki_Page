@@ -31,8 +31,8 @@ public class ControllerServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
-        String username=request.getParameter("username");
-        String password=request.getParameter("password");
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
         
         User user=new User();
         user.setUsername(username);
@@ -51,11 +51,13 @@ public class ControllerServlet extends HttpServlet {
             out.println("<body>");
             if (status){
                out.println("<script>alert(\"Hello\\nSUCESS\");</script>");
+//               out.println("<p>---------------------------success---------------------</p>");
                RequestDispatcher rd = request.getRequestDispatcher("login_success.jsp");
                rd.forward(request, response);
             }
             else{
                 out.println("<script>alert(\"Hello\\nFAIL\");</script>");
+//                out.println("<p>---------------------------fail---------------------</p>");
                 RequestDispatcher rd = request.getRequestDispatcher("login_error.jsp");
                 rd.forward(request, response);
             }

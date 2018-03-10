@@ -107,9 +107,6 @@ public class User {
     }
     
     public boolean validate(){
-        if(password.equals("admin")){
-            return true;
-        }
-        return false;
+        return password.equals("admin");
     }
 }
