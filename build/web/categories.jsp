@@ -18,7 +18,7 @@
     </head>
     <body class="w3-light-grey">
         <%@ include file="template.jsp" %>
-        <h1 class="w3-container">Categories</h1>
+        <h1 class="w3-container">Hello World!</h1>
         <%@ include file="category_list.jsp" %>
 
     </body>

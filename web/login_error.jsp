@@ -1,11 +1,10 @@
 <%-- 
-    Document   : login
-    Created on : 07-Mar-2018, 12:23:45
+    Document   : login_error
+    Created on : 09-Mar-2018, 13:28:27
     Author     : acc16scu
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -13,9 +12,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-
-        <h1>Hello World!</h1>
-
+        <h1>Username or password incorrect!</h1>
         <form action="ControllerServlet" method="post">
             Username: <input type="text" name="username"> <br>
             Password: <input type="password" name="password"><br>

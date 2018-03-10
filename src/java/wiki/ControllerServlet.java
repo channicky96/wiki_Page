@@ -7,11 +7,13 @@ package wiki;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.*;
 
 /**
  *
@@ -20,15 +22,11 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "ControllerServlet", urlPatterns = {"/ControllerServlet"})
 public class ControllerServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+
+//    public ControllerServlet() throws SQLException {
+        //java.sql.Connection connectionUrl = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres"); //8084?
+//    }
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -43,8 +41,6 @@ public class ControllerServlet extends HttpServlet {
         
         boolean status = user.validate();
         
-        
-        
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
@@ -54,10 +50,14 @@ public class ControllerServlet extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             if (status){
-                out.println("<script>alert(\"Hello\\nSUCESS\");</script>");
+               out.println("<script>alert(\"Hello\\nSUCESS\");</script>");
+               RequestDispatcher rd = request.getRequestDispatcher("login_success.jsp");
+               rd.forward(request, response);
             }
             else{
                 out.println("<script>alert(\"Hello\\nFAIL\");</script>");
+                RequestDispatcher rd = request.getRequestDispatcher("login_error.jsp");
+                rd.forward(request, response);
             }
             out.println("<h1>Servlet ControllerServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
