@@ -27,10 +27,10 @@
                 out.println("<p>----------------------1---------------------</p>");
                 Class.forName("org.postgresql.Driver");
                 
-                String url = "jdbc:postgresql://127.0.0.1/studentdb";//////////////////////////////////////
+                String url = "jdbc:postgresql://127.0.0.1/studentdb";
 //                
                 out.println("<p>----------------------2---------------------</p>");
-                connectionUrl = DriverManager.getConnection(url,"student","dbpassword"); //8084?
+                connectionUrl = DriverManager.getConnection(url,"student","dbpassword"); 
 //                
                 out.println("<p>---------------------3----------------------</p>");
                 Statement st = connectionUrl.createStatement();
