@@ -30,7 +30,6 @@
                 String url = "jdbc:postgresql://127.0.0.1/studentdb";//////////////////////////////////////
 //                
                 out.println("<p>----------------------2---------------------</p>");
-                connectionUrl = DriverManager.getConnection(url,"student","dbpassword"); 
                 connectionUrl = DriverManager.getConnection(url,"student","dbpassword"); //8084?
 //                
                 out.println("<p>---------------------3----------------------</p>");
