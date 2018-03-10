@@ -7,4 +7,6 @@
 }
 #search_input {
     height: 43px;
+    width: 30vw;
+    max-width: 230px;
 }

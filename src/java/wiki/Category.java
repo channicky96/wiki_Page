@@ -22,11 +22,13 @@ public class Category {
         }
         return false;
     }
-    public boolean clearArticles(){
+    public void clearArticles(){
         list.clear();
-        return true;
     }
 
+    public void setName(String name){
+        this.name = name;
+    }
     public String getName() {
         return name;
     }
