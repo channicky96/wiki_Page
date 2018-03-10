@@ -14,7 +14,7 @@
             <!--menu icon-->
             <i class="fa fa-bars w3-xlarge"></i>
         </a>
-        <a class ="w3-bar-item w3-button w3-right w3-hover-white">
+        <a href="login.jsp" class ="w3-bar-item w3-button w3-right w3-hover-white">
             <!--user icon-->
             <i class="fa fa-user w3-xlarge" title="Log in/Register"></i>
         </a>
