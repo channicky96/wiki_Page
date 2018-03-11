@@ -10,13 +10,16 @@ public class Article {
     private int id;
     private String name;
     private ArrayList<String> tags;
+    private ArrayList<Section> sections;
     private double rate;
     
-    public Article(int aID, String aName, ArrayList<String> aTag, double aRating){
-        this.id = aID;
-        this.name = aName;
-        this.tags = aTag;
-        this.rate = aRating;
+    public Article(){
+        name = null;
+        sections = new ArrayList<>();
+    }
+    
+    public void addSection(Section se){
+        sections.add(se);
     }
 
     /**
@@ -73,6 +76,20 @@ public class Article {
      */
     public void setRate(double rate) {
         this.rate = rate;
+    }
+
+    /**
+     * @return the sections
+     */
+    public ArrayList<Section> getSections() {
+        return sections;
+    }
+
+    /**
+     * @param sections the sections to set
+     */
+    public void setSections(ArrayList<Section> sections) {
+        this.sections = sections;
     }
     
     

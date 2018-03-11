@@ -34,7 +34,7 @@
     <a class="w3-bar-item w3-button w3-hover-black" href="categories.jsp">Categories</a>
     <a class="w3-bar-item w3-button w3-hover-black" href="#">Link</a>
     <a class="w3-bar-item w3-button w3-hover-black" href="#">Link</a>
-    <a class="w3-bar-item w3-button w3-hover-black" href="sandbox.jsp">Sandbox</a>
+    <a class="w3-bar-item w3-button w3-hover-black" href="ArticleServlet">Sandbox</a>
 </nav>
 <!-- Overlay effect when opening sidebar on small screens -->
 <div class="w3-overlay w3-hide-large" onclick="closeBar()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>

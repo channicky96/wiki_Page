@@ -13,13 +13,13 @@
         <link rel="stylesheet" href="w3.css" type="text/css">
         <!--import icons-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="nav.css" type="text/css">
+        <link rel="stylesheet" href="pages.css" type="text/css">
     </head>
     <body>
         <%@ include file="template.jsp" %>
 
         <div>
-            <h2 class="w3-container w3-cell-row w3-red">Username or password incorrect!</h2>
+            <h2 class="w3-container w3-cell-row w3-red w3-animate-top">Username or password incorrect!</h2>
             <form class="w3-container w3-left" action="ControllerServlet" method="post">
                 Username: <input class="w3-input" type="text" name="username"> <br>
                 Password: <input class="w3-input" type="password" name="password"><br>

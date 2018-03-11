@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package wiki;
 
 import java.io.IOException;
@@ -50,13 +45,11 @@ public class ControllerServlet extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             if (status){
-               out.println("<script>alert(\"Hello\\nSUCESS\");</script>");
 //               out.println("<p>---------------------------success---------------------</p>");
                RequestDispatcher rd = request.getRequestDispatcher("login_success.jsp");
                rd.forward(request, response);
             }
             else{
-                out.println("<script>alert(\"Hello\\nFAIL\");</script>");
 //                out.println("<p>---------------------------fail---------------------</p>");
                 RequestDispatcher rd = request.getRequestDispatcher("login_error.jsp");
                 rd.forward(request, response);
@@ -103,7 +96,7 @@ public class ControllerServlet extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "a login controller servlet";
     }// </editor-fold>
 
 }
