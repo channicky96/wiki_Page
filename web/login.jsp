@@ -17,18 +17,6 @@
         <link rel="stylesheet" href="pages.css" type="text/css">
     </head>
     <body>
-<<<<<<< HEAD
-
-        <h1>Hello World!</h1>
-
-        <form action="ControllerServlet" method="post">
-            Username: <input type="text" name="username"> <br>
-            Password: <input type="password" name="password"><br>
-            <input type="submit" name="button" value="login" ><br>
-            
-        </form>
-        <a href="register.jsp">Not registered?</a>
-=======
         <%@ include file="template.jsp" %>
 
         <div class="w3-panel w3-left">
@@ -36,9 +24,9 @@
             <form class="w3-container" action="ControllerServlet" method="post">
                 Username: <input class="w3-input" type="text" name="username"> <br>
                 Password: <input class="w3-input" type="password" name="password"><br>
-                <input class="w3-block w3-button w3-black" type="submit" value="login" >
+                <input class="w3-block w3-button w3-black" type="submit" name="button" value="login" >
             </form>
+            <a href="register.jsp">Not registered?</a>
         </div>
->>>>>>> 534c71743fe16eeef46b1fe14360d8afdef306ba
     </body>
 </html>

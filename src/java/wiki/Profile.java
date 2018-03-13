@@ -11,10 +11,7 @@ public class Profile {
     private String email;
     private ArrayList<Article> contributed;
     private int rate;    // like:+1, dislike:-1
-<<<<<<< HEAD
-    
-=======
->>>>>>> 534c71743fe16eeef46b1fe14360d8afdef306ba
+
     public Profile(String name, String email){
         this.name = name;
         this.email = email;

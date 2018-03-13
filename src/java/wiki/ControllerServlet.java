@@ -9,11 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.*;
-<<<<<<< HEAD
 import java.util.logging.Level;
 import java.util.logging.Logger;
-=======
->>>>>>> 534c71743fe16eeef46b1fe14360d8afdef306ba
 
 /**
  *
@@ -33,7 +30,6 @@ public class ControllerServlet extends HttpServlet {
         
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-<<<<<<< HEAD
         String nickname = request.getParameter("nickname");
         String confirmpassword = request.getParameter("password1");
         String email = request.getParameter("useremail");
@@ -100,34 +96,6 @@ public class ControllerServlet extends HttpServlet {
             }
             catch(ClassNotFoundException e){
                 e.printStackTrace();
-                
-=======
-        
-        User user=new User();
-        user.setUsername(username);
-        user.setPassword(password);
-        request.setAttribute("TEST", user);
-        
-        boolean status = user.validate();
-        
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ControllerServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            if (status){
-//               out.println("<p>---------------------------success---------------------</p>");
-               RequestDispatcher rd = request.getRequestDispatcher("login_success.jsp");
-               rd.forward(request, response);
-            }
-            else{
-//                out.println("<p>---------------------------fail---------------------</p>");
-                RequestDispatcher rd = request.getRequestDispatcher("login_error.jsp");
-                rd.forward(request, response);
->>>>>>> 534c71743fe16eeef46b1fe14360d8afdef306ba
             }
         }
     }

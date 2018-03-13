@@ -156,8 +156,7 @@ public class User {
     public void setFeed(ArrayList<Newsfeed> feed) {
         this.feed = feed;
     }
-    
-<<<<<<< HEAD
+
     public boolean validate(String username) throws SQLException{
         try{
                 Connection connectionUrl = null;
@@ -204,9 +203,7 @@ public class User {
                 
             }
         return false;
-=======
     public boolean validate(){
         return password.equals("admin");
->>>>>>> 534c71743fe16eeef46b1fe14360d8afdef306ba
     }
 }
