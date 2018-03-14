@@ -187,7 +187,7 @@ public class User {
                 Connection connectionUrl;           
                 Class.forName("org.postgresql.Driver");
                 String url = "jdbc:postgresql://127.0.0.1/studentdb";
-                connectionUrl = DriverManager.getConnection(url,"student","dbpassword"); //8084?
+                connectionUrl = DriverManager.getConnection(url,"student","dbpassword"); 
                 Statement st = connectionUrl.createStatement();
                 ResultSet rs = st.executeQuery("select username from users where username ='"+tUsername+"'");
                 while (rs.next()){
@@ -203,8 +203,5 @@ public class User {
                 
             }
         return false;
-    }
-    public boolean validate(){
-        return password.equals("admin");
     }
 }
