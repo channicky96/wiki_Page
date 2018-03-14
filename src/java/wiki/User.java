@@ -203,6 +203,7 @@ public class User {
                 
             }
         return false;
+    }
     public boolean validate(){
         return password.equals("admin");
     }
