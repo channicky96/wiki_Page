@@ -23,14 +23,14 @@
                 <div class="w3-third w3-container w3-margin-bottom">
                     <img src="https://i.imgur.com/OvMZBs9.jpg" alt="" style="width:100%" class="w3-hover-opacity">
                     <div class="w3-container w3-white">
-                        <p><b>Lorem Ipsum</b></p>
+                        <p href="article.jsp" name="articleid" value="1"><b>article 1</b></p>
                         <p>Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.</p>
                     </div>
                 </div>
                 <div class="w3-third w3-container w3-margin-bottom">
                     <img src="https://i.imgur.com/OvMZBs9.jpg" alt="" style="width:100%" class="w3-hover-opacity">
                     <div class="w3-container w3-white">
-                        <p><b>Lorem Ipsum</b></p>
+                        <p><b>article 2</b></p>
                         <p>Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.</p>
                     </div>
                 </div>
