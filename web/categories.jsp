@@ -14,11 +14,11 @@
         <link rel="stylesheet" href="w3.css" type="text/css">
         <!--import icons-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="nav.css" type="text/css">
+        <link rel="stylesheet" href="pages.css" type="text/css">
     </head>
     <body class="w3-light-grey">
         <%@ include file="template.jsp" %>
-        <h1 class="w3-container">Hello World!</h1>
+        <h1 class="w3-container">Categories</h1>
         <%@ include file="category_list.jsp" %>
 
     </body>

@@ -10,8 +10,8 @@ public class Category {
     private String name;
     private ArrayList<Article> list; // list of articles under this category
 
-    public Category(String name) {
-        this.name = name;
+    public Category() {
+        this.name = null;
         list = new ArrayList<>();
     }
 
@@ -22,11 +22,13 @@ public class Category {
         }
         return false;
     }
-    public boolean clearArticles(){
+    public void clearArticles(){
         list.clear();
-        return true;
     }
 
+    public void setName(String name){
+        this.name = name;
+    }
     public String getName() {
         return name;
     }

@@ -10,15 +10,22 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <link rel="stylesheet" href="w3.css" type="text/css">
+        <!--import icons-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="pages.css" type="text/css">
     </head>
     <body>
-        <h1>Username or password incorrect!</h1>
-        <form action="ControllerServlet" method="post">
-            Username: <input type="text" name="username"> <br>
-            Password: <input type="password" name="password"><br>
-            <input type="submit" name="button" value="login" ><br>
-            <a href="register.jsp">Not registered?</a>
-            
-        </form>
+        <%@ include file="template.jsp" %>
+        <h2 class="w3-container w3-cell-row w3-red w3-animate-top">Username or password incorrect!</h2>
+
+        <div class="w3-margin-left">
+            <form class="w3-container w3-left" action="ControllerServlet" method="post">
+                Username: <input class="w3-input" type="text" name="username"> <br/>
+                Password: <input class="w3-input" type="password" name="password"><br/>
+                <input class="w3-block w3-button w3-black" type="submit" name="button" value="login" >
+                <a class="w3-panel" href="register.jsp">Not registered?</a>
+            </form>
+        </div>
     </body>
 </html>

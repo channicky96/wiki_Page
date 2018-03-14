@@ -18,7 +18,7 @@
             <!--user icon-->
             <i class="fa fa-user w3-xlarge" title="Log in/Register"></i>
         </a>
-        <div class="w3-right">
+        <div class="w3-right w3-cell-top">
             <button class="w3-bar-item w3-button w3-black w3-right" type="submit"><i class="fa fa-search"></i></button>
             <input id="search_input" class="w3-border" type="text" placeholder="Search..">
         </div>
@@ -26,7 +26,7 @@
     </div>
 </div>
 <!-- Sidebar -->
-<nav class="w3-sidebar w3-bar-block w3-collapse w3-large w3-animate-left" id="sidebar">
+<nav class="w3-sidebar w3-bar-block w3-collapse w3-large" id="sidebar">
     <a href="javascript:void(0)" onclick="closeBar()" class="w3-right w3-padding-large w3-hover-black w3-hide-large" title="Close Menu">
         <i class="fa fa-close"></i>
     </a>
@@ -34,7 +34,7 @@
     <a class="w3-bar-item w3-button w3-hover-black" href="categories.jsp">Categories</a>
     <a class="w3-bar-item w3-button w3-hover-black" href="#">Link</a>
     <a class="w3-bar-item w3-button w3-hover-black" href="#">Link</a>
-    <a class="w3-bar-item w3-button w3-hover-black" href="sandbox.jsp">Sandbox</a>
+    <a class="w3-bar-item w3-button w3-hover-black" href="ArticleServlet">Sandbox</a>
 </nav>
 <!-- Overlay effect when opening sidebar on small screens -->
 <div class="w3-overlay w3-hide-large" onclick="closeBar()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
