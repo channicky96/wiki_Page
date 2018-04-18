@@ -2,7 +2,7 @@ package wiki;
 
 import java.util.ArrayList;
 import java.sql.*;
-import java.util.Random;
+//import java.util.Random;
 
 /**
  *
@@ -21,56 +21,56 @@ public class User {
     }
     
      public User(String nickName, String uPassword, String uEmail) throws SQLException{
-        //Profile newU = new Profile(name, email);
+        Profile newU = new Profile(name, email);
         int idd = 0;
         
         Profile pro = new Profile(nickName, uEmail);
         
-        try{
-                Connection connectionUrl;             
-                Class.forName("org.postgresql.Driver");
-                String url = "jdbc:postgresql://127.0.0.1/studentdb";
-                connectionUrl = DriverManager.getConnection(url,"student","dbpassword"); //8084?
-                Statement st = connectionUrl.createStatement();
-                ResultSet rs = st.executeQuery("select max(id) as maxid from users");
-                while (rs.next()){
-                    idd = rs.getInt("maxid")+1;
-                    System.out.println("mkmkmkmkduidwu");
-                    System.out.println(idd);
-                }
-                connectionUrl.close();
-                
-            }
-            catch(ClassNotFoundException e){
-                e.printStackTrace();
-                
-            }
-        Random rand = new Random();
-        String tempusername = nickName+rand.nextInt(99999);
-        while(checkUsername(tempusername) == false){
-            tempusername = nickName+rand.nextInt(99999);
-        }
+//        try{
+//                Connection connectionUrl;             
+//                Class.forName("org.postgresql.Driver");
+//                String url = "jdbc:postgresql://127.0.0.1/studentdb";
+//                connectionUrl = DriverManager.getConnection(url,"student","dbpassword"); 
+//                Statement st = connectionUrl.createStatement();
+//                ResultSet rs = st.executeQuery("select max(id) as maxid from users");
+//                while (rs.next()){
+//                    idd = rs.getInt("maxid")+1;
+//                    System.out.println("mkmkmkmkduidwu");
+//                    System.out.println(idd);
+//                }
+//                connectionUrl.close();
+//                
+//            }
+//            catch(ClassNotFoundException e){
+//                e.printStackTrace();
+//                
+//            }
+//        Random rand = new Random();
+//        String tempusername = nickName+rand.nextInt(99999);
+//        while(checkUsername(tempusername) == false){
+//            tempusername = nickName+rand.nextInt(99999);
+//        }
         username = tempusername;
         id = idd;
         password = uPassword;
         
-        try{
-                Connection connectionUrl;           
-                Class.forName("org.postgresql.Driver");
-                String url = "jdbc:postgresql://127.0.0.1/studentdb";
-                connectionUrl = DriverManager.getConnection(url,"student","dbpassword"); //8084?
-                Statement st = connectionUrl.createStatement();
-                ResultSet rs = st.executeQuery("insert into users(id,username,userpassword,email,nickname) values('"+id+"','"+username+"','"+password+"','"+uEmail+"','"+nickName+"')");
-                while (rs.next()){
-                    
-                }
-                connectionUrl.close();
-                
-            }
-            catch(ClassNotFoundException e){
-                e.printStackTrace();
-                
-            }
+//        try{
+//                Connection connectionUrl;           
+//                Class.forName("org.postgresql.Driver");
+//                String url = "jdbc:postgresql://127.0.0.1/studentdb";
+//                connectionUrl = DriverManager.getConnection(url,"student","dbpassword"); //8084?
+//                Statement st = connectionUrl.createStatement();
+//                ResultSet rs = st.executeQuery("insert into users(id,username,userpassword,email,nickname) values('"+id+"','"+username+"','"+password+"','"+uEmail+"','"+nickName+"')");
+//                while (rs.next()){
+//                    
+//                }
+//                connectionUrl.close();
+//                
+//            }
+//            catch(ClassNotFoundException e){
+//                e.printStackTrace();
+//                
+//            }
     }
 
     /**
@@ -181,27 +181,27 @@ public class User {
         return false;
     }
     
-    public boolean checkUsername(String tUsername) throws SQLException{
-        String tun = null;
-        try{
-                Connection connectionUrl;           
-                Class.forName("org.postgresql.Driver");
-                String url = "jdbc:postgresql://127.0.0.1/studentdb";
-                connectionUrl = DriverManager.getConnection(url,"student","dbpassword"); //8084?
-                Statement st = connectionUrl.createStatement();
-                ResultSet rs = st.executeQuery("select username from users where username ='"+tUsername+"'");
-                while (rs.next()){
-                    tun = rs.getString("username");
-                }
-                connectionUrl.close();
-                if(tun == null){
-                    return true;
-                }
-            }
-            catch(ClassNotFoundException e){
-                e.printStackTrace();
-                
-            }
-        return false;
-    }
+//    public boolean checkUsername(String tUsername) throws SQLException{
+//        String tun = null;
+//        try{
+//                Connection connectionUrl;           
+//                Class.forName("org.postgresql.Driver");
+//                String url = "jdbc:postgresql://127.0.0.1/studentdb";
+//                connectionUrl = DriverManager.getConnection(url,"student","dbpassword"); //8084?
+//                Statement st = connectionUrl.createStatement();
+//                ResultSet rs = st.executeQuery("select username from users where username ='"+tUsername+"'");
+//                while (rs.next()){
+//                    tun = rs.getString("username");
+//                }
+//                connectionUrl.close();
+//                if(tun == null){
+//                    return true;
+//                }
+//            }
+//            catch(ClassNotFoundException e){
+//                e.printStackTrace();
+//                
+//            }
+//        return false;
+//    }
 }

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Random;
 
 /**
  *
@@ -34,7 +35,7 @@ public class ControllerServlet extends HttpServlet {
         String confirmpassword = request.getParameter("password1");
         String email = request.getParameter("useremail");
         String button = request.getParameter("button");
-        if(button.equals("login")){
+        if(button.equals("login")){ //IF USER IS LOGGING IN
             User user=new User();
             user.setUsername(username);
             user.setPassword(password);
@@ -64,7 +65,7 @@ public class ControllerServlet extends HttpServlet {
                 out.println("</body>");
                 out.println("</html>");
             }
-        }else if (button.equals("register")){
+        }else if (button.equals("register")){ //IF THE USER IS REGISTERING
             String emailcheck = null;
             try{
                 Connection connectionUrl = null;           
@@ -84,7 +85,51 @@ public class ControllerServlet extends HttpServlet {
                     }
                 }else{
                     if(password.equals(confirmpassword)){
-                        System.out.println("CHCKCKCK");
+                        
+                        //-------------------------------------CREATE NEW ID
+                        
+                        int id = 0;
+                        
+                        try{
+                            //Connection connectionUrl;             
+                            Class.forName("org.postgresql.Driver");
+                            connectionUrl = DriverManager.getConnection(url,"student","dbpassword"); 
+                            ResultSet rs1 = st.executeQuery("select max(id) as maxid from users");
+                            while (rs1.next()){
+                                id = rs1.getInt("maxid")+1;
+                                //System.out.println("mkmkmkmkduidwu");
+                                System.out.println(id);
+                               }
+                            connectionUrl.close();
+                
+                        }
+                        catch(ClassNotFoundException e){
+                            e.printStackTrace();
+                        }
+                        
+                        //---------------------------------------- CHECK FOR EXISTING NICKNAMES
+                        Random rand = new Random();
+                        String newusername = nickname+rand.nextInt(99999);
+                        while(checkUsername(newusername) == false){
+                            newusername = nickname+rand.nextInt(99999);
+                        }
+                        //---------------------------------------- ADD NEW USER TO DATABASE
+                        try{
+                            //Connection connectionUrl;           
+                            Class.forName("org.postgresql.Driver");
+                            //String url = "jdbc:postgresql://127.0.0.1/studentdb";
+                            connectionUrl = DriverManager.getConnection(url,"student","dbpassword"); //8084?
+                            //Statement st = connectionUrl.createStatement();
+                            st.executeQuery("insert into users(id,username,userpassword,email,nickname) values('"+id+"','"+newusername+"','"+password+"','"+email+"','"+nickname+"')");
+                            connectionUrl.close();
+                
+                        }
+                        
+                        catch(ClassNotFoundException e){
+                            e.printStackTrace();
+                        }
+                        
+                        //---------------------------------------- 
                         User nuser = new User(nickname,password,email);
                     }else{
                         try (PrintWriter out = response.getWriter()){
@@ -100,7 +145,29 @@ public class ControllerServlet extends HttpServlet {
             }
         }
     }
-
+        public boolean checkUsername(String tUsername) throws SQLException{ //CHECK FOR EXISTING NICKNAMES
+        String tun = null;
+        try{
+                Connection connectionUrl;           
+                Class.forName("org.postgresql.Driver");
+                String url = "jdbc:postgresql://127.0.0.1/studentdb";
+                connectionUrl = DriverManager.getConnection(url,"student","dbpassword"); //8084?
+                Statement st = connectionUrl.createStatement();
+                ResultSet rs = st.executeQuery("select username from users where username ='"+tUsername+"'");
+                while (rs.next()){
+                    tun = rs.getString("username");
+                }
+                connectionUrl.close();
+                if(tun == null){
+                    return true;
+                }
+            }
+            catch(ClassNotFoundException e){
+                e.printStackTrace();
+                
+            }
+        return false;
+    }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
