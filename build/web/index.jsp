@@ -10,10 +10,10 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Noodles Wiki</title>
-        <link rel="stylesheet" href="w3.css" type="text/css">
+        <link rel="stylesheet" href="/NoodlesWiki/w3.css" type="text/css">
         <!--import Font Awesome Icons-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="pages.css" type="text/css">
+        <link rel="stylesheet" href="/NoodlesWiki/pages.css" type="text/css">
 
     </head>
     <body class="w3-light-grey">
@@ -23,7 +23,7 @@
                 <div class="w3-third w3-container w3-margin-bottom">
                     <img src="https://i.imgur.com/OvMZBs9.jpg" alt="" style="width:100%" class="w3-hover-opacity">
                     <div class="w3-container w3-white">
-                        <p href="article.jsp" name="articleid" value="1"><b>article 1</b></p>
+                        <p><b>article 1</b></p>
                         <p>Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.</p>
                     </div>
                 </div>

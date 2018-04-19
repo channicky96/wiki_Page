@@ -20,6 +20,6 @@
             Email: <input type="email" name="useremail"><br>
             <input type="submit" name="button" value="register" ><br>
         </form>
-        <a href="login.jsp">Already registered?</a>
+        <a href="/NoodlesWiki/login.jsp">Already registered?</a>
     </body>
 </html>
