@@ -1,8 +1,7 @@
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%-- 
-    Document   : categories
-    Created on : 2018-3-2, 16:51:17
-    Author     : btk16xmu
+    Document   : ArticleEditer
+    Created on : 20-Apr-2018, 15:02:52
+    Author     : acc16scu
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -10,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Categories - NoodlesWiki</title>
+        <title>Article Editor - NoodlesWiki</title>
         <link rel="stylesheet" href="w3.css" type="text/css">
         <!--import icons-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -19,8 +18,9 @@
     </head>
     <body class="w3-light-grey">
         <%@ include file="template.jsp" %>
-        <h1 class="w3-container">Categories</h1>
-        <%@ include file="category_list.jsp" %>
-
+        <div id="edit"  contenteditable="true">
+            <p> hello </p>
+            <textarea>Next, start a free trial!</textarea>
+        </div>
     </body>
 </html>
