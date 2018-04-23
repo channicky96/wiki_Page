@@ -11,11 +11,11 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
-        <link rel="stylesheet" href="w3.css" type="text/css">
+        <link rel="stylesheet" href="/NoodlesWiki/w3.css" type="text/css">
         <!--import icons-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="pages.css" type="text/css">
         <link rel="Shortcut Icon" href="noodleswiki.ico">
+        <link rel="stylesheet" href="/NoodlesWiki/pages.css" type="text/css">
     </head>
     <body>
         <%@ include file="template.jsp" %>

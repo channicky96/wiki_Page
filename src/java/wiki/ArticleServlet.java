@@ -1,7 +1,6 @@
 package wiki;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author placy
  */
-@WebServlet(name = "ArticleServlet", urlPatterns = {"/ArticleServlet"})
+@WebServlet(name = "ArticleServlet", urlPatterns = {"/article/"})
 public class ArticleServlet extends HttpServlet {
 
     /**
@@ -45,7 +44,7 @@ public class ArticleServlet extends HttpServlet {
         
         request.setAttribute("name", testArticle.getName());
         request.setAttribute("sections", sendSections);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("sandbox.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/sandbox.jsp");
         dispatcher.forward(request, response);
     }
 
