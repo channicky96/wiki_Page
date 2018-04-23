@@ -15,12 +15,9 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="Shortcut Icon" href="noodleswiki.ico">
         <link rel="stylesheet" href="/NoodlesWiki/pages.css" type="text/css">
-
->>>>>>> 4520f52c5c4322c36f4af4270ce6a225cd6db6c4
     </head>
     <body class="w3-light-grey">
         <%@ include file="template.jsp" %>
-        <!-- First Photo Grid-->
             <div class="w3-row-padding">
                 <div class="w3-third w3-container w3-margin-bottom">
                     <img src="https://i.imgur.com/OvMZBs9.jpg" alt="" style="width:100%" class="w3-hover-opacity">

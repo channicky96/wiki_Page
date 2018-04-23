@@ -5,6 +5,7 @@ package wiki;
  * @author btk16xmu
  */
 public class Section {
+    private int order;
     private String title;
     private String content;
     
@@ -39,5 +40,19 @@ public class Section {
      */
     public void setContent(String content) {
         this.content = content;
+    }
+
+    /**
+     * @return the order
+     */
+    public int getOrder() {
+        return order;
+    }
+
+    /**
+     * @param order the order to set
+     */
+    public void setOrder(int order) {
+        this.order = order;
     }
 }

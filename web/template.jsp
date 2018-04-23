@@ -19,8 +19,10 @@
             <i class="fa fa-user w3-xlarge" title="Log in/Register"></i>
         </a>
         <div class="w3-right w3-cell-top">
-            <button class="w3-bar-item w3-button w3-black w3-right" type="submit"><i class="fa fa-search"></i></button>
-            <input id="search_input" class="w3-border" type="text" placeholder="Search..">
+            <form action="/NoodlesWiki/article/" method="post">
+                <input id="search_input" class="w3-border" type="text" name="keyword" placeholder="Search..">
+                <button class="w3-bar-item w3-button w3-black w3-right" type="submit" name="submit"><i class="fa fa-search"></i></button>
+            </form>
         </div>
 
     </div>
@@ -34,13 +36,13 @@
     <a class="w3-bar-item w3-button w3-hover-black" href="/NoodlesWiki/categories.jsp">Categories</a>
     <a class="w3-bar-item w3-button w3-hover-black" href="#">Link</a>
     <a class="w3-bar-item w3-button w3-hover-black" href="#">Link</a>
-    <a class="w3-bar-item w3-button w3-hover-black" href="/NoodlesWiki/article/">Sandbox</a>
+    <a class="w3-bar-item w3-button w3-hover-black" href="/NoodlesWiki/article/">show me 404</a>
 </nav>
 <!-- Overlay effect when opening sidebar on small screens -->
-<div class="w3-overlay w3-hide-large" onclick="closeBar()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+<div class="w3-overlay w3-hide-large" onclick="closeBar()" style="cursor:pointer" title="close side menu" id="overlay"></div>
 
 <!-- shift 200px when sidebar visible -->
 <div class="w3-main" style="margin-left:200px; margin-top:43px;">
 
-<script src="/NoodlesWiki/nav.js"></script>
+    <script src="/NoodlesWiki/nav.js"></script>
 

@@ -28,24 +28,30 @@ public class ArticleServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        Section test = new Section();
-        test.setTitle("each");
-        test.setContent("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
-                + "Sed id dui ac ex eleifend malesuada. Suspendisse ut metus enim. Cras pretium purus nulla. Suspendisse blandit, nulla id tincidunt dignissim, orci justo commodo enim, ut luctus tortor urna et nisl. Praesent non ante ac arcu pellentesque congue et non nisi. Cras vel eros dapibus, finibus ipsum at, lobortis massa. Mauris elementum lobortis nibh sit amet tempus. Vivamus ac tincidunt arcu. Curabitur vehicula tincidunt metus. Pellentesque in iaculis orci, in rhoncus ante. Maecenas at dolor id felis finibus suscipit sed condimentum turpis. Nam dui lorem, vestibulum et felis quis, laoreet maximus tellus. Maecenas et lorem enim. Nullam iaculis augue in ligula ultrices tempus. Donec pulvinar id nisi a consequat. Nunc faucibus condimentum massa."
-                + "<br/>Donec finibus pellentesque augue");
-        
-        Article testArticle = new Article();
-        testArticle.setName("Sandbox");
-        testArticle.addSection(test);
-        testArticle.addSection(test);
-        
-        List<Section> sendSections = testArticle.getSections();
-        
-        request.setAttribute("name", testArticle.getName());
-        request.setAttribute("sections", sendSections);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/sandbox.jsp");
-        dispatcher.forward(request, response);
+        String searchWord = request.getParameter("keyword");
+        //TODO database search
+
+        System.out.println("?");
+        if (searchWord == null) {
+            response.sendRedirect("/NoodlesWiki/404.jsp");
+            return;
+        } else {
+            Section test = new Section();
+            test.setTitle("Articletitle");
+            test.setContent("Article content");
+
+            Article testArticle = new Article();
+            testArticle.setName(searchWord);
+            testArticle.addSection(test);
+            testArticle.addSection(test);
+
+            List<Section> sendSections = testArticle.getSections();
+
+            request.setAttribute("name", testArticle.getName());
+            request.setAttribute("sections", sendSections);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/displayArticle.jsp");
+            dispatcher.forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

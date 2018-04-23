@@ -33,7 +33,7 @@ public class ControllerServlet extends HttpServlet {
         String confirmpassword = request.getParameter("password1");
         String email = request.getParameter("useremail");
         String button = request.getParameter("button");
-        if (button.equals("login")) { //IF USER IS LOGGING IN
+        if (button.equals("Login")) { //IF USER IS LOGGING IN
             User user = new User();
             user.setUsername(username);
             user.setPassword(password);
@@ -53,23 +53,22 @@ public class ControllerServlet extends HttpServlet {
                     //out.println("<script>alert(\"Hello\\nSUCESS\");</script>");
                     RequestDispatcher rd = request.getRequestDispatcher("login_success.jsp");
                     rd.forward(request, response);
+                    return;
                 } else {
                     //out.println("<script>alert(\"Hello\\nFAIL\");</script>");
                     RequestDispatcher rd = request.getRequestDispatcher("login_error.jsp");
                     rd.forward(request, response);
+                    return;
                 }
-                out.println("<h1>Servlet ControllerServlet at " + request.getContextPath() + "</h1>");
-                out.println("</body>");
-                out.println("</html>");
             }
-        } else if (button.equals("register")) { //IF THE USER IS REGISTERING
+        } else if (button.equals("Register")) { //IF THE USER IS REGISTERING
             String emailcheck = null;
             //-------------------------------------SEE IF EMAIL
             try {
                 Connection connectionUrl = null;
                 Class.forName("org.postgresql.Driver");
                 String url = "jdbc:postgresql://127.0.0.1/studentdb";
-                connectionUrl = DriverManager.getConnection(url, "student", "dbpassword"); //8084?
+                connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
                 Statement st = connectionUrl.createStatement();
                 ResultSet rs = st.executeQuery("select username from users where email ='" + email + "'");
                 while (rs.next()) {
@@ -115,7 +114,7 @@ public class ControllerServlet extends HttpServlet {
                         Connection connectionUrl2;           
                         Class.forName("org.postgresql.Driver");
                         String url2 = "jdbc:postgresql://127.0.0.1/studentdb";
-                        connectionUrl2 = DriverManager.getConnection(url2, "student", "dbpassword"); //8084?
+                        connectionUrl2 = DriverManager.getConnection(url2, "student", "dbpassword");
                         Statement st2 = connectionUrl2.createStatement();
                         System.out.println("HEL MDKOWNDOINW");
                         ResultSet rs2 = st2.executeQuery("insert into users(id,username,userpassword,email,nickname) values('" + id + "','" + newusername + "','" + password + "','" + email + "','" + nickname + "')");
@@ -149,7 +148,7 @@ public class ControllerServlet extends HttpServlet {
             Connection connectionUrl;
             Class.forName("org.postgresql.Driver");
             String url = "jdbc:postgresql://127.0.0.1/studentdb";
-            connectionUrl = DriverManager.getConnection(url, "student", "dbpassword"); //8084?
+            connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
             Statement st = connectionUrl.createStatement();
             ResultSet rs = st.executeQuery("select username from users where username ='" + tUsername + "'");
             while (rs.next()) {
@@ -173,7 +172,7 @@ public class ControllerServlet extends HttpServlet {
             //                String pwd = request.getParameter("userpassword");             
             Class.forName("org.postgresql.Driver");
             String url = "jdbc:postgresql://127.0.0.1/studentdb";
-            connectionUrl = DriverManager.getConnection(url, "student", "dbpassword"); //8084?
+            connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
             Statement st = connectionUrl.createStatement();
             ResultSet rs = st.executeQuery("select userpassword from users where username ='" + username + "'");
             while (rs.next()) {
