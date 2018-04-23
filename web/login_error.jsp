@@ -24,7 +24,7 @@
             <form class="w3-container w3-left" action="ControllerServlet" method="post">
                 Username: <input class="w3-input" type="text" name="username"> <br/>
                 Password: <input class="w3-input" type="password" name="password"><br/>
-                <input class="w3-block w3-button w3-black" type="submit" name="button" value="login" >
+                <input class="w3-block w3-button w3-black" type="submit" name="button" value="Login" >
                 <a class="w3-panel" href="/NoodlesWiki/register.jsp">Not registered?</a>
             </form>
         </div>

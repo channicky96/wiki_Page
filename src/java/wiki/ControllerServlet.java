@@ -33,28 +33,32 @@ public class ControllerServlet extends HttpServlet {
         String confirmpassword = request.getParameter("password1");
         String email = request.getParameter("useremail");
         String button = request.getParameter("button");
-        if (button.equals("login")) { //IF USER IS LOGGING IN
+        System.out.println("IOHFWEIOPHFGIOHIOEGHIOGHEIOHEGIOGHEIOGH");
+        if (button.equals("Login")) { //IF USER IS LOGGING IN
             User user = new User();
             user.setUsername(username);
             user.setPassword(password);
             request.setAttribute("TEST", user);
-
+            
             boolean status = validate(username, password);
-
+            System.out.println(status);
             try (PrintWriter out = response.getWriter()) {
                 /* TODO output your page here. You may use following sample code. */
                 out.println("<!DOCTYPE html>");
                 out.println("<html>");
                 out.println("<head>");
                 out.println("<title>Servlet ControllerServlet</title>");
+                
                 out.println("</head>");
                 out.println("<body>");
+                
+
                 if (status) {
-                    //out.println("<script>alert(\"Hello\\nSUCESS\");</script>");
+                    out.println("<script>alert(\"Hello\\nSUCESS\");</script>");
                     RequestDispatcher rd = request.getRequestDispatcher("login_success.jsp");
                     rd.forward(request, response);
                 } else {
-                    //out.println("<script>alert(\"Hello\\nFAIL\");</script>");
+                    out.println("<script>alert(\"Hello\\nFAIL\");</script>");
                     RequestDispatcher rd = request.getRequestDispatcher("login_error.jsp");
                     rd.forward(request, response);
                 }
@@ -62,7 +66,7 @@ public class ControllerServlet extends HttpServlet {
                 out.println("</body>");
                 out.println("</html>");
             }
-        } else if (button.equals("register")) { //IF THE USER IS REGISTERING
+        } else if (button.equals("Register")) { //IF THE USER IS REGISTERING
             String emailcheck = null;
             //-------------------------------------SEE IF EMAIL
             try {
@@ -146,16 +150,16 @@ public class ControllerServlet extends HttpServlet {
     public boolean checkUsername(String tUsername) throws SQLException { //CHECK FOR EXISTING NICKNAMES
         String tun = null;
         try {
-            Connection connectionUrl;
+            Connection connectionUrl3;
             Class.forName("org.postgresql.Driver");
-            String url = "jdbc:postgresql://127.0.0.1/studentdb";
-            connectionUrl = DriverManager.getConnection(url, "student", "dbpassword"); //8084?
-            Statement st = connectionUrl.createStatement();
-            ResultSet rs = st.executeQuery("select username from users where username ='" + tUsername + "'");
-            while (rs.next()) {
-                tun = rs.getString("username");
+            String url3 = "jdbc:postgresql://127.0.0.1/studentdb";
+            connectionUrl3 = DriverManager.getConnection(url3, "student", "dbpassword"); //8084?
+            Statement st3 = connectionUrl3.createStatement();
+            ResultSet rs3 = st3.executeQuery("select username from users where username ='" + tUsername + "'");
+            while (rs3.next()) {
+                tun = rs3.getString("username");
             }
-            connectionUrl.close();
+            connectionUrl3.close();
             if (tun == null) {
                 return true;
             }
@@ -167,20 +171,21 @@ public class ControllerServlet extends HttpServlet {
     }
 
     public boolean validate(String username, String password) throws SQLException { //VALIDATE LOGIN 
+        
         try {
-            Connection connectionUrl = null;
+            Connection connectionUrl4;
             //                session.putValue("userid",userid);
             //                String pwd = request.getParameter("userpassword");             
             Class.forName("org.postgresql.Driver");
-            String url = "jdbc:postgresql://127.0.0.1/studentdb";
-            connectionUrl = DriverManager.getConnection(url, "student", "dbpassword"); //8084?
-            Statement st = connectionUrl.createStatement();
-            ResultSet rs = st.executeQuery("select userpassword from users where username ='" + username + "'");
-            while (rs.next()) {
-                String passw = rs.getString("userpassword");
+            String url4 = "jdbc:postgresql://127.0.0.1/studentdb";
+            connectionUrl4 = DriverManager.getConnection(url4, "student", "dbpassword"); //8084?
+            Statement st4 = connectionUrl4.createStatement();
+            ResultSet rs4 = st4.executeQuery("select userpassword from users where username ='" + username + "'");
+            while (rs4.next()) {
+                String passw = rs4.getString("userpassword");
                 return password.equals(passw);
             }
-            connectionUrl.close();
+            connectionUrl4.close();
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
