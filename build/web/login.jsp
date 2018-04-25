@@ -21,7 +21,7 @@
         <%@ include file="template.jsp" %>
         <div class="w3-margin-left w3-left">
             <h1 class="w3-margin-left">Login</h1>
-            <form class="w3-container" action="ControllerServlet" method="post">
+            <form class="w3-container" action="/NoodlesWiki/ControllerServlet" method="post">
                 Username: <input class="w3-input" type="text" name="username"> <br/>
                 Password: <input class="w3-input" type="password" name="password"><br/>
                 <input class="w3-block w3-button w3-black" type="submit" name="button" value="Login" >

@@ -185,7 +185,7 @@ public class ControllerServlet extends HttpServlet {
             }
             connectionUrl4.close();
 
-        } catch (ClassNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
 
         }
@@ -236,7 +236,7 @@ public class ControllerServlet extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "controller servlet";
     }// </editor-fold>
 
 }

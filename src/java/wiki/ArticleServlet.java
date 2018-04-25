@@ -1,7 +1,14 @@
 package wiki;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author placy
+ * @author btk16xmu
  */
 @WebServlet(name = "ArticleServlet", urlPatterns = {"/article/"})
 public class ArticleServlet extends HttpServlet {
@@ -24,34 +31,75 @@ public class ArticleServlet extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * @throws SQLException
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         String searchWord = request.getParameter("keyword");
         //TODO database search
 
-        System.out.println("?");
         if (searchWord == null) {
             response.sendRedirect("/NoodlesWiki/404.jsp");
             return;
         } else {
-            Section test = new Section();
-            test.setTitle("Articletitle");
-            test.setContent("Article content");
+            try {
+                Article result = searchArticle(searchWord);
+                if (result == null) {
+                    response.sendRedirect("/NoodlesWiki/404.jsp");
+                    return;
+                }
+                List<Section> sendSections = result.getSections();
 
-            Article testArticle = new Article();
-            testArticle.setName(searchWord);
-            testArticle.addSection(test);
-            testArticle.addSection(test);
-
-            List<Section> sendSections = testArticle.getSections();
-
-            request.setAttribute("name", testArticle.getName());
-            request.setAttribute("sections", sendSections);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/displayArticle.jsp");
-            dispatcher.forward(request, response);
+                request.setAttribute("name", result.getName());
+                request.setAttribute("sections", sendSections);
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/displayArticle.jsp");
+                dispatcher.forward(request, response);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+    }
+
+    public Article searchArticle(String article) throws SQLException { //search article in database
+
+        try {
+            Connection connectionUrl;
+            Class.forName("org.postgresql.Driver");
+            String url = "jdbc:postgresql://127.0.0.1/studentdb";
+            connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
+            Statement st = connectionUrl.createStatement();
+            ResultSet articleRs = st.executeQuery("select * from articles where name ='" + article + "'");
+            String dbArticle = null;
+            int aId = 0;
+            while (articleRs.next()) {
+                dbArticle = articleRs.getString("name");
+                aId = articleRs.getInt("id");
+            }
+            if (dbArticle != null) {
+                Article foundArticle = new Article();
+                foundArticle.setName(dbArticle);
+                foundArticle.setId(aId);
+                articleRs.close();
+                ResultSet sectionRs = st.executeQuery("select * from sections where article_id ='" + aId + "'");
+                while (sectionRs.next()) {
+                    Section temp = new Section();
+                    temp.setTitle(sectionRs.getString("title"));
+                    temp.setContent("Article content");
+
+                    foundArticle.addSection(temp);
+                }
+
+                return foundArticle;
+            }
+
+            connectionUrl.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return null;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -66,7 +114,11 @@ public class ArticleServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(ArticleServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -80,7 +132,11 @@ public class ArticleServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(ArticleServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
