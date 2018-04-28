@@ -1,3 +1,6 @@
+article {
+    padding-top: 43px;
+}
 .w3-sidebar {
     z-index: 3;
     width: 200px;
@@ -7,7 +10,7 @@
 }
 #search_input {
     height: 43px;
-    width: 29vw;
+    width: 15vw;
     max-width: 230px;
 }
 
@@ -20,6 +23,9 @@
     padding: 0 13px 0 13px;
 }
 
+#article_rate {
+    font-size: 20px;
+}
 .article_section{
     overflow: auto;
 }

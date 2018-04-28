@@ -61,5 +61,9 @@
                 out.println("<h2 align=\"center\">" + date.toString() + "</h2>");
             %>
         </div>
+        <%@ include file="end_template.jspf" %>
     </body>
+
+</body>
+
 </html>

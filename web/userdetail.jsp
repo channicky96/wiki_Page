@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>User Details</title>
         <link rel="stylesheet" href="/NoodlesWiki/w3.css" type="text/css">
         <!--import icons-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -70,6 +70,8 @@
                 </table>    
             </div>
         </div>
-    </div>
-</body>
+
+        <%@ include file="end_template.jspf" %>
+    </body>
+
 </html>

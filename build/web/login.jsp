@@ -39,5 +39,7 @@
                 </form>
             </div>
         </div>
+            <%@ include file="end_template.jspf" %>
+
     </body>
 </html>

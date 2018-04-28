@@ -29,5 +29,6 @@
             </form>
             <a class="w3-panel" href="login.jsp">Already registered?</a>
         </div>
+        <%@ include file="end_template.jspf" %>
     </body>
 </html>

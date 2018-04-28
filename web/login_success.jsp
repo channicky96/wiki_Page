@@ -84,6 +84,6 @@
                 <a href="#" class="w3-bar-item w3-button w3-hover-black">»</a>
             </div>
         </div>
-        
+        <%@ include file="end_template.jspf" %>
     </body>
 </html>
