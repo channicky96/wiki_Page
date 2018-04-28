@@ -31,7 +31,7 @@
                 String username = request.getParameter("username");
                 Class.forName("org.postgresql.Driver");
                 String url = "jdbc:postgresql://127.0.0.1/studentdb";
-                connectionUrl = DriverManager.getConnection(url, "student", "dbpassword"); //8084?
+                connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
                 Statement st = connectionUrl.createStatement();
                 out.println("<p>Your username is : " + username + "</p>");
                 ResultSet rs = st.executeQuery("select * from users where username = '" + username + "'");

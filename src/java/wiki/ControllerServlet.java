@@ -50,7 +50,9 @@ public class ControllerServlet extends HttpServlet {
         }
 
         // Login -----------------------------------------------------------------------------------------------------------------------    
-        if (button.equals("Login")) {
+
+        if (button.equals("Login")) { //IF USER IS LOGGING IN
+
             User user = new User();
             user.setUsername(username);
             user.setPassword(password);
@@ -92,13 +94,12 @@ public class ControllerServlet extends HttpServlet {
                     session.setAttribute("userpassword", passwordD);
                     RequestDispatcher rd = request.getRequestDispatcher("login_success.jsp");
                     rd.forward(request, response);
+                    return;
                 } else {
                     RequestDispatcher rd = request.getRequestDispatcher("login_error.jsp");
                     rd.forward(request, response);
+                    return;
                 }
-                out.println("<h1>Servlet ControllerServlet at " + request.getContextPath() + "</h1>");
-                out.println("</body>");
-                out.println("</html>");
             }
         } // Register a new user ---------------------------------------------------------------------------------------------------------
         else if (button.equals("Register")) {
@@ -107,7 +108,9 @@ public class ControllerServlet extends HttpServlet {
                 Connection connectionUrl = null;
                 Class.forName("org.postgresql.Driver");
                 String url = "jdbc:postgresql://127.0.0.1/studentdb";
+
                 connectionUrl = DriverManager.getConnection(url, dbUsername, dbpassword);
+
                 Statement st = connectionUrl.createStatement();
                 ResultSet rs = st.executeQuery(query2);
                 while (rs.next()) {
@@ -146,7 +149,9 @@ public class ControllerServlet extends HttpServlet {
                         Connection connectionUrl2;
                         Class.forName("org.postgresql.Driver");
                         String url2 = "jdbc:postgresql://127.0.0.1/studentdb";
-                        connectionUrl2 = DriverManager.getConnection(url2, dbUsername, dbpassword); //8084?
+                        
+                        connectionUrl2 = DriverManager.getConnection(url2, dbUsername, dbpassword); 
+
                         Statement st2 = connectionUrl2.createStatement();
                         st2.executeUpdate(query4);
                         connectionUrl2.close();
@@ -241,7 +246,9 @@ public class ControllerServlet extends HttpServlet {
             Connection connectionUrl3;
             Class.forName("org.postgresql.Driver");
             String url3 = "jdbc:postgresql://127.0.0.1/studentdb";
+
             connectionUrl3 = DriverManager.getConnection(url3, dbUsername, dbpassword);
+
             Statement st3 = connectionUrl3.createStatement();
             ResultSet rs3 = st3.executeQuery(query);
             while (rs3.next()) {
@@ -266,7 +273,9 @@ public class ControllerServlet extends HttpServlet {
             Connection connectionUrl4;
             Class.forName("org.postgresql.Driver");
             String url4 = "jdbc:postgresql://127.0.0.1/studentdb";
+
             connectionUrl4 = DriverManager.getConnection(url4, dbUsername, dbpassword);
+
             Statement st4 = connectionUrl4.createStatement();
             ResultSet rs4 = st4.executeQuery(query);
             while (rs4.next()) {
@@ -275,7 +284,7 @@ public class ControllerServlet extends HttpServlet {
             }
             connectionUrl4.close();
 
-        } catch (ClassNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
@@ -325,7 +334,7 @@ public class ControllerServlet extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "controller servlet";
     }// </editor-fold>
 
 }

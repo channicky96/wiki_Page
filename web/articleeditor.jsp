@@ -26,9 +26,14 @@
                     <p> hello </p>
                     <textarea>Next, start a free trial!</textarea>
                 </div>-->
-        <textarea id="editor"></textarea>
+        <div class="w3-container">
+            <form action="ArticleServlet" method="post">
+            <textarea id="editor" name="editor"></textarea>
+            <button type="submit">Finish</button>
+            </form>
+        </div>
         <script>
-            var simplemde = new SimpleMDE({element: document.getElementById("editor")});
+            var simplemde = new SimpleMDE({ element: document.getElementById("editor") });
         </script>
     </body>
 </html>
