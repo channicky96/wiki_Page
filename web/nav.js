@@ -20,33 +20,6 @@ function closeBar() {
     overlayBg.style.display = "none";
 }
 
-function changeEmail(){
-    var x = document.getElementById("changeEmail");
-    if(x.className.indexOf("w3-show") === -1){
-        x.className += " w3-show";
-    }else{
-        x.className = x.className.replace(" w3-show","");
-    }
-}
-
-function changeNickname(){
-    var x = document.getElementById("changeNickname");
-    if(x.className.indexOf("w3-show") === -1){
-        x.className += " w3-show";
-    }else{
-        x.className = x.className.replace(" w3-show","");
-    }
-}
-
-function changePassword(){
-    var x = document.getElementById("changePassword");
-    if(x.className.indexOf("w3-show") === -1){
-        x.className += " w3-show";
-    }else{
-        x.className = x.className.replace(" w3-show","");
-    }
-}
-
 function accountChange(evt, accountc) {
   var i, x, tablinks;
   x = document.getElementsByClassName("account");
@@ -55,8 +28,8 @@ function accountChange(evt, accountc) {
   }
   tablinks = document.getElementsByClassName("tablink");
   for (i = 0; i < x.length; i++) {
-      tablinks[i].className = tablinks[i].className.replace(" w3-blue", "");
+      tablinks[i].className = tablinks[i].className.replace(" w3-blue w3-leftbar", "");
   }
   document.getElementById(accountc).style.display = "block";
-  evt.currentTarget.className += " w3-blue";
+  evt.currentTarget.className += " w3-blue w3-leftbar";
 }

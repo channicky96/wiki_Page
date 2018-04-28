@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
+<script src="nav.js" type="text/javascript"></script>
 <!-- Navbar on top-->
 <div class="w3-top">
     <div class="w3-bar w3-top w3-black w3-large">
@@ -22,7 +22,7 @@
             String loginchk = (String) session.getAttribute("username");
             String Nickname = (String) session.getAttribute("userNickname");
             if (loginchk != null) {
-                out.print("<div class=\"w3-bar-item w3-animate-opacity\">Welcome "+ Nickname +"</div>");
+                out.print("<div class=\"w3-bar-item w3-animate-opacity\">Welcome back "+ Nickname +" !</div>");
                 out.print("<form class=\"w3-bar-item w3-button w3-right w3-hover-white\" action=\"ControllerServlet\" method=\"post\">");
                 out.print("<input style=\"padding: 0px\" class=\"w3-bar-item w3-button w3-right w3-hover-white\" type=\"submit\" name=\"button\" value=\"Logout\">");
                 out.print("</form>");

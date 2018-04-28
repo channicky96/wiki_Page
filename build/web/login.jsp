@@ -18,24 +18,26 @@
         <link rel="stylesheet" href="/NoodlesWiki/pages.css" type="text/css">
     </head>
     <body>
+        <!-- shift 200px when sidebar visible -->
         <%@ include file="template.jsp" %>
-        <%
-            String username = (String)session.getAttribute("username");
-            if(username != null){
-                String redirectToUserDetail = "userdetail.jsp";
-                response.sendRedirect(redirectToUserDetail);
-            }
+        <div class="w3-main" style="margin-left:200px; margin-top:43px;">
+
+            <%            String username = (String) session.getAttribute("username");
+                if (username != null) {
+                    String redirectToUserDetail = "userdetail.jsp";
+                    response.sendRedirect(redirectToUserDetail);
+                }
             %>
-        <div class="w3-margin-left w3-left">
-            <h1 class="w3-margin-left">Login</h1>
+            <div class="w3-margin-left w3-left">
+                <h1 class="w3-margin-left">Login</h1>
 
-            <form class="w3-container" action="/NoodlesWiki/ControllerServlet" method="post">
-                Username: <input class="w3-input" type="text" name="username"> <br/>
-                Password: <input class="w3-input" type="password" name="password"><br/>
-
-                <input class="w3-block w3-button w3-black" type="submit" name="button" value="Login" >
-                <a class="w3-panel" href="/NoodlesWiki/register.jsp">Not registered?</a>
-            </form>
+                <form class="w3-container" action="/NoodlesWiki/ControllerServlet" method="post">
+                    Username: <input class="w3-input" type="text" name="username"> <br/>
+                    Password: <input class="w3-input" type="password" name="password"><br/>
+                    <input class="w3-block w3-button w3-black" type="submit" name="button" value="Login" >
+                    <a class="w3-panel" href="/NoodlesWiki/register.jsp">Not registered?</a>
+                </form>
+            </div>
         </div>
     </body>
 </html>
