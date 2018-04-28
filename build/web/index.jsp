@@ -19,6 +19,8 @@
     </head>
     <body class="w3-light-grey">
         <%@ include file="template.jsp" %>
+        <!-- shift 200px when sidebar visible -->
+        <div class="w3-main" style="margin-left:200px; margin-top:43px;">
             <div class="w3-row-padding">
                 <div class="w3-third w3-container w3-margin-bottom">
                     <img src="https://i.imgur.com/OvMZBs9.jpg" alt="" style="width:100%" class="w3-hover-opacity">
@@ -42,23 +44,26 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Pagination -->
-        <div class="w3-center w3-padding-32">
-            <div class="w3-bar">
-                <a href="#" class="w3-bar-item w3-button w3-hover-black">«</a>
-                <a href="#" class="w3-bar-item w3-black w3-button">1</a>
-                <a href="#" class="w3-bar-item w3-button w3-hover-black">2</a>
-                <a href="#" class="w3-bar-item w3-button w3-hover-black">3</a>
-                <a href="#" class="w3-bar-item w3-button w3-hover-black">4</a>
-                <a href="#" class="w3-bar-item w3-button w3-hover-black">»</a>
+
+            <!-- Pagination -->
+            <div class="w3-center w3-padding-32">
+                <div class="w3-bar">
+                    <a href="#" class="w3-bar-item w3-button w3-hover-black">«</a>
+                    <a href="#" class="w3-bar-item w3-black w3-button">1</a>
+                    <a href="#" class="w3-bar-item w3-button w3-hover-black">2</a>
+                    <a href="#" class="w3-bar-item w3-button w3-hover-black">3</a>
+                    <a href="#" class="w3-bar-item w3-button w3-hover-black">4</a>
+                    <a href="#" class="w3-bar-item w3-button w3-hover-black">»</a>
+                </div>
             </div>
+            <%            Date date = new Date();
+                out.println("<h2 align=\"center\">" + date.toString() + "</h2>");
+            %>
         </div>
-        <%
-        Date date = new Date();
-        out.println("<h2 align=\"center\">"+date.toString()+"</h2>");
-        %>
         <%@ include file="end_template.jspf" %>
-        </body>
+    </body>
+
+</body>
+
 </html>

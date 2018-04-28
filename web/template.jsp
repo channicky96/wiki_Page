@@ -53,5 +53,6 @@
 <!-- Overlay effect when opening sidebar on small screens -->
 <div class="w3-overlay w3-hide-large" onclick="closeBar()" style="cursor:pointer" title="close side menu" id="overlay"></div>
 
+
 <!-- shift 200px when sidebar visible -->
 <div class="w3-main" style="margin-left:200px; margin-top:43px;">

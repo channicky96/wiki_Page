@@ -21,6 +21,8 @@
     </head>
     <body class="w3-light-grey">
         <%@ include file="template.jsp" %>
+        <!-- shift 200px when sidebar visible -->
+        <div class="w3-main" style="margin-left:200px; margin-top:43px;">
         <h1 class="w3-container">Categories</h1>
         <jsp:useBean id="cList" scope="session" class="wiki.Category" />
         <ul>
@@ -31,5 +33,6 @@
             <li><jsp:getProperty name="cList" property="name" /></li>
         </ul>
         <%@include file="end_template.jspf" %>
+
     </body>
 </html>
