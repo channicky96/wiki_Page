@@ -5,7 +5,6 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<script src="/NoodlesWiki/nav.js"></script>
 
 <!-- Navbar on top-->
 <div class="w3-top">
@@ -54,5 +53,5 @@
 <!-- Overlay effect when opening sidebar on small screens -->
 <div class="w3-overlay w3-hide-large" onclick="closeBar()" style="cursor:pointer" title="close side menu" id="overlay"></div>
 
-<!-- shift 200px when sidebar visible -->
-<div class="w3-main" style="margin-left:200px; margin-top:43px;"></div>
+
+

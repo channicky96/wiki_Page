@@ -19,8 +19,10 @@
     </head>
     <body class="w3-light-grey">
         <%@ include file="template.jsp" %>
+        <!-- shift 200px when sidebar visible -->
+        <div class="w3-main" style="margin-left:200px; margin-top:43px;">
         <h1 class="w3-container">Categories</h1>
         <%@ include file="category_list.jsp" %>
-
+        </div>
     </body>
 </html>
