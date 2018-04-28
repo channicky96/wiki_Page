@@ -1,4 +1,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page import="wiki.Category"%>
+
 <%-- 
     Document   : categories
     Created on : 2018-3-2, 16:51:17
@@ -20,7 +22,14 @@
     <body class="w3-light-grey">
         <%@ include file="template.jsp" %>
         <h1 class="w3-container">Categories</h1>
-        <%@ include file="category_list.jsp" %>
-
+        <jsp:useBean id="cList" scope="session" class="wiki.Category" />
+        <ul>
+            <li><% out.println("ttttt");%></li>
+                <c:forEach var="item" items="${cList.list}">
+                <li>${item}</li>
+                </c:forEach>
+            <li><jsp:getProperty name="cList" property="name" /></li>
+        </ul>
+        <%@include file="end_template.jspf" %>
     </body>
 </html>

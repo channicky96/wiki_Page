@@ -37,5 +37,7 @@
                 <a class="w3-panel" href="/NoodlesWiki/register.jsp">Not registered?</a>
             </form>
         </div>
+            <%@ include file="end_template.jspf" %>
+
     </body>
 </html>

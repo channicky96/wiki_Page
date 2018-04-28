@@ -59,5 +59,6 @@
         Date date = new Date();
         out.println("<h2 align=\"center\">"+date.toString()+"</h2>");
         %>
+        <%@ include file="end_template.jspf" %>
         </body>
 </html>

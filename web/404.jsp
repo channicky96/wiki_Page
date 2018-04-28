@@ -43,5 +43,6 @@
             <div><h3>Are you looking for:</h3></div>
             <p><a></a></p>
         </div>
+        <%@ include file="end_template.jspf" %>
     </body>
 </html>
