@@ -40,6 +40,8 @@
             <h1>404</h1>
             <h2>not found</h2>
             <p>goto <a href="index.jsp">homepage</a></p>
+            <div><h3>Are you looking for:</h3></div>
+            <p><a></a></p>
         </div>
     </body>
 </html>

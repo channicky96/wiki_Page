@@ -6,6 +6,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,15 +39,15 @@ public class ArticleServlet extends HttpServlet {
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         String searchWord = request.getParameter("keyword");
-        //TODO database search
 
-        if (searchWord == null) {
+        if (searchWord == null || "".equals(searchWord)) {
             response.sendRedirect("/NoodlesWiki/404.jsp");
             return;
         } else {
             try {
                 Article result = searchArticle(searchWord);
                 if (result == null) {
+                    matchSimilar(searchWord);
                     response.sendRedirect("/NoodlesWiki/404.jsp");
                     return;
                 }
@@ -61,43 +63,70 @@ public class ArticleServlet extends HttpServlet {
         }
     }
 
-    public Article searchArticle(String article) throws SQLException { //search article in database
-
+    public Article searchArticle(String searchWord) throws SQLException { //search article in database
+        String article = searchWord.substring(0, 1).toUpperCase() + searchWord.substring(1).toLowerCase();
         try {
             Connection connectionUrl;
             Class.forName("org.postgresql.Driver");
             String url = "jdbc:postgresql://127.0.0.1/studentdb";
             connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
             Statement st = connectionUrl.createStatement();
-            ResultSet articleRs = st.executeQuery("select * from articles where name ='" + article + "'");
+            ResultSet articleRs = st.executeQuery("select * from articles where name LIKE'" + article + "%'");
             String dbArticle = null;
             int aId = 0;
+
             while (articleRs.next()) {
                 dbArticle = articleRs.getString("name");
                 aId = articleRs.getInt("id");
+                //TODO
+                
+                
+                
+                
             }
             if (dbArticle != null) {
                 Article foundArticle = new Article();
                 foundArticle.setName(dbArticle);
                 foundArticle.setId(aId);
                 articleRs.close();
-                ResultSet sectionRs = st.executeQuery("select * from sections where article_id ='" + aId + "'");
+                ResultSet sectionRs = st.executeQuery("select * from sections where article_id ='" + aId + "' ORDER BY section_order");
                 while (sectionRs.next()) {
                     Section temp = new Section();
                     temp.setTitle(sectionRs.getString("title"));
-                    temp.setContent("Article content");
+                    temp.setContent(sectionRs.getString("content"));
 
                     foundArticle.addSection(temp);
                 }
 
                 return foundArticle;
             }
-
+            
             connectionUrl.close();
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public String[] matchSimilar(String searchWord) throws SQLException{
+        try {
+            Connection connectionUrl;
+            Class.forName("org.postgresql.Driver");
+            String url = "jdbc:postgresql://127.0.0.1/studentdb";
+            connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
+            Statement st = connectionUrl.createStatement();
+            ResultSet articleRs = st.executeQuery("select * from articles where name LIKE'" + searchWord.substring(0, 1) + "%'");
+            ArrayList<String> matches = new ArrayList<>();
 
+            while (articleRs.next()) {
+                System.out.println(searchWord.substring(0, 1));
+            }
+            
+            return matches.toArray(new String[0]);
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -116,8 +145,10 @@ public class ArticleServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             processRequest(request, response);
+
         } catch (SQLException ex) {
-            Logger.getLogger(ArticleServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ArticleServlet.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -134,8 +165,10 @@ public class ArticleServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             processRequest(request, response);
+
         } catch (SQLException ex) {
-            Logger.getLogger(ArticleServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ArticleServlet.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
