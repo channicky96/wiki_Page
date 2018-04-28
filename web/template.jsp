@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<script src="/NoodlesWiki/nav.js"></script>
 
 <!-- Navbar on top-->
 <div class="w3-top">
@@ -18,6 +19,18 @@
             <!--user icon-->
             <i class="fa fa-user w3-xlarge" title="Log in/Register"></i>
         </a>
+        <%
+            String loginchk = (String) session.getAttribute("username");
+            String Nickname = (String) session.getAttribute("userNickname");
+            if (loginchk != null) {
+                out.print("<div class=\"w3-bar-item w3-animate-opacity\">Welcome "+ Nickname +"</div>");
+                out.print("<form class=\"w3-bar-item w3-button w3-right w3-hover-white\" action=\"ControllerServlet\" method=\"post\">");
+                out.print("<input style=\"padding: 0px\" class=\"w3-bar-item w3-button w3-right w3-hover-white\" type=\"submit\" name=\"button\" value=\"Logout\">");
+                out.print("</form>");
+            }else{
+                out.print("<div class=\"w3-bar-item w3-animate-opacity\">Welcome Visitor</div>");
+            }
+        %>
         <div class="w3-right w3-cell-top">
             <button class="w3-bar-item w3-button w3-black w3-right" type="submit"><i class="fa fa-search"></i></button>
             <input id="search_input" class="w3-border" type="text" placeholder="Search..">
@@ -41,6 +54,4 @@
 
 <!-- shift 200px when sidebar visible -->
 <div class="w3-main" style="margin-left:200px; margin-top:43px;">
-
-<script src="/NoodlesWiki/nav.js"></script>
 

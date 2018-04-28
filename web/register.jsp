@@ -20,11 +20,11 @@
         <%@ include file="template.jsp" %>
         <div class="w3-margin-left w3-left">
             <h1 class="w3-margin-left">Register</h1>
-            <form class="w3-container" action="ControllerServlet" method="post">
-                Nickname: <input class="w3-input" type="text" name="nickname"> <br>
-                Password: <input class="w3-input" type="password" name="password"><br>
-                Confirm Password: <input class="w3-input" type="password" name="password1"><br>
-                Email: <input class="w3-input" type="email" name="useremail"><br>
+            <form class="w3-container w3-animate-left" action="ControllerServlet" method="post">
+                Nickname: <input class="w3-input" type="text" name="nickname" required> <br>
+                Password: <input class="w3-input" type="password" name="password" required><br>
+                Confirm Password: <input class="w3-input" type="password" name="password1" required><br>
+                Email: <input class="w3-input" type="email" name="useremail" required><br>
                 <input class="w3-block w3-button w3-black" type="submit" name="button" value="Register" ><br>
             </form>
             <a class="w3-panel" href="login.jsp">Already registered?</a>

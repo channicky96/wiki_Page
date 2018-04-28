@@ -4,6 +4,7 @@
     Author     : noodlesEngineering
 --%>
 
+<%@page import="java.util.Date"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -55,5 +56,9 @@
                 <a href="#" class="w3-bar-item w3-button w3-hover-black">»</a>
             </div>
         </div>
-    </body>
+        <%
+        Date date = new Date();
+        out.println("<h2 align=\"center\">"+date.toString()+"</h2>");
+        %>
+        </body>
 </html>
