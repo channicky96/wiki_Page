@@ -20,6 +20,15 @@ function closeBar() {
     overlay.style.display = "none";
 }
 
+function myFunction(id) {
+    var x = document.getElementById(id);
+    if (x.className.indexOf("w3-show") == -1) {
+        x.className += " w3-show";
+    } else { 
+        x.className = x.className.replace(" w3-show", "");
+    }
+}
+
 function accountChange(evt, accountc) {
   var i, x, tablinks;
   x = document.getElementsByClassName("account");
