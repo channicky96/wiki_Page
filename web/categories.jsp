@@ -21,6 +21,7 @@
     </head>
     <body class="w3-light-grey">
         <%@ include file="template.jsp" %>
+
         <h1 class="w3-container">Categories</h1>
         <jsp:useBean id="cList" scope="session" class="wiki.Category" />
         <ul>
