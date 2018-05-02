@@ -27,7 +27,7 @@
                 text-align: center;
             }
             h1 {
-                font-size: 144px;
+                font-size: 72px;
             }
             p {
                 font-size: small;
