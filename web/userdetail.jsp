@@ -53,7 +53,7 @@
                     out.print("<div id=\"AS\" class=\"w3-container w3-border account\" style=\"display:none\">");
                     out.print("<table class=\"w3-table \">");
                     out.print("<form class=\"w3-container\" action=\"ControllerServlet\" method=\"post\">");
-                    out.print("<tr><th><button onclick=\"myFunction('CN')\" class=\"w3-btn w3-block w3-black w3-left-align\">Change Nickname</button>");
+                    out.print("<tr><th><button onclick=\"popout('CN')\" class=\"w3-btn w3-block w3-black w3-left-align\">Change Nickname</button>");
                     out.print("<div id=\"CN\" class=\"w3-container w3-hide\">");
                     out.print("<input class=\"w3-input\" type=\"text\" name=\"newNickname\" placeholder=\"Enter new nickname\" required>");
                     out.print("<input class=\"w3-block w3-button w3-black\" type=\"submit\" name=\"button\" value=\"Change Nickname\">");
@@ -61,7 +61,7 @@
                     out.print("</form>");
                 %>
                 <form class="w3-container" action="ControllerServlet" method="post">
-                    <tr><th><button onclick="myFunction('CP')" class="w3-btn w3-block w3-black w3-left-align">Change Password</button>
+                    <tr><th><button onclick="popout('CP')" class="w3-btn w3-block w3-black w3-left-align">Change Password</button>
                         <div id="CP" class="w3-container w3-hide">
                             <input class="w3-input" type="password" name="oldPassword" placeholder="Enter old password" required>
                             <input class="w3-input" type="password" name="newPassword" placeholder="Enter new password"required>

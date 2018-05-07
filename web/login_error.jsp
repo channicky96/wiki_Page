@@ -18,18 +18,16 @@
     </head>
     <body>
         <%@ include file="template.jsp" %>
-        <div class="w3-main" style="margin-left:200px; margin-top:43px;">
             <h2 class="w3-container w3-cell-row w3-red w3-animate-top">Username or password incorrect!</h2>
 
-            <div class="w3-margin-left">
-                <form class="w3-container w3-left" action="ControllerServlet" method="post">
+            <div class="w3-margin-left w3-left">
+                <form class="w3-container w3-animate-left" action="ControllerServlet" method="post">
                     Username: <input class="w3-input" type="text" name="username"> <br/>
                     Password: <input class="w3-input" type="password" name="password"><br/>
                     <input class="w3-block w3-button w3-black" type="submit" name="button" value="Login" >
                     <a class="w3-panel" href="/NoodlesWiki/register.jsp">Not registered?</a>
                 </form>
             </div>
-        </div>
         <%@ include file="end_template.jspf" %>
     </body>
 </html>

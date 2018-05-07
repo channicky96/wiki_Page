@@ -40,6 +40,8 @@
                 out.print("<form class=\"w3-bar-item w3-right\" style=\"padding:0px;\" action=\"/NoodlesWiki/ControllerServlet\" method=\"post\">");
                 out.print("<input class=\"w3-button w3-right w3-black w3-hover-white\" type=\"submit\" name=\"button\" value=\"Logout\">");
                 out.print("</form>");
+                out.print("<a href=\"/NoodlesWiki/newArticle.jsp\" class =\"w3-bar-item w3-button w3-right w3-hover-white\">"
+                        + "<i class=\"fas fa-plus\"></i></a>");
             } else {
                 out.print("<div class=\"w3-bar-item w3-animate-opacity\">Welcome Visitor</div>");
             }

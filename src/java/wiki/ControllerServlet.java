@@ -94,11 +94,9 @@ public class ControllerServlet extends HttpServlet {
                     session.setAttribute("userpassword", passwordD);
                     RequestDispatcher rd = request.getRequestDispatcher("login_success.jsp");
                     rd.forward(request, response);
-                    return;
                 } else {
                     RequestDispatcher rd = request.getRequestDispatcher("login_error.jsp");
                     rd.forward(request, response);
-                    return;
                 }
             }
         } // Register a new user ---------------------------------------------------------------------------------------------------------
@@ -159,6 +157,7 @@ public class ControllerServlet extends HttpServlet {
                         e.printStackTrace();
                     }
                     User nuser = new User(newusername, id, nickname, password, email);
+                    
                 } else {
                     try (PrintWriter out = response.getWriter()) {
                         out.println("<script>alert(\"Passwords are not the same\");</script>");
@@ -168,6 +167,8 @@ public class ControllerServlet extends HttpServlet {
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
+            RequestDispatcher rd = request.getRequestDispatcher("userdetail.jsp");
+            rd.forward(request, response);
         } // Change password -------------------------------------------------------------------------------------------------------------     
         else if (button.equals("Change Password")) {
             String oldPassword = request.getParameter("oldPassword");

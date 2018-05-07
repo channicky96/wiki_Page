@@ -30,7 +30,7 @@ Author     : acc16scu
             <!--<form action="/NoodlesWiki/article/" method="post">-->
             <p>${title}</p>
             <form>
-                <textarea id="editor" name="editor"></textarea>
+                <textarea id="editor" name="editor">${content}</textarea>
                 <button onclick="debug()">Finish</button>
                 <!--<button type="submit">Finish</button>-->
             </form>
@@ -38,9 +38,9 @@ Author     : acc16scu
         <script>
             var simplemde = new SimpleMDE({element: document.getElementById("editor")});
             function debug() {
-//                alert(simplemde.options.previewRender("This is *example* Markdown"));
+                alert(simplemde.options.previewRender(simplemde.value()));
                 var turndownService = new TurndownService();
-                alert(turndownService.turndown(simplemde.options.previewRender("This is *example* Markdown")));
+//                alert(turndownService.turndown(simplemde.options.previewRender("This is *example* Markdown")));
             }
 
         </script>
