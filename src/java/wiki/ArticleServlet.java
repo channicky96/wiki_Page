@@ -39,7 +39,15 @@ public class ArticleServlet extends HttpServlet {
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         String searchWord = request.getParameter("keyword");
+        String edit = request.getParameter("edit");
+        if (edit != null) {
+            request.setAttribute("title", edit);
 
+
+            RequestDispatcher dispatcher = request.getRequestDispatcher("../articleeditor.jsp");
+            dispatcher.forward(request, response);
+            return;
+        }
         if (searchWord == null || "".equals(searchWord)) {
             response.sendRedirect("/NoodlesWiki/404.jsp");
             return;
