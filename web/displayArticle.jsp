@@ -21,6 +21,7 @@
         <%@ include file="template.jsp" %>
         <article class="w3-white w3-container w3-padding-large">
             <h1 class="w3-serif w3-bottombar">${name}
+
                 <a href="/NoodlesWiki/articleeditor.jsp" class="w3-text-light-blue w3-large">[edit]</a>
                 <a class="w3-right" id="article_rate">Rate:<i class="far fa-star w3-button"></i><i class="far fa-star w3-button"></i><i class="far fa-star w3-button"></i><i class="far fa-star w3-button"></i><i class="far fa-star w3-button"></i>
                 <%
@@ -29,15 +30,16 @@
                     int userID = (Integer) session.getAttribute("userID");
                     int chk = (Integer) session.getAttribute("bookmark");
                         if (loginchk != null && chk == 1) {
-                                out.print("<form action=\"/NoodlesWiki/article/\" method=\"post\">");
-                                out.print("<button type=\"submit\" name=\"submit\" value=\"removebookmark\"><i class=\"fas fa-bookmark w3-xlarge w3-button\" title=\"Bookmark\"></i></button>");
-                                out.print("</form>");
+                    
+                                out.print("<a href=\"/NoodlesWiki/article/?keyword="+name+"\"><i class=\"fas fa-bookmark w3-xlarge w3-button\" title=\"Bookmark\"></i></a>");
+                               
                         } else if( loginchk != null){
                                 out.print("<a><i class=\"far fa-bookmark w3-xlarge w3-button\" title=\"Bookmark\"></i></a>");
                             }else{
                                 out.print("<a onclick=\"loginAlert()\"><i class=\"far fa-bookmark w3-xlarge w3-button\" title=\"Bookmark\"></i></a>");
                             }
                 %>
+
             </h1>
             <div id="menu" class="w3-right w3-card w3-padding-small">
                 <nav>

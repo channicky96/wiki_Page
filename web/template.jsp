@@ -49,7 +49,7 @@
         <div class="w3-right w3-cell-top">
             <form action="/NoodlesWiki/article/" method="post">
                 <input id="search_input" class="w3-border w3-round-large w3-padding-small" type="text" name="keyword" placeholder="Search..">
-                <button class="w3-bar-item w3-button w3-black w3-right w3-round-large" type="submit" name="submit" value="search"><i class="fa fa-search"></i></button>
+                <button class="w3-bar-item w3-button w3-black w3-right w3-round-large" type="submit" name="submit"><i class="fa fa-search"></i></button>
             </form>
         </div>
 
