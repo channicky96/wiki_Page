@@ -39,7 +39,7 @@
         <div id="main">
             <h1>404</h1>
             <h2>not found</h2>
-            <p>goto <a href="/NoodlesWiki/index.jsp">homepage</a></p>
+            <p>goto <a href="index.jsp">homepage</a></p>
             <!--if matched some search word-->
             <c:if test="${matchList != null}">
                 <div><h3>Are you looking for:</h3></div>

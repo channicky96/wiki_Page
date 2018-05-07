@@ -22,7 +22,7 @@ function closeBar() {
 //function to hide and show html elements (change pw and nickname)
 function popout(id) {
     var x = document.getElementById(id);
-    if (x.className.indexOf("w3-show") == -1) {
+    if (x.className.indexOf("w3-show") === -1) {
         x.className += " w3-show";
     } else { 
         x.className = x.className.replace(" w3-show", "");

@@ -37,8 +37,8 @@
             String Nickname = (String) session.getAttribute("userNickname");
             if (loginchk != null) {
                 out.print("<div class=\"w3-bar-item w3-animate-opacity\">Welcome back " + Nickname + " !</div>");
-                out.print("<form class=\"w3-bar-item w3-button w3-right w3-hover-white\" action=\"/NoodlesWiki/ControllerServlet\" method=\"post\">");
-                out.print("<input style=\"padding: 0px\" class=\"w3-bar-item w3-button w3-right w3-hover-white\" type=\"submit\" name=\"button\" value=\"Logout\">");
+                out.print("<form class=\"w3-bar-item w3-right\" style=\"padding:0px;\" action=\"/NoodlesWiki/ControllerServlet\" method=\"post\">");
+                out.print("<input class=\"w3-button w3-right w3-black w3-hover-white\" type=\"submit\" name=\"button\" value=\"Logout\">");
                 out.print("</form>");
                 out.print("<a href=\"/NoodlesWiki/newArticle.jsp\" class =\"w3-bar-item w3-button w3-right w3-hover-white\">"
                         + "<i class=\"fas fa-plus\"></i></a>");
@@ -61,7 +61,7 @@
         <i class="fa fa-close"></i>
     </a>
     <h4 class="w3-bar-item"><b>Menu</b></h4>
-    <a class="w3-bar-item w3-button w3-hover-black" href="/NoodlesWiki/categories.jsp">Categories</a>
+    <a class="w3-bar-item w3-button w3-hover-black" href="/NoodlesWiki/categories">Categories</a>
     <a class="w3-bar-item w3-button w3-hover-black" href="#">Link</a>
     <a class="w3-bar-item w3-button w3-hover-black" href="#">Link</a>
     <a class="w3-bar-item w3-button w3-hover-black" href="/NoodlesWiki/article/">show me 404</a>

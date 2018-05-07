@@ -6,7 +6,12 @@
 package wiki;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -32,17 +37,40 @@ public class CategoriesServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet CategoriesServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet CategoriesServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        try {
+            Connection connectionUrl;
+            Class.forName("org.postgresql.Driver");
+            String url = "jdbc:postgresql://127.0.0.1/studentdb";
+            connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
+            Statement st = connectionUrl.createStatement();
+            ResultSet categories = st.executeQuery("select * from categories ORDER BY name;");
+
+            ArrayList<Category> categoryList = new ArrayList<>();
+            while (categories.next()) {
+                Category cat = new Category();
+                cat.setId(categories.getInt("id"));
+                cat.setName(categories.getString("name"));
+                categoryList.add(cat);
+            }
+            categories.close();
+            ArrayList<String> sublist = new ArrayList<>();
+            String q;
+            for (Category each : categoryList) {
+                q = "select name from articles WHERE category='" + each.getName() + "' ORDER BY name;";
+                ResultSet articles = st.executeQuery(q);
+                while (articles.next()) {
+                    sublist.add(articles.getString("name"));
+                }
+                each.setList(new ArrayList<>(sublist));
+                sublist.clear();
+            }
+
+            request.setAttribute("categoryList", categoryList);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/categories.jsp");
+            dispatcher.forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+
         }
     }
 
