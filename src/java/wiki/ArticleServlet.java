@@ -17,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -39,11 +40,10 @@ public class ArticleServlet extends HttpServlet {
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         String searchWord = request.getParameter("keyword");
-
-        if (searchWord == null || "".equals(searchWord)) {
-            response.sendRedirect("/NoodlesWiki/404.jsp");
-            return;
-        } else {
+        HttpSession session = request.getSession();
+        int pageid = 11;
+        String button = request.getParameter("submit");
+        if (button.equals("search")) {
             try {
                 Article result = searchArticle(searchWord);
                 if (result == null) {
@@ -55,13 +55,34 @@ public class ArticleServlet extends HttpServlet {
 
                 request.setAttribute("name", result.getName());
                 request.setAttribute("sections", sendSections);
+                pageid = result.getId();
+                String loginchk = (String) session.getAttribute("username");
+                if (loginchk != null) {
+                    int userid = (Integer) session.getAttribute("userID");
+                    int chk = checkBookmarks(userid, pageid);
+                    session.setAttribute("bookmark", chk);
+                } else {
+                    session.setAttribute("bookmark", 0);
+                }
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/displayArticle.jsp");
                 dispatcher.forward(request, response);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }else if (button.equals("removebookmark")){
+   
+
+                int userid = (Integer) session.getAttribute("userID");
+                removeBookmark(userid, pageid);
+                response.sendRedirect("/NoodlesWiki/404.jsp");
+//            } else if (searchWord == null || "".equals(searchWord)) {
+//                System.out.println("pssseddededededededededededededed");
+//                response.sendRedirect("/NoodlesWiki/404.jsp");
+//                //return;
+//            }
         }
-    }
+        }
+    
 
     public Article searchArticle(String searchWord) throws SQLException { //search article in database
         String article = searchWord.substring(0, 1).toUpperCase() + searchWord.substring(1).toLowerCase();
@@ -79,10 +100,7 @@ public class ArticleServlet extends HttpServlet {
                 dbArticle = articleRs.getString("name");
                 aId = articleRs.getInt("id");
                 //TODO
-                
-                
-                
-                
+
             }
             if (dbArticle != null) {
                 Article foundArticle = new Article();
@@ -100,7 +118,7 @@ public class ArticleServlet extends HttpServlet {
 
                 return foundArticle;
             }
-            
+
             connectionUrl.close();
 
         } catch (Exception e) {
@@ -108,8 +126,8 @@ public class ArticleServlet extends HttpServlet {
         }
         return null;
     }
-    
-    public String[] matchSimilar(String searchWord) throws SQLException{
+
+    public String[] matchSimilar(String searchWord) throws SQLException {
         try {
             Connection connectionUrl;
             Class.forName("org.postgresql.Driver");
@@ -122,13 +140,47 @@ public class ArticleServlet extends HttpServlet {
             while (articleRs.next()) {
                 System.out.println(searchWord.substring(0, 1));
             }
-            
+
             return matches.toArray(new String[0]);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public int checkBookmarks(int userid, int articleid) {
+        int ans = 0;
+        try {
+            Connection connectionUrl;
+            Class.forName("org.postgresql.Driver");
+            String url = "jdbc:postgresql://127.0.0.1/studentdb";
+            connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
+            Statement st = connectionUrl.createStatement();
+            ResultSet articleRs = st.executeQuery("select articleid from bookmarks where userid ='" + userid + "' and articleid ='" + articleid + "'");
+            while (articleRs.next()) {
+                if (articleRs.getInt("articleid") == articleid) {
+                    ans = 1;
+                }
+            }
+            connectionUrl.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ans;
+    }
+
+    public void removeBookmark(int userid, int articleid) {
+        try {
+            Connection connectionUrl;
+            Class.forName("org.postgresql.Driver");
+            String url = "jdbc:postgresql://127.0.0.1/studentdb";
+            connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
+            Statement st = connectionUrl.createStatement();
+            st.executeUpdate("delete from bookmarks where userid ='" + userid + "'and articleid ='" + articleid + "'");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

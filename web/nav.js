@@ -19,7 +19,16 @@ function closeBar() {
     sidebar.style.display = "none";
     overlay.style.display = "none";
 }
-
+//function to hide and show html elements (change pw and nickname)
+function popout(id) {
+    var x = document.getElementById(id);
+    if (x.className.indexOf("w3-show") == -1) {
+        x.className += " w3-show";
+    } else { 
+        x.className = x.className.replace(" w3-show", "");
+    }
+}
+//funtion to change tabs in profile page
 function accountChange(evt, accountc) {
   var i, x, tablinks;
   x = document.getElementsByClassName("account");
@@ -32,4 +41,8 @@ function accountChange(evt, accountc) {
   }
   document.getElementById(accountc).style.display = "block";
   evt.currentTarget.className += " w3-blue w3-leftbar";
+}
+
+function loginAlert() {
+    alert("Please Login First");
 }
