@@ -44,36 +44,31 @@ public class ArticleServlet extends HttpServlet {
             response.sendRedirect("/NoodlesWiki/404.jsp");
             return;
         } else {
-            String article;
-            if (searchWord.length() == 1) {     // Aaa format
-                article = searchWord.substring(0, 1).toUpperCase();
-            } else {
-                article = searchWord.substring(0, 1).toUpperCase() + searchWord.substring(1).toLowerCase();
-            }
             try {
                 Connection connectionUrl;
                 Class.forName("org.postgresql.Driver");
                 String url = "jdbc:postgresql://127.0.0.1/studentdb";
                 connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
                 Statement st = connectionUrl.createStatement();
-                ResultSet articleRs = st.executeQuery("select * from articles where name LIKE'" + article + "%'");
+                // case insensitive
+                ResultSet articleRs = st.executeQuery("select * from articles where LOWER(name) = LOWER('" + searchWord + "');");
 
                 String dbArticle = null;
                 int aId = 0;
-                ArrayList<String> matches = new ArrayList<>();
+                double aRate = 3.0;
                 Article result = null;
 
                 while (articleRs.next()) {
                     dbArticle = articleRs.getString("name");
                     aId = articleRs.getInt("id");
+                    aRate = articleRs.getDouble("rate");
                     //TODO
-
-                    matches.add(dbArticle);
                 }
                 if (dbArticle != null) {
                     Article foundArticle = new Article();
                     foundArticle.setName(dbArticle);
                     foundArticle.setId(aId);
+                    foundArticle.setRate(aRate);
                     articleRs.close();
                     ResultSet sectionRs = st.executeQuery("select * from sections where article_id ='" + aId + "' ORDER BY section_order");
                     while (sectionRs.next()) {
@@ -85,14 +80,25 @@ public class ArticleServlet extends HttpServlet {
                     }
                     result = foundArticle;
                 }
+                if (result == null) {
+                    ArrayList<String> matches = new ArrayList<>();
+                    ResultSet similar = st.executeQuery("select * from articles where LOWER(name) LIKE LOWER('" + searchWord + "%');");
+
+                    while (similar.next()) {
+                        matches.add(similar.getString("name"));
+                    }
+
+                    if (matches.isEmpty()) {
+                        response.sendRedirect("/NoodlesWiki/404.jsp");
+                    } else {
+                        request.setAttribute("matchList", matches);
+                        RequestDispatcher dispatcher = request.getRequestDispatcher("/404.jsp");
+                        dispatcher.forward(request, response);
+                        return;
+                    }
+                }
                 connectionUrl.close();
 
-                System.out.println(matches);
-                
-                if (result == null) {
-                    response.sendRedirect("/NoodlesWiki/404.jsp");
-                    return;
-                }
                 List<Section> sendSections = result.getSections();
 
                 request.setAttribute("name", result.getName());
@@ -104,7 +110,6 @@ public class ArticleServlet extends HttpServlet {
             }
         }
     }
-
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
