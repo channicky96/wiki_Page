@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 import javax.servlet.http.HttpSession;
 
 /**
@@ -43,14 +42,14 @@ public class ArticleServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String searchWord = request.getParameter("keyword");
         String articleID = request.getParameter("articleID");
+        String editorContent = request.getParameter("htmlText");
         HttpSession session = request.getSession();
         int pageid = 11;
-        
+
         // edit
         if (articleID != null) {
             try {
-                int order = Integer.parseInt(request.getParameter("paraId"));
-                System.out.println(order);
+                int order = Integer.parseInt(request.getParameter("paraID"));
                 Connection connectionUrl;
                 Class.forName("org.postgresql.Driver");
                 String url = "jdbc:postgresql://127.0.0.1/studentdb";
@@ -58,11 +57,23 @@ public class ArticleServlet extends HttpServlet {
                 Statement st = connectionUrl.createStatement();
                 ResultSet rs = st.executeQuery(
                         "select content from sections where article_id = "
-                                +articleID+" AND section_order = " + order + ";");
-                while(rs.next()){
+                        + articleID + " AND section_order = " + order + ";");
+                while (rs.next()) {
                     session.setAttribute("content", rs.getString("content"));
+                    break;
                 }
-                
+                rs.close();
+                ResultSet nameRs = st.executeQuery("select name from articles where id="
+                        + articleID);
+                while (nameRs.next()) {
+                    session.setAttribute("aName", nameRs.getString("name"));
+                    break;
+                }
+                nameRs.close();
+                // edit
+                session.setAttribute("aID", articleID);
+                session.setAttribute("sID", order);
+
                 RequestDispatcher dispatcher = request.getRequestDispatcher("../articleeditor.jsp");
                 dispatcher.forward(request, response);
                 return;
@@ -71,12 +82,21 @@ public class ArticleServlet extends HttpServlet {
             }
         }
         
+        // receive editor content
+        if (editorContent != null) {
+            int aID = Integer.parseInt(request.getParameter("editedArticle"));
+            int sID = Integer.parseInt(request.getParameter("editedSection"));
+            String aName = request.getParameter("editedArticleName");
+
+            updateSection(aID, sID, editorContent);
+            ///////////////////
+            searchWord = aName;
+        }
         // search
         if (searchWord == null || "".equals(searchWord)) {
             response.sendRedirect("/NoodlesWiki/404.jsp");
             return;
         }
-
         try {
             Connection connectionUrl;
             Class.forName("org.postgresql.Driver");
@@ -156,12 +176,6 @@ public class ArticleServlet extends HttpServlet {
         int userid = (Integer) session.getAttribute("userID");
         removeBookmark(userid, pageid);
         response.sendRedirect("/NoodlesWiki/404.jsp");
-//            } else if (searchWord == null || "".equals(searchWord)) {
-//                System.out.println("pssseddededededededededededededed");
-//                response.sendRedirect("/NoodlesWiki/404.jsp");
-//                //return;
-//            }
-
     }
 
     public int checkBookmarks(int userid, int articleid) {
@@ -193,6 +207,26 @@ public class ArticleServlet extends HttpServlet {
             connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
             Statement st = connectionUrl.createStatement();
             st.executeUpdate("delete from bookmarks where userid ='" + userid + "'and articleid ='" + articleid + "'");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateSection(int articleID, int sectionOrder, String content) {
+        try {
+            Connection connectionUrl;
+            Class.forName("org.postgresql.Driver");
+            String url = "jdbc:postgresql://127.0.0.1/studentdb";
+            connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
+            Statement st = connectionUrl.createStatement();
+            String q = "UPDATE sections SET content='" + content + "' WHERE article_id="
+                    + articleID + " AND section_order=" + sectionOrder + ";";
+            //debug
+            System.out.println(q);
+            
+            st.executeUpdate(q);
+            connectionUrl.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }

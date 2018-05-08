@@ -19,30 +19,34 @@ Author     : acc16scu
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
         <!--markdown editor-->
         <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
-        <!--html to markdown converter-->
-        <script src="https://unpkg.com/turndown/dist/turndown.js"></script>
 
     </head>
     <body class="w3-light-grey">
         <%@ include file="template.jsp" %>
 
         <div class="w3-container">
-            <!--<form action="/NoodlesWiki/article/" method="post">-->
-            <p>${title}</p>
-            <form>
+            <!--<p>${title}</p>-->
+            <form action="/NoodlesWiki/article/" method="POST" onsubmit="makeHtml()">
                 <textarea id="editor" name="editor">${content}</textarea>
-                <button onclick="debug()">Finish</button>
+                <!--pass article information back to article servlet-->
+                <input class="w3-hide" name="editedArticleName" value="${aName}"/>
+                <input class="w3-hide" name="editedArticle" value="${aID}"/>
+                <input class="w3-hide" name="editedSection" value="${sID}"/>
+                <input class="w3-hide" name="htmlText" id="html" />
+
+
+                <button type="submit">Finish</button>
                 <!--<button type="submit">Finish</button>-->
             </form>
         </div>
         <script>
-            var simplemde = new SimpleMDE({element: document.getElementById("editor")});
-            function debug() {
-                alert(simplemde.options.previewRender(simplemde.value()));
-                var turndownService = new TurndownService();
-//                alert(turndownService.turndown(simplemde.options.previewRender("This is *example* Markdown")));
-            }
-
+            var simplemde = new SimpleMDE({
+                //hide H icon
+                hideIcons: ["heading"],
+                element: document.getElementById("editor")});
+            function makeHtml(){
+            document.getElementById("html").value = simplemde.options.previewRender(simplemde.value());
+        }
         </script>
         <%@include file="end_template.jspf" %>
     </body>
