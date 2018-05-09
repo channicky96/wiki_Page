@@ -23,8 +23,6 @@ import javax.servlet.http.HttpSession;
  *
  * @author btk16xmu
  */
-
-
 @WebServlet(name = "ArticleServlet", urlPatterns = {"/article/"})
 public class ArticleServlet extends HttpServlet {
 
@@ -43,12 +41,13 @@ public class ArticleServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
         int pageid;
+        int userid = 0;
         String searchWord = request.getParameter("keyword");
         String editedAID = request.getParameter("articleID");
         String editorContent = request.getParameter("htmlText");
         String postComment = request.getParameter("comment");
-        ArrayList<Comment> commentList = new ArrayList();
-        
+        ArrayList<Comment> commentList = new ArrayList<>();
+
         // edit
         if (editedAID != null) {
             try {
@@ -94,10 +93,10 @@ public class ArticleServlet extends HttpServlet {
             ///////////////////
             searchWord = aName;
         }
-        
+
         if (postComment != null) {
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-            int userid = (Integer) session.getAttribute("userID");
+            userid = (Integer) session.getAttribute("userID");
             pageid = (Integer) session.getAttribute("pageid");
 
             addComment(pageid, postComment, userid, timestamp);
@@ -144,6 +143,7 @@ public class ArticleServlet extends HttpServlet {
                     ResultSet sectionRs = st.executeQuery("select * from sections where article_id ='" + aId + "' ORDER BY section_order");
                     while (sectionRs.next()) {
                         Section temp = new Section();
+                        temp.setOrder(sectionRs.getInt("section_order"));
                         temp.setTitle(sectionRs.getString("title"));
                         temp.setContent(sectionRs.getString("content"));
 
@@ -180,8 +180,6 @@ public class ArticleServlet extends HttpServlet {
                 request.setAttribute("sections", sendSections);
                 session.setAttribute("sections", sendSections);
 
-//                ArrayList<Comment> commentList = new ArrayList();
-                int userid = 0;
                 if (loginchk != null) {
                     userid = (Integer) session.getAttribute("userID");
                     chk = checkBookmarks(userid, pageid);
@@ -197,6 +195,7 @@ public class ArticleServlet extends HttpServlet {
 
                 // change the icon depends on if the user has book marked the article 
                 String crm = request.getParameter("bml");
+                System.out.println(crm);
                 if (crm != null) {
                     if (crm.equals("rbm")) {
                         removeBookmark(userid, pageid);
@@ -208,10 +207,13 @@ public class ArticleServlet extends HttpServlet {
                         session.setAttribute("bookmark", chk);
                     }
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
+//            if (searchWord == null || "".equals(searchWord)) {
+//                response.sendRedirect("/NoodlesWiki/404.jsp");
+//                return;
+//            }
         }
         RequestDispatcher dispatcher = request.getRequestDispatcher("/displayArticle.jsp");
         dispatcher.forward(request, response);
@@ -309,7 +311,8 @@ public class ArticleServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
-        public void updateSection(int articleID, int sectionOrder, String content) {
+
+    public void updateSection(int articleID, int sectionOrder, String content) {
         try {
             Connection connectionUrl;
             Class.forName("org.postgresql.Driver");

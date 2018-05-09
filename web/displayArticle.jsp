@@ -28,33 +28,20 @@
     <body class="w3-light-grey">
         <%@ include file="template.jsp" %>
         <article class="w3-white w3-container w3-padding-large">
-            <h1 class="w3-serif w3-bottombar">${article.name}
+            <h1 class="w3-serif w3-bottombar">${name}
                 <a href="javascript:void(0)" onclick="openEdit()" id="edit" class="w3-text-light-blue w3-large">[edit]</a>
                 <a class="w3-right" id="article_rate">Rate:<i class="far fa-star w3-button"></i><i class="far fa-star w3-button"></i><i class="far fa-star w3-button"></i><i class="far fa-star w3-button"></i><i class="far fa-star w3-button"></i></a>
-                        <%                    String name = (String) session.getAttribute("name");
+                        <%  String name = (String) session.getAttribute("name");
                             int articleID = (Integer) session.getAttribute("pageid");
                             int userID = (Integer) session.getAttribute("userID");
                             int chk = (Integer) session.getAttribute("bookmark");
                             if (loginchk != null && chk == 1) {
-
-                                <a  href = "/NoodlesWiki/articleeditor.jsp" class="w3-text-light-blue w3-large">[edit]</a
-                                        > <a 
-                                class="w3-right" id = "article_rate" > Rate:<i class="far fa-star w3-button"></i > <i 
-                                class="far fa-star w3-button"></i > <i 
-                                class="far fa-star w3-button"></i > <i 
-                                class="far fa-star w3-button"></i > <i 
-                                class="far fa-star w3-button"></i
-                                        > < % String name = (String) session.getAttribute("name");
-                                int articleID = (Integer) session.getAttribute("pageid");
-                                int userID = (Integer) session.getAttribute("userID");
-                                int chk = (Integer) session.getAttribute("bookmark");
-                                if (loginchk != null && chk == 1) {
-                                    out.print("<a onclick=\"bookmarkRemove()\" href=\"/NoodlesWiki/article/?keyword=" + name + "&bml=rbm\"><i class=\"fas fa-bookmark w3-xlarge w3-button\" title=\"Bookmark\"></i></a>");
-                                } else if (loginchk != null) {
-                                    out.print("<a onclick=\"bookmarkAdd()\" href=\"/NoodlesWiki/article/?keyword=" + name + "&bml=abm\"><i class=\"far fa-bookmark w3-xlarge w3-button\" title=\"Bookmark\"></i></a>");
-                                } else {
-                                    out.print("<a onclick=\"loginAlert()\" href=\"/NoodlesWiki/article/?keyword=" + name + "&bml=nli\"><i class=\"far fa-bookmark w3-xlarge w3-button\" title=\"Bookmark\"></i></a>");
-                                }
+                                out.print("<a onclick=\"bookmarkRemove()\" href=\"/NoodlesWiki/article/?keyword=" + name + "&bml=rbm\"><i class=\"fas fa-bookmark w3-xlarge w3-button\" title=\"Bookmark\"></i></a>");
+                            } else if (loginchk != null) {
+                                out.print("<a onclick=\"bookmarkAdd()\" href=\"/NoodlesWiki/article/?keyword=" + name + "&bml=abm\"><i class=\"far fa-bookmark w3-xlarge w3-button\" title=\"Bookmark\"></i></a>");
+                            } else {
+                                out.print("<a onclick=\"loginAlert()\"><i class=\"far fa-bookmark w3-xlarge w3-button\" title=\"Bookmark\"></i></a>");
+                            }
                         %>
             </h1>
             <div id="menu" class="w3-right w3-card w3-padding-small">
@@ -73,26 +60,10 @@
                     <p>${section.content}</p>
                 </div>
             </c:forEach>
+
             <div class="w3-container w3-padding-large w3-hide hiding">
                 <button id="newSection" class="w3-button w3-black">+</button> Add section
             </div>
-        </article>
-
-        <script>
-            function openEdit() {
-                bts = document.getElementsByClassName("hiding");
-                var i;
-                for (i = 0; i < bts.length; i++) {
-                    if (bts[i].className.indexOf("w3-hide") === -1) {
-                        bts[i].className += " w3-hide";
-                    } else {
-                        bts[i].className = bts[i].className.replace(" w3-hide", "");
-                    }
-                }
-            }
-        </script>
-
-        <article>
 
             <h3>Comments:</h3>
             <table class="w3-table w3-bordered">
@@ -131,10 +102,23 @@
             </div>
             <%   }
             %>
-
-            <%@ include file="end_template.jspf" %>
-
+        </article>
 
 
+        <%@ include file="end_template.jspf" %>
+
+        <script>
+            function openEdit() {
+                bts = document.getElementsByClassName("hiding");
+                var i;
+                for (i = 0; i < bts.length; i++) {
+                    if (bts[i].className.indexOf("w3-hide") === -1) {
+                        bts[i].className += " w3-hide";
+                    } else {
+                        bts[i].className = bts[i].className.replace(" w3-hide", "");
+                    }
+                }
+            }
+        </script>
     </body>
 </html>
