@@ -16,18 +16,26 @@
             <!--menu icon-->
             <i class="fa fa-bars w3-xlarge"></i>
         </a>
-        <a href="/NoodlesWiki/login.jsp" class ="w3-bar-item w3-button w3-right w3-hover-white">
-            <!--user icon-->
-            <i class="fa fa-user w3-xlarge" title="Log in/Register"></i>
-        </a>
         <!--Basket icon only appears if user is logged in-->
         <%
             String loginchk1 = (String) session.getAttribute("username");
             if (loginchk1 != null) {
         %>
+        
+        <a href="/NoodlesWiki/ProfileServlet" class ="w3-bar-item w3-button w3-right w3-hover-white">
+            <!--user icon-->
+            <i class="fa fa-user w3-xlarge" title="Log in/Register"></i>
+        </a>
         <a href="/NoodlesWiki/basket.jsp" class ="w3-bar-item w3-button w3-right w3-hover-white">           
             <i class="fas fa-shopping-cart" title="Basket"></i>
         </a> 
+        <%
+        } else {
+        %>
+        <a href="/NoodlesWiki/login.jsp" class ="w3-bar-item w3-button w3-right w3-hover-white">
+            <!--user icon-->
+            <i class="fa fa-user w3-xlarge" title="Log in/Register"></i>
+        </a>
         <%
             }
         %>
