@@ -29,7 +29,7 @@ function popout(id) {
     }
 }
 
-//funtion to change tabs in profile page
+//function to change tabs in profile page
 function accountChange(evt, accountc) {
   var i, x, tablinks;
   x = document.getElementsByClassName("account");

@@ -23,6 +23,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author btk16xmu
  */
+
+
 @WebServlet(name = "ArticleServlet", urlPatterns = {"/article/"})
 public class ArticleServlet extends HttpServlet {
 
@@ -42,22 +44,70 @@ public class ArticleServlet extends HttpServlet {
         HttpSession session = request.getSession();
         int pageid;
         String searchWord = request.getParameter("keyword");
+        String editedAID = request.getParameter("articleID");
+        String editorContent = request.getParameter("htmlText");
         String postComment = request.getParameter("comment");
         ArrayList<Comment> commentList = new ArrayList();
-            
+        
+        // edit
+        if (editedAID != null) {
+            try {
+                int order = Integer.parseInt(request.getParameter("paraID"));
+                Connection connectionUrl;
+                Class.forName("org.postgresql.Driver");
+                String url = "jdbc:postgresql://127.0.0.1/studentdb";
+                connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
+                Statement st = connectionUrl.createStatement();
+                ResultSet rs = st.executeQuery("select content from sections where article_id = "
+                        + editedAID + " AND section_order = " + order + ";");
+                while (rs.next()) {
+                    session.setAttribute("content", rs.getString("content"));
+                    break;
+                }
+                rs.close();
+                ResultSet nameRs = st.executeQuery("select name from articles where id="
+                        + editedAID);
+                while (nameRs.next()) {
+                    session.setAttribute("aName", nameRs.getString("name"));
+                    break;
+                }
+                nameRs.close();
+                // edit
+                session.setAttribute("aID", editedAID);
+                session.setAttribute("sID", order);
+
+                RequestDispatcher dispatcher = request.getRequestDispatcher("../articleeditor.jsp");
+                dispatcher.forward(request, response);
+                return;
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(ArticleServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        // receive editor content
+        if (editorContent != null) {
+            int aID = Integer.parseInt(request.getParameter("editedArticle"));
+            int sID = Integer.parseInt(request.getParameter("editedSection"));
+            String aName = request.getParameter("editedArticleName");
+
+            updateSection(aID, sID, editorContent);
+            ///////////////////
+            searchWord = aName;
+        }
+        
         if (postComment != null) {
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
             int userid = (Integer) session.getAttribute("userID");
             pageid = (Integer) session.getAttribute("pageid");
-            
+
             addComment(pageid, postComment, userid, timestamp);
             commentList = showComments(pageid);
             session.setAttribute("comments", commentList);
             postComment = null;
-            
+
             RequestDispatcher dispatcher = request.getRequestDispatcher("/displayArticle.jsp");
             dispatcher.forward(request, response);
-            
+
         } else {
 
             if (searchWord == null || "".equals(searchWord)) {
@@ -140,7 +190,7 @@ public class ArticleServlet extends HttpServlet {
                 } else {
                     session.setAttribute("bookmark", 0);
                 }
-                
+
                 // load the comment before the dispatch
                 commentList = showComments(pageid);
                 session.setAttribute("comments", commentList);
@@ -158,13 +208,13 @@ public class ArticleServlet extends HttpServlet {
                         session.setAttribute("bookmark", chk);
                     }
                 }
-                
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/displayArticle.jsp");
-            dispatcher.forward(request, response);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/displayArticle.jsp");
+        dispatcher.forward(request, response);
     }
 
     public int checkBookmarks(int userid, int articleid) {
@@ -259,7 +309,25 @@ public class ArticleServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
+        public void updateSection(int articleID, int sectionOrder, String content) {
+        try {
+            Connection connectionUrl;
+            Class.forName("org.postgresql.Driver");
+            String url = "jdbc:postgresql://127.0.0.1/studentdb";
+            connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
+            Statement st = connectionUrl.createStatement();
+            String q = "UPDATE sections SET content='" + content + "' WHERE article_id="
+                    + articleID + " AND section_order=" + sectionOrder + ";";
+            //debug
+            System.out.println(q);
 
+            st.executeUpdate(q);
+            connectionUrl.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
