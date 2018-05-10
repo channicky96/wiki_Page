@@ -27,16 +27,15 @@ Author     : acc16scu
         <div class="w3-container">
             <!--<p>${title}</p>-->
             <form action="/NoodlesWiki/article/" method="POST" onsubmit="makeHtml()" class="w3-container">
-                <label>Title</label><br/>
-                <input name="title"/><br/>
-                <label>Content</label>
+                <label for="title">Title</label><br/>
+                <input class="w3-input w3-border w3-round" name="editedTitle" value="${title}"/><br/>
+                <label for="editor">Content</label>
                 <textarea id="editor" name="editor">${content}</textarea>
                 <!--pass article information back to article servlet-->
                 <input class="w3-hide" name="editedArticleName" value="${aName}"/>
                 <input class="w3-hide" name="editedArticle" value="${aID}"/>
                 <input class="w3-hide" name="editedSection" value="${sID}"/>
                 <input class="w3-hide" name="htmlText" id="html" />
-
 
                 <button type="submit">Finish</button>
                 <!--<button type="submit">Finish</button>-->

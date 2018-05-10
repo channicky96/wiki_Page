@@ -52,18 +52,45 @@ public class ArticleServlet extends HttpServlet {
         if (editedAID != null) {
             try {
                 int order = Integer.parseInt(request.getParameter("paraID"));
+
                 Connection connectionUrl;
                 Class.forName("org.postgresql.Driver");
                 String url = "jdbc:postgresql://127.0.0.1/studentdb";
                 connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
                 Statement st = connectionUrl.createStatement();
-                ResultSet rs = st.executeQuery("select content from sections where article_id = "
-                        + editedAID + " AND section_order = " + order + ";");
-                while (rs.next()) {
-                    session.setAttribute("content", rs.getString("content"));
-                    break;
+                String sectionQuery;
+                // create a new section
+                if (order == -1) {
+                    int maxOrder = 0;
+                    sectionQuery = "SELECT MAX(section_order) FROM sections WHERE article_id="
+                            + editedAID + ";";
+                    ResultSet rs = st.executeQuery(sectionQuery);
+                    while (rs.next()) {
+                        maxOrder = rs.getInt(1);
+                        break;
+                    }
+                    String insertSection = "INSERT INTO sections VALUES("
+                            + editedAID + "," + (maxOrder + 1) + ",'No title','please add content');";
+                    // debug
+                    System.out.println(insertSection);
+                    rs.close();
+                    st.executeUpdate(insertSection);
+                    order = maxOrder + 1;
+                    // empty editor
+                    session.setAttribute("content", "");
+                    session.setAttribute("title", "");
+                } else {
+                    // editing a section
+                    sectionQuery = "select title, content from sections where article_id = "
+                            + editedAID + " AND section_order = " + order + ";";
+                    ResultSet rs = st.executeQuery(sectionQuery);
+                    while (rs.next()) {
+                        session.setAttribute("content", rs.getString("content"));
+                        session.setAttribute("title", rs.getString("title"));
+                        break;
+                    }
+                    rs.close();
                 }
-                rs.close();
                 ResultSet nameRs = st.executeQuery("select name from articles where id="
                         + editedAID);
                 while (nameRs.next()) {
@@ -82,14 +109,15 @@ public class ArticleServlet extends HttpServlet {
                 Logger.getLogger(ArticleServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
         // receive editor content
         if (editorContent != null) {
             int aID = Integer.parseInt(request.getParameter("editedArticle"));
             int sID = Integer.parseInt(request.getParameter("editedSection"));
             String aName = request.getParameter("editedArticleName");
+            String editedTitle = request.getParameter("editedTitle");
 
-            updateSection(aID, sID, editorContent);
+            updateSection(aID, sID, editedTitle, editorContent);
             ///////////////////
             searchWord = aName;
         }
@@ -312,14 +340,14 @@ public class ArticleServlet extends HttpServlet {
         }
     }
 
-    public void updateSection(int articleID, int sectionOrder, String content) {
+    public void updateSection(int articleID, int sectionOrder, String title, String content) {
         try {
             Connection connectionUrl;
             Class.forName("org.postgresql.Driver");
             String url = "jdbc:postgresql://127.0.0.1/studentdb";
             connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
             Statement st = connectionUrl.createStatement();
-            String q = "UPDATE sections SET content='" + content + "' WHERE article_id="
+            String q = "UPDATE sections SET title='" + title + "', content='" + content + "' WHERE article_id="
                     + articleID + " AND section_order=" + sectionOrder + ";";
             //debug
             System.out.println(q);

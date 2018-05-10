@@ -29,7 +29,7 @@
         <%@ include file="template.jsp" %>
         <article class="w3-white w3-container w3-padding-large">
             <h1 class="w3-serif w3-bottombar">${name}
-                <a href="javascript:void(0)" onclick="openEdit()" id="edit" class="w3-text-light-blue w3-large">[edit]</a>
+                <a href="javascript:void(0)" onclick="toggleEdit()" id="edit" class="w3-text-light-blue w3-large">[edit]</a>
                 <a class="w3-right" id="article_rate">Rate:<i class="far fa-star w3-button"></i><i class="far fa-star w3-button"></i><i class="far fa-star w3-button"></i><i class="far fa-star w3-button"></i><i class="far fa-star w3-button"></i></a>
                         <%  String name = (String) session.getAttribute("name");
                             int articleID = (Integer) session.getAttribute("pageid");
@@ -63,14 +63,8 @@
                     <p>${section.content}</p>
                 </div>
             </c:forEach>
-<<<<<<< HEAD
             <div class="w3-margin-top w3-container w3-hide hiding">
                 <a href="/NoodlesWiki/article/?articleID=${pageid}&paraID=-1" id="newSection" class="w3-button w3-black">+</a> Add section
-=======
-
-            <div class="w3-container w3-padding-large w3-hide hiding">
-                <button id="newSection" class="w3-button w3-black">+</button> Add section
->>>>>>> refs/remotes/origin/master
             </div>
 
             <h3>Comments:</h3>
