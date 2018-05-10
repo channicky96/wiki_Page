@@ -21,9 +21,9 @@
         <%@ include file="template.jsp" %>
         <article class="w3-white w3-container w3-padding-large">
             <h1 class="w3-serif w3-bottombar">${article.name}
-                <a href="javascript:void(0)" onclick="openEdit()" id="edit" class="w3-text-light-blue w3-large">[edit]</a>
+                <a href="javascript:void(0)" onclick="toggleEdit()" id="edit" class="w3-text-light-blue w3-large">[edit]</a>
                 <a class="w3-right" id="article_rate">Rate:<i class="far fa-star w3-button"></i><i class="far fa-star w3-button"></i><i class="far fa-star w3-button"></i><i class="far fa-star w3-button"></i><i class="far fa-star w3-button"></i></a>
-                        <%                    String name = (String) session.getAttribute("name");
+                        <%  String name = (String) session.getAttribute("name");
                             int articleID = (Integer) session.getAttribute("pageid");
                             int userID = (Integer) session.getAttribute("userID");
                             int chk = (Integer) session.getAttribute("bookmark");
@@ -50,17 +50,20 @@
             </div>
             <c:forEach var="section" items="${sections}">
                 <div id="${section.title}" class="article_section w3-border-bottom">
-                    <h3>${section.title} <a class="hiding w3-hide w3-button w3-white w3-border w3-small w3-padding-small" onclick="passPara()" href="/NoodlesWiki/article/?articleID=${article.id}&paraID=${section.order}" class="w3-text-light-blue w3-small">[edit]</a></h3>
+                    <h3>${section.title} 
+                        <a class="hiding w3-hide w3-button w3-white w3-border w3-small w3-padding-small" href="/NoodlesWiki/article/?articleID=${article.id}&paraID=${section.order}" class="w3-text-light-blue w3-small">[edit]</a>
+                        <button class="hiding w3-hide w3-padding-small w3-small w3-red w3-button" id="removeSection" class="w3-button w3-black">remove section</button>
+                    </h3>
                     <p>${section.content}</p>
                 </div>
             </c:forEach>
-            <div class="w3-container w3-padding-large w3-hide hiding">
-                <button id="newSection" class="w3-button w3-black">+</button> Add section
+            <div class="w3-margin-top w3-container w3-hide hiding">
+                <a href="/NoodlesWiki/article/?articleID=${article.id}&paraID=-1" id="newSection" class="w3-button w3-black">+</a> Add section
             </div>
         </article>
 
         <script>
-            function openEdit() {
+            function toggleEdit() {
                 bts = document.getElementsByClassName("hiding");
                 var i;
                 for (i = 0; i < bts.length; i++) {

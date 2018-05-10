@@ -26,7 +26,10 @@ Author     : acc16scu
 
         <div class="w3-container">
             <!--<p>${title}</p>-->
-            <form action="/NoodlesWiki/article/" method="POST" onsubmit="makeHtml()">
+            <form action="/NoodlesWiki/article/" method="POST" onsubmit="makeHtml()" class="w3-container">
+                <label>Title</label><br/>
+                <input name="title"/><br/>
+                <label>Content</label>
                 <textarea id="editor" name="editor">${content}</textarea>
                 <!--pass article information back to article servlet-->
                 <input class="w3-hide" name="editedArticleName" value="${aName}"/>
@@ -44,9 +47,9 @@ Author     : acc16scu
                 //hide H icon
                 hideIcons: ["heading"],
                 element: document.getElementById("editor")});
-            function makeHtml(){
-            document.getElementById("html").value = simplemde.options.previewRender(simplemde.value());
-        }
+            function makeHtml() {
+                document.getElementById("html").value = simplemde.options.previewRender(simplemde.value());
+            }
         </script>
         <%@include file="end_template.jspf" %>
     </body>

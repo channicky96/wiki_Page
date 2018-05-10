@@ -41,13 +41,13 @@ public class ArticleServlet extends HttpServlet {
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         String searchWord = request.getParameter("keyword");
-        String articleID = request.getParameter("articleID");
+        String editedAID = request.getParameter("articleID");
         String editorContent = request.getParameter("htmlText");
         HttpSession session = request.getSession();
         int pageid = 11;
 
         // edit
-        if (articleID != null) {
+        if (editedAID != null) {
             try {
                 int order = Integer.parseInt(request.getParameter("paraID"));
                 Connection connectionUrl;
@@ -55,23 +55,22 @@ public class ArticleServlet extends HttpServlet {
                 String url = "jdbc:postgresql://127.0.0.1/studentdb";
                 connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
                 Statement st = connectionUrl.createStatement();
-                ResultSet rs = st.executeQuery(
-                        "select content from sections where article_id = "
-                        + articleID + " AND section_order = " + order + ";");
+                ResultSet rs = st.executeQuery("select content from sections where article_id = "
+                        + editedAID + " AND section_order = " + order + ";");
                 while (rs.next()) {
                     session.setAttribute("content", rs.getString("content"));
                     break;
                 }
                 rs.close();
                 ResultSet nameRs = st.executeQuery("select name from articles where id="
-                        + articleID);
+                        + editedAID);
                 while (nameRs.next()) {
                     session.setAttribute("aName", nameRs.getString("name"));
                     break;
                 }
                 nameRs.close();
-                // edit
-                session.setAttribute("aID", articleID);
+
+                session.setAttribute("aID", editedAID);
                 session.setAttribute("sID", order);
 
                 RequestDispatcher dispatcher = request.getRequestDispatcher("../articleeditor.jsp");
@@ -163,7 +162,6 @@ public class ArticleServlet extends HttpServlet {
                 int userid = (Integer) session.getAttribute("userID");
                 int chk = checkBookmarks(userid, pageid);
                 session.setAttribute("bookmark", chk);
-
             } else {
                 session.setAttribute("bookmark", 0);
             }
@@ -214,6 +212,26 @@ public class ArticleServlet extends HttpServlet {
 
     public void updateSection(int articleID, int sectionOrder, String content) {
         try {
+            Connection connectionUrl;
+            Class.forName("org.postgresql.Driver");
+            String url = "jdbc:postgresql://127.0.0.1/studentdb";
+            connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
+            Statement st = connectionUrl.createStatement();
+            String q = "UPDATE sections SET content='" + content + "' WHERE article_id="
+                    + articleID + " AND section_order=" + sectionOrder + ";";
+//            //debug
+//            System.out.println(q);
+            
+            st.executeUpdate(q);
+            connectionUrl.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void AddSection(int articleID, int sectionOrder, String content){
+                try {
             Connection connectionUrl;
             Class.forName("org.postgresql.Driver");
             String url = "jdbc:postgresql://127.0.0.1/studentdb";
