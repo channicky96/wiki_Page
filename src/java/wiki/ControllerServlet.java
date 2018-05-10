@@ -131,7 +131,7 @@ public class ControllerServlet extends HttpServlet {
                         ResultSet rs1 = st1.executeQuery(query3);
                         while (rs1.next()) {
                             id = rs1.getInt("maxid") + 1;
-                            System.out.println(id);
+                            //System.out.println(id);
                         }
                         connectionUrl1.close();
                     } catch (ClassNotFoundException e) {
@@ -157,7 +157,11 @@ public class ControllerServlet extends HttpServlet {
                         e.printStackTrace();
                     }
                     User nuser = new User(newusername, id, nickname, password, email);
-                    
+                    session.setAttribute("username", newusername);
+                    session.setAttribute("userID", id);
+                    session.setAttribute("userEmail", email);
+                    session.setAttribute("userNickname", nickname);
+                    session.setAttribute("userpassword", password);
                 } else {
                     try (PrintWriter out = response.getWriter()) {
                         out.println("<script>alert(\"Passwords are not the same\");</script>");
