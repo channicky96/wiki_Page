@@ -58,7 +58,15 @@
                 <div id="${section.title}" class="article_section w3-border-bottom">
                     <h3>${section.title} 
                         <a class="hiding w3-hide w3-button w3-white w3-border w3-small w3-padding-small" href="/NoodlesWiki/article/?articleID=${pageid}&paraID=${section.order}" class="w3-text-light-blue w3-small">[edit]</a>
-                        <button class="hiding w3-hide w3-padding-small w3-small w3-red w3-button" id="removeSection" class="w3-button w3-black">remove section</button>
+                        <form action="/NoodlesWiki/article/" method="POST" onsubmit="return removeConfirm()"
+                              style="display:inline;">
+                            <button class="hiding w3-hide w3-padding-small w3-small w3-red w3-button"
+                                    id="removeSection" class="w3-button w3-black" type="submit">remove section</button>
+                            <input type="hidden" name="keyword" value="${name}"/>
+                            <input type="hidden" name="articleID" value="${pageid}"/>
+                            <input type="hidden" name="paraID" value="${section.order}" />
+                            <input type="hidden" name="removeSection" value="1" />
+                        </form>
                     </h3>
                     <p>${section.content}</p>
                 </div>
@@ -120,6 +128,16 @@
                         bts[i].className = bts[i].className.replace(" w3-hide", "");
                     }
                 }
+            }
+            function removeConfirm() {
+                var w = confirm("Remove this section?");
+                if (w == true) {
+                    alert("removed!");
+                    return true;
+                } else {
+                    alert("Fine.");
+                }
+                return false;
             }
         </script>
     </body>
