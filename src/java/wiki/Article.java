@@ -1,6 +1,7 @@
 package wiki;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -16,6 +17,14 @@ public class Article {
     public Article(){
         name = null;
         sections = new ArrayList<>();
+    }
+    
+    public Article(int id, String name, ArrayList<String> tag, ArrayList<Section> section, double rate){
+        this.id = id;
+        this.name = name;
+        this.tags = tag;
+        this.sections = section;
+        this.rate = rate;
     }
     
     public void addSection(Section se){
@@ -90,5 +99,12 @@ public class Article {
      */
     public void setSections(ArrayList<Section> sections) {
         this.sections = sections;
-    }    
+    }
+    
+    @Override
+    public String toString(){
+        StringBuilder articleContent = new StringBuilder();
+        articleContent.append("Article Title: \n").append(name).append("\n").append(sections.toString()).append("\n\n--------------------------------\n");
+        return articleContent.toString();
+    }
 }

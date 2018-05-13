@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.Random;
@@ -39,7 +40,7 @@ public class ControllerServlet extends HttpServlet {
         String query2 = "select username from users where email ='" + email + "'";
         String query3 = "select max(id) as maxid from users";
 
-        // Session to store user's informations ----------------------------------------------------------------------------------------
+        // Session to store a user's informations --------------------------------------------------------------------------------------
         HttpSession session = request.getSession();
 
         // Logout ----------------------------------------------------------------------------------------------------------------------    
@@ -50,7 +51,6 @@ public class ControllerServlet extends HttpServlet {
         }
 
         // Login -----------------------------------------------------------------------------------------------------------------------    
-
         if (button.equals("Login")) { //IF USER IS LOGGING IN
 
             User user = new User();
@@ -72,6 +72,7 @@ public class ControllerServlet extends HttpServlet {
                     String passwordD = null;
                     session.setAttribute("username", username);
                     try {
+                        // Connect to postgreSQL to get the desired data
                         Connection connectionUrlA = null;
                         Class.forName("org.postgresql.Driver");
                         String urlA = "jdbc:postgresql://127.0.0.1/studentdb";
@@ -88,10 +89,13 @@ public class ControllerServlet extends HttpServlet {
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace();
                     }
+                    ArrayList<Article> basket = new ArrayList<>();
                     session.setAttribute("userID", idA);
                     session.setAttribute("userEmail", emailB);
                     session.setAttribute("userNickname", nicknameC);
                     session.setAttribute("userpassword", passwordD);
+                    session.setAttribute("basket", basket);
+                    // Redirects to pages
                     RequestDispatcher rd = request.getRequestDispatcher("login_success.jsp");
                     rd.forward(request, response);
                 } else {
@@ -99,22 +103,23 @@ public class ControllerServlet extends HttpServlet {
                     rd.forward(request, response);
                 }
             }
-        } // Register a new user ---------------------------------------------------------------------------------------------------------
+        } // Register a new user --------------------------------------------------------------------------------------------------------
         else if (button.equals("Register")) {
             String emailcheck = null;
             try {
+                // Connect to postgreSQL to get the desired data
                 Connection connectionUrl = null;
                 Class.forName("org.postgresql.Driver");
                 String url = "jdbc:postgresql://127.0.0.1/studentdb";
-
                 connectionUrl = DriverManager.getConnection(url, dbUsername, dbpassword);
-
                 Statement st = connectionUrl.createStatement();
                 ResultSet rs = st.executeQuery(query2);
+
                 while (rs.next()) {
                     emailcheck = rs.getString("username");
                 }
                 connectionUrl.close();
+                // If email is already used to register
                 if (emailcheck != null) {
                     try (PrintWriter out = response.getWriter()) {
                         out.println("<script>alert(\"Email already registered\");</script>");
@@ -131,12 +136,12 @@ public class ControllerServlet extends HttpServlet {
                         ResultSet rs1 = st1.executeQuery(query3);
                         while (rs1.next()) {
                             id = rs1.getInt("maxid") + 1;
-                            //System.out.println(id);
                         }
                         connectionUrl1.close();
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace();
                     }
+                    // Generate a username for a user for them to log in
                     Random rand = new Random();
                     String newusername = nickname + rand.nextInt(99999);
                     while (checkUsername(newusername) == false) {
@@ -144,11 +149,12 @@ public class ControllerServlet extends HttpServlet {
                     }
                     String query4 = "insert into users(id,username,userpassword,email,nickname) values('" + id + "','" + newusername + "','" + password + "','" + email + "','" + nickname + "')";
                     try {
+                        // Insert a user's detail to register them
                         Connection connectionUrl2;
                         Class.forName("org.postgresql.Driver");
                         String url2 = "jdbc:postgresql://127.0.0.1/studentdb";
-                        
-                        connectionUrl2 = DriverManager.getConnection(url2, dbUsername, dbpassword); 
+
+                        connectionUrl2 = DriverManager.getConnection(url2, dbUsername, dbpassword);
 
                         Statement st2 = connectionUrl2.createStatement();
                         st2.executeUpdate(query4);
@@ -156,6 +162,7 @@ public class ControllerServlet extends HttpServlet {
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace();
                     }
+                    // Create a new User object
                     User nuser = new User(newusername, id, nickname, password, email);
                     session.setAttribute("username", newusername);
                     session.setAttribute("userID", id);
@@ -163,6 +170,7 @@ public class ControllerServlet extends HttpServlet {
                     session.setAttribute("userNickname", nickname);
                     session.setAttribute("userpassword", password);
                 } else {
+                    // If password and comfrmed password is not identical, alert is displayed
                     try (PrintWriter out = response.getWriter()) {
                         out.println("<script>alert(\"Passwords are not the same\");</script>");
                         out.println("<meta http-equiv=\"refresh\" content=\"0; url=register.jsp\" />");
@@ -185,7 +193,7 @@ public class ControllerServlet extends HttpServlet {
                 Connection connectionUrl5;
                 Class.forName("org.postgresql.Driver");
                 String url5 = "jdbc:postgresql://127.0.0.1/studentdb";
-                connectionUrl5 = DriverManager.getConnection(url5, dbUsername, dbpassword); //8084?
+                connectionUrl5 = DriverManager.getConnection(url5, dbUsername, dbpassword);
                 Statement st5 = connectionUrl5.createStatement();
                 Statement st6 = connectionUrl5.createStatement();
                 ResultSet rs6 = st6.executeQuery(queryB);
@@ -214,10 +222,11 @@ public class ControllerServlet extends HttpServlet {
             String getNickname = request.getParameter("newNickname");
             String getUsername = (String) session.getAttribute("username");
             String queryC = ("UPDATE users SET nickname = '" + getNickname + "' WHERE username ='" + getUsername + "'");
-            Pattern p = Pattern.compile("[\\p{Punct}]");
-            Matcher m = p.matcher(getNickname);
-            if (!m.find()) {
+//            Pattern p = Pattern.compile("[\\p{Punct}]");
+            Pattern p = Pattern.compile("^[a-zA-Z0-9 ]*$");
 
+            Matcher m = p.matcher(getNickname);
+            if (m.find()) {
                 try {
                     Connection connectionUrl7;
                     Class.forName("org.postgresql.Driver");
@@ -234,14 +243,14 @@ public class ControllerServlet extends HttpServlet {
                 }
             } else {
                 try (PrintWriter out = response.getWriter()) {
-                    out.print("<script>alert(\"Nickname cannot contain any punctuation\");</script>");
+                    out.print("<script>alert(\"Please only use alphanumeric characters in your Nickname.\");</script>");
                     out.println("<meta http-equiv=\"refresh\" content=\"0; url=userdetail.jsp\" />");
                 }
             }
         }
     }
 
-    // Check for existing username -------------------------------------------------------------------------------------------------
+    // Check for existing username -------------------------------------------------------------------------------------------------------
     public boolean checkUsername(String tUsername) throws SQLException {
         String tun = null;
         String dbUsername = "student";
@@ -251,11 +260,10 @@ public class ControllerServlet extends HttpServlet {
             Connection connectionUrl3;
             Class.forName("org.postgresql.Driver");
             String url3 = "jdbc:postgresql://127.0.0.1/studentdb";
-
             connectionUrl3 = DriverManager.getConnection(url3, dbUsername, dbpassword);
-
             Statement st3 = connectionUrl3.createStatement();
             ResultSet rs3 = st3.executeQuery(query);
+
             while (rs3.next()) {
                 tun = rs3.getString("username");
             }
@@ -269,7 +277,7 @@ public class ControllerServlet extends HttpServlet {
         return false;
     }
 
-    // Check for validate login ----------------------------------------------------------------------------------------------------
+    // Validate login ----------------------------------------------------------------------------------------------------
     public boolean validate(String username, String password) throws SQLException {
         String dbUsername = "student";
         String dbpassword = "dbpassword";

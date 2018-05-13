@@ -27,7 +27,7 @@
             </select>
             Sections:<input type="number">
             <input type="submit" name="button">
-<!--            https://www.npmjs.com/package/tags-input-->
+            <!--https://www.npmjs.com/package/tags-input-->
         </form>
     </body>
 </html>

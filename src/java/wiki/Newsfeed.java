@@ -7,7 +7,4 @@ package wiki;
 class Newsfeed {
     public int article_id;
     
-    public static void main(String[] args) {
-        
-    }
 }

@@ -1,7 +1,7 @@
 <%-- 
-Document   : ArticleEditer
-Created on : 20-Apr-2018, 15:02:52
-Author     : acc16scu
+    Document   : articleEditer
+    Created on : 20-Apr-2018, 15:02:52
+    Author     : acc16scu
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -44,9 +44,9 @@ Author     : acc16scu
                 //hide H icon
                 hideIcons: ["heading"],
                 element: document.getElementById("editor")});
-            function makeHtml(){
-            document.getElementById("html").value = simplemde.options.previewRender(simplemde.value());
-        }
+            function makeHtml() {
+                document.getElementById("html").value = simplemde.options.previewRender(simplemde.value());
+            }
         </script>
         <%@include file="end_template.jspf" %>
     </body>

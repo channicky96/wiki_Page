@@ -18,61 +18,15 @@
         <link rel="Shortcut Icon" href="noodleswiki.ico">
         <link rel="stylesheet" href="/NoodlesWiki/pages.css" type="text/css">
     </head>
-        <body class="w3-light-grey">
+    <body class="w3-light-grey">
         <%@ include file="template.jsp" %>
         <!-- First Photo Grid-->
-        
-            <div class="w3-row-padding">
-                <h3>Login success</h3>
-                <%
-            
-            /*try {
-                Connection connectionUrl = null;
-                String username = request.getParameter("username");
-                Class.forName("org.postgresql.Driver");
-                String url = "jdbc:postgresql://127.0.0.1/studentdb";
-                connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
-                Statement st = connectionUrl.createStatement();
-                out.println("<p>Your username is : " + username + "</p>");
-                ResultSet rs = st.executeQuery("select * from users where username = '" + username + "'");
-                while (rs.next()) {
-                    String nn = rs.getString("nickname");
-                    out.println("<p>Welcome back " + nn + "</p>");
-                }
-                connectionUrl.close();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-                out.println("<p>not found</p>");
-              
-            }
-            */
-            String redirectURL = "index.jsp";
-            response.sendRedirect(redirectURL);
-        %>
-<!--                <div class="w3-third w3-container w3-margin-bottom">
-                    <img src="https://i.imgur.com/OvMZBs9.jpg" alt="" style="width:100%" class="w3-hover-opacity">
-                    <div class="w3-container w3-white">
-                        <p><b>article 1</b></p>
-                        <p>Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.</p>
-                    </div>
-                </div>
-                <div class="w3-third w3-container w3-margin-bottom">
-                    <img src="https://i.imgur.com/OvMZBs9.jpg" alt="" style="width:100%" class="w3-hover-opacity">
-                    <div class="w3-container w3-white">
-                        <p><b>article 2</b></p>
-                        <p>Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.</p>
-                    </div>
-                </div>
-                <div class="w3-third w3-container w3-margin-bottom">
-                    <img src="https://i.imgur.com/OvMZBs9.jpg" alt="" style="width:100%" class="w3-hover-opacity">
-                    <div class="w3-container w3-white">
-                        <p><b>Lorem Ipsum</b></p>
-                        <p>Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.</p>
-                    </div>
-                </div>-->
-            </div>
+        <div class="w3-row-padding">
+            <h3>Login success</h3>
+            <%                    String redirectURL = "index.jsp";
+                response.sendRedirect(redirectURL);
+            %>
         </div>
-
         <!-- Pagination -->
         <div class="w3-center w3-padding-32">
             <div class="w3-bar">

@@ -90,7 +90,7 @@
 
                 var d = weekday[today.getDay()];
                 var n = month[today.getMonth()];
-                var str = d + " " + today.getDate() + " " + n + " " 
+                var str = d + " " + today.getDate() + " " + n + " "
                         + h + ":" + m + ":" + s + " " + today.getFullYear();
                 document.getElementById('clock').innerHTML = str;
 
@@ -99,14 +99,10 @@
             function checkTime(i) {
                 if (i < 10) {
                     i = "0" + i
-                }
-                ;  // add zero in front of numbers < 10
+                };  // add zero in front of numbers < 10
                 return i;
             }
         </script>
         <%@ include file="end_template.jspf" %>
     </body>
-
-</body>
-
 </html>

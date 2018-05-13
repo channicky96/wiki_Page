@@ -18,16 +18,12 @@
         <%
             try {
                 Connection connectionUrl = null;
-                //int h = request.getIntHeader("articleid");
                 String articleid = request.getParameter("articleid");
-//                int aid = Integer.valueOf(articleid);
-                System.out.println("h: "+articleid);
-                //int articleid = 2;
+                System.out.println("h: " + articleid);
                 Class.forName("org.postgresql.Driver");
                 String url = "jdbc:postgresql://127.0.0.1/studentdb";
-                connectionUrl = DriverManager.getConnection(url, "student", "dbpassword"); //8084?
+                connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
                 Statement st = connectionUrl.createStatement();
-                //out.println("<p>Your username is : " + username + "</p>");
                 ResultSet rs = st.executeQuery("select * from article where articleID = '" + articleid + "'");
                 while (rs.next()) {
                     String title = rs.getString("articleTitle");

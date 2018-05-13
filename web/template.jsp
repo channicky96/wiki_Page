@@ -21,7 +21,7 @@
             String loginchk1 = (String) session.getAttribute("username");
             if (loginchk1 != null) {
         %>
-        
+
         <a href="/NoodlesWiki/ProfileServlet" class ="w3-bar-item w3-button w3-right w3-hover-white">
             <!--user icon-->
             <i class="fa fa-user w3-xlarge" title="Log in/Register"></i>

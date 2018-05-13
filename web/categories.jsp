@@ -22,16 +22,16 @@
     <body class="w3-light-grey">
         <%@ include file="template.jsp" %>
         <div class="w3-white w3-container w3-margin">
-        <h1 class="w3-container">Categories</h1>
-        <ul class="w3-ul">
-            <c:forEach var="cat" items="${categoryList}">
-                <li><h4>${cat}</h4>
-                    <c:forEach var="articleName" items="${cat.list}">
-                        <ul><li><a href="/NoodlesWiki/article/?keyword=${articleName}">${articleName}</li></a></ul>
-                    </c:forEach>
-                </li>
-            </c:forEach>
-        </ul>
+            <h1 class="w3-container">Categories</h1>
+            <ul class="w3-ul">
+                <c:forEach var="cat" items="${categoryList}">
+                    <li><h4>${cat}</h4>
+                            <c:forEach var="articleName" items="${cat.list}">
+                            <ul><li><a href="/NoodlesWiki/article/?keyword=${articleName}">${articleName}</li></a></ul>
+                                </c:forEach>
+                    </li>
+                </c:forEach>
+            </ul>
         </div>
         <%@include file="end_template.jspf" %>
 

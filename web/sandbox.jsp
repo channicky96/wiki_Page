@@ -40,6 +40,5 @@
                     <p>${section.content}</p>
                 </div>
             </c:forEach>
-            <article>
     </body>
 </html>
