@@ -18,16 +18,28 @@
     </head>
     <body>
         <%@ include file="template.jsp" %>
+        <div class="w3-container">
         <h1>New Article</h1>
-        <form class="w3-container w3-animate-left" action="ArticleServerlet" method="post">
-            Title:<input type="text">
-            Tags:
-            Category:<select>
-                <option value="Nature">Nature</option>
+        <form class="w3-container w3-animate-left" action="/NoodlesWiki/article/" method="post">
+            Title:<input name="name" type="text">
+            Category:<select name="category">
+                <option value="Violet">Violet</option>
+                <option value="Red">Red</option>
+                <option value="Green">Green</option>
+                <option value="Puce">Puce</option>
+                <option value="Indigo">Indigo</option>
+                <option value="Crimson">Crimson</option>
+                <option value="Mauv">Mauv</option>
+                <option value="Pink">Pink</option>
+                <option value="Yellow">Yellow</option>
+                <option value="Goldenrod">Goldenrod</option>
+                <option value="Teal">Teal</option>
+                <option value="Khaki">Khaki</option>
             </select>
-            Sections:<input type="number">
+            <!--Sections:<input type="number" min="1">-->
             <input type="submit" name="button">
             <!--https://www.npmjs.com/package/tags-input-->
         </form>
+        </div>
     </body>
 </html>

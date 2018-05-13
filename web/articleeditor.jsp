@@ -26,14 +26,16 @@
 
         <div class="w3-container">
             <!--<p>${title}</p>-->
-            <form action="/NoodlesWiki/article/" method="POST" onsubmit="makeHtml()">
+            <form action="/NoodlesWiki/article/" method="POST" onsubmit="return makeHtml()" class="w3-container">
+                <label for="title">Title</label><br/>
+                <input class="w3-input w3-border w3-round" id="title" name="editedTitle" value="${title}"/><br/>
+                <label for="editor">Content</label>
                 <textarea id="editor" name="editor">${content}</textarea>
                 <!--pass article information back to article servlet-->
-                <input class="w3-hide" name="editedArticleName" value="${aName}"/>
-                <input class="w3-hide" name="editedArticle" value="${aID}"/>
-                <input class="w3-hide" name="editedSection" value="${sID}"/>
-                <input class="w3-hide" name="htmlText" id="html" />
-
+                <input type="hidden" name="editedArticleName" value="${aName}"/>
+                <input type="hidden" name="editedArticle" value="${aID}"/>
+                <input type="hidden" name="editedSection" value="${sID}"/>
+                <input type="hidden" name="htmlText" id="html" />
 
                 <button type="submit">Finish</button>
                 <!--<button type="submit">Finish</button>-->
@@ -45,7 +47,18 @@
                 hideIcons: ["heading"],
                 element: document.getElementById("editor")});
             function makeHtml() {
-                document.getElementById("html").value = simplemde.options.previewRender(simplemde.value());
+                var content = simplemde.value();
+                // validate form
+                if (document.getElementById("title").value === '') {
+                    alert("Title cannot be empty");
+                    return false;
+                }
+                if(content === ''){
+                    alert("Please write some content");
+                    return false;
+                }
+                document.getElementById("html").value = simplemde.options.previewRender(content);
+                return true;
             }
         </script>
         <%@include file="end_template.jspf" %>

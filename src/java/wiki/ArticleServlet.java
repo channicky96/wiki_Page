@@ -52,8 +52,10 @@ public class ArticleServlet extends HttpServlet {
         String editedAID = request.getParameter("articleID");
         String editorContent = request.getParameter("htmlText");
         String postComment = request.getParameter("comment");
-        ArrayList<Comment> commentList = new ArrayList<>();
-        ArrayList<Article> basket = new ArrayList<>();
+        String category = request.getParameter("category");
+        ArrayList<Comment> commentList;
+        ArrayList<Article> basket;
+
         String basketconfirm = request.getParameter("basket");
         String download = request.getParameter("download");
         basket = (ArrayList) session.getAttribute("basket");
@@ -92,7 +94,7 @@ public class ArticleServlet extends HttpServlet {
             session.setAttribute("newrating", showRate);
 
         }
-        
+
         //Basket
         if (basketconfirm != null) {
             boolean added = false;
@@ -125,38 +127,77 @@ public class ArticleServlet extends HttpServlet {
             }
         }
 
-        // Edit contents of an article -------------------------------------------------------------------------------------------------
-        if (editedAID
-                != null) {
-            try {
-                int order = Integer.parseInt(request.getParameter("paraID"));
-                Connection connectionUrl;
-                Class.forName("org.postgresql.Driver");
-                String url = "jdbc:postgresql://127.0.0.1/studentdb";
-                connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
-                Statement st = connectionUrl.createStatement();
-                ResultSet rs = st.executeQuery("select content from sections where article_id = "
-                        + editedAID + " AND section_order = " + order + ";");
-                while (rs.next()) {
-                    session.setAttribute("content", rs.getString("content"));
-                    break;
-                }
-                rs.close();
-                ResultSet nameRs = st.executeQuery("select name from articles where id="
-                        + editedAID);
-                while (nameRs.next()) {
-                    session.setAttribute("aName", nameRs.getString("name"));
-                    break;
-                }
-                nameRs.close();
-                session.setAttribute("aID", editedAID);
-                session.setAttribute("sID", order);
+        // create new article
+        if (category != null) {
+            String name = request.getParameter("name");
+            userid = (Integer) session.getAttribute("userID");
+            createArticle(userid, name, category);
+            searchWord = name;
+        }
+        // edit
+        if (editedAID != null) {
+            int order = Integer.parseInt(request.getParameter("paraID"));
+            String removing = request.getParameter("removeSection");
+            // delete a section
+            if (removing != null && removing.equals("1")) {
+                removeSection(Integer.parseInt(editedAID), order);
+            } else {
+                try {
+                    Connection connectionUrl;
+                    Class.forName("org.postgresql.Driver");
+                    String url = "jdbc:postgresql://127.0.0.1/studentdb";
+                    connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
+                    Statement st = connectionUrl.createStatement();
+                    String sectionQuery;
+                    // create a new section
+                    if (order == -1) {
+                        int maxOrder = 0;
+                        sectionQuery = "SELECT MAX(section_order) FROM sections WHERE article_id="
+                                + editedAID + ";";
+                        ResultSet rs = st.executeQuery(sectionQuery);
+                        while (rs.next()) {
+                            maxOrder = rs.getInt(1);
+                            break;
+                        }
+                        String insertSection = "INSERT INTO sections VALUES("
+                                + editedAID + "," + (maxOrder + 1) + ",'No title','Please add content');";
+                        // debug
+                        System.out.println(insertSection);
+                        rs.close();
+                        st.executeUpdate(insertSection);
+                        order = maxOrder + 1;
+                        // empty editor
+                        session.setAttribute("content", "");
+                        session.setAttribute("title", "");
+                    } else {
+                        // editing a section
+                        sectionQuery = "select title, content from sections where article_id = "
+                                + editedAID + " AND section_order = " + order + ";";
+                        ResultSet rs = st.executeQuery(sectionQuery);
+                        while (rs.next()) {
+                            session.setAttribute("content", rs.getString("content"));
+                            session.setAttribute("title", rs.getString("title"));
+                            break;
+                        }
+                        rs.close();
+                    }
+                    ResultSet nameRs = st.executeQuery("select name from articles where id="
+                            + editedAID);
+                    while (nameRs.next()) {
+                        session.setAttribute("aName", nameRs.getString("name"));
+                        break;
+                    }
+                    nameRs.close();
 
-                RequestDispatcher dispatcher = request.getRequestDispatcher("../articleeditor.jsp");
-                dispatcher.forward(request, response);
-                return;
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(ArticleServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    session.setAttribute("aID", editedAID);
+                    session.setAttribute("sID", order);
+
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("../articleeditor.jsp");
+                    dispatcher.forward(request, response);
+                    return;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -166,7 +207,11 @@ public class ArticleServlet extends HttpServlet {
             int aID = Integer.parseInt(request.getParameter("editedArticle"));
             int sID = Integer.parseInt(request.getParameter("editedSection"));
             String aName = request.getParameter("editedArticleName");
-            updateSection(aID, sID, editorContent);
+
+            String editedTitle = request.getParameter("editedTitle");
+
+            updateSection(aID, sID, editedTitle, editorContent);
+            ///////////////////
             searchWord = aName;
         }
 
@@ -255,8 +300,8 @@ public class ArticleServlet extends HttpServlet {
                 List<Section> sendSections = result.getSections();
 
                 pageid = result.getId();
-                session.setAttribute("pageid", pageid);
                 String loginchk = (String) session.getAttribute("username");
+                session.setAttribute("pageid", pageid);
                 session.setAttribute("name", result.getName());
                 request.setAttribute("sections", sendSections);
                 session.setAttribute("sections", sendSections);
@@ -351,7 +396,7 @@ public class ArticleServlet extends HttpServlet {
 
     // Function to retrieve comment(s) in the database for an article
     public ArrayList showComments(int articleid) {
-        ArrayList<Comment> cal = new ArrayList();
+        ArrayList<Comment> cal = new ArrayList<>();
         try {
             Connection connectionUrl;
             Class.forName("org.postgresql.Driver");
@@ -395,17 +440,15 @@ public class ArticleServlet extends HttpServlet {
     }
 
     // Function to update a section of an article
-    public void updateSection(int articleID, int sectionOrder, String content) {
+    public void updateSection(int articleID, int sectionOrder, String title, String content) {
         try {
             Connection connectionUrl;
             Class.forName("org.postgresql.Driver");
             String url = "jdbc:postgresql://127.0.0.1/studentdb";
             connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
             Statement st = connectionUrl.createStatement();
-            String q = "UPDATE sections SET content='" + content + "' WHERE article_id="
+            String q = "UPDATE sections SET title='" + title + "', content='" + content + "' WHERE article_id="
                     + articleID + " AND section_order=" + sectionOrder + ";";
-            //debug
-//            System.out.println(q);
 
             st.executeUpdate(q);
             connectionUrl.close();
@@ -475,6 +518,24 @@ public class ArticleServlet extends HttpServlet {
 
     }
 
+    public void removeSection(int articleID, int sectionOrder) {
+        try {
+            Connection connectionUrl;
+            Class.forName("org.postgresql.Driver");
+            String url = "jdbc:postgresql://127.0.0.1/studentdb";
+            connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
+            Statement st = connectionUrl.createStatement();
+            String q = "DELETE FROM sections WHERE article_id="
+                    + articleID + " AND section_order=" + sectionOrder + ";";
+
+            st.executeUpdate(q);
+            connectionUrl.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void updateAverageRating(int articleid) {
         double rate = 0;
         int count = 0;
@@ -486,6 +547,7 @@ public class ArticleServlet extends HttpServlet {
             connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
             Statement st = connectionUrl.createStatement();
             Statement st1 = connectionUrl.createStatement();
+
             ResultSet rs = st.executeQuery("select count(articleid) as count ,sum(rating) as totalrate from rating where articleid = '" + articleid + "'");
             while (rs.next()) {
                 count = rs.getInt("count");
@@ -517,6 +579,28 @@ public class ArticleServlet extends HttpServlet {
             e.printStackTrace();
         }
         return rating;
+    }
+
+    public void createArticle(int userid, String name, String category) {
+        int maxid = 0;
+        try {
+            Connection connectionUrl;
+            Class.forName("org.postgresql.Driver");
+            String url = "jdbc:postgresql://127.0.0.1/studentdb";
+            connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
+            Statement st = connectionUrl.createStatement();
+            Statement st1 = connectionUrl.createStatement();
+            ResultSet rs = st1.executeQuery("select max(id) as maxid from articles");
+            while (rs.next()) {
+                maxid = rs.getInt("maxid") + 1;
+            }
+            st.executeUpdate("insert into articles (id, name, rate, category, creator, editor)"
+                    + " values ('" + maxid + "','" + name + "', 0, '" + category + "','" + userid + "','" + userid + "')");
+            connectionUrl.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

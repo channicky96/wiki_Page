@@ -18,7 +18,7 @@
             }
 
             function basketalert() {
-                    alert("Article added into Basket");
+                alert("Article added into Basket");
             }
 
             function ratingAlert() {
@@ -31,13 +31,12 @@
         <link rel="stylesheet" href="/NoodlesWiki/w3.css" type="text/css">
         <!--import icons-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="Shortcut Icon" href="noodleswiki.ico">
+        <link rel="Shortcut Icon" href="/NoodlesWiki/noodleswiki.ico">
         <link rel="stylesheet" href="/NoodlesWiki/pages.css" type="text/css">
     </head>
     <body class="w3-light-grey">
         <%@ include file="template.jsp" %>
-        <%            
-            String name = (String) session.getAttribute("name");
+        <%            String name = (String) session.getAttribute("name");
             int articleID = (Integer) session.getAttribute("pageid");
             int userID = (Integer) session.getAttribute("userID");
             int chk = (Integer) session.getAttribute("bookmark");
@@ -45,21 +44,30 @@
         %>
         <article class="w3-white w3-container w3-padding-large">
             <h1 class="w3-serif w3-bottombar">${name}
-                <a href="javascript:void(0)" onclick="openEdit()" id="edit" class="w3-text-light-blue w3-large">[edit]</a>
                 <%
                     if (loginchk != null) {
                 %>
                 <form style="display:inline;"action="/NoodlesWiki/article/" method="POST">
                     <fieldset class="rating">
-                        <input type="radio" name="stars" id="4_stars" value="four" <%if (4.0 < newrating && newrating <= 5.0){out.print("checked");}%> onchange='this.form.submit();'>
+                        <input type="radio" name="stars" id="4_stars" value="four" <%if (4.0 < newrating && newrating <= 5.0) {
+                                out.print("checked");
+                            }%> onchange='this.form.submit();'>
                         <label class="stars" for="4_stars">4 stars</label>
-                        <input type="radio" name="stars" id="3_stars" value="three" <%if (3.0 < newrating && newrating <= 4.0){out.print("checked");}%> onchange='this.form.submit();'>
+                        <input type="radio" name="stars" id="3_stars" value="three" <%if (3.0 < newrating && newrating <= 4.0) {
+                                out.print("checked");
+                            }%> onchange='this.form.submit();'>
                         <label class="stars" for="3_stars">3 stars</label>
-                        <input type="radio" name="stars" id="2_stars" value="two" <%if (2.0 < newrating && newrating <= 3.0){out.print("checked");}%> onchange='this.form.submit();'>
+                        <input type="radio" name="stars" id="2_stars" value="two" <%if (2.0 < newrating && newrating <= 3.0) {
+                                out.print("checked");
+                            }%> onchange='this.form.submit();'>
                         <label class="stars" for="2_stars">2 stars</label>
-                        <input type="radio" name="stars" id="1_stars" value="one" <%if (1.0 < newrating && newrating <= 2.0){out.print("checked");}%> onchange='this.form.submit();'>
+                        <input type="radio" name="stars" id="1_stars" value="one" <%if (1.0 < newrating && newrating <= 2.0) {
+                                out.print("checked");
+                            }%> onchange='this.form.submit();'>
                         <label class="stars" for="1_stars">1 star</label>
-                        <input type="radio" name="stars" id="0_stars" value="zero" <%if (0.0 < newrating && newrating <= 1.0){out.print("checked");}%> required onchange='this.form.submit();'>
+                        <input type="radio" name="stars" id="0_stars" value="zero" <%if (0.0 < newrating && newrating <= 1.0) {
+                                out.print("checked");
+                            }%> required onchange='this.form.submit();'>
                         <label  class="stars" for="0_stars">0 star</label>
                     </fieldset>
                     <input type="hidden" name="keyword" value="${name}"/>
@@ -94,8 +102,10 @@
                 %>
                 <%
                     if (loginchk != null && chk == 1) {
+                        out.print("<a href=\"javascript:void(0)\" onclick=\"toggleEdit()\" id=\"edit\" class=\"w3-text-light-blue w3-large\">[edit]</a>");
                         out.print("<a onclick=\"bookmarkRemove()\" href=\"/NoodlesWiki/article/?keyword=" + name + "&bml=rbm\"><i class=\"fas fa-bookmark w3-xlarge w3-button\" title=\"Bookmark\"></i></a>");
                     } else if (loginchk != null) {
+                        out.print("<a href=\"javascript:void(0)\" onclick=\"toggleEdit()\" id=\"edit\" class=\"w3-text-light-blue w3-large\">[edit]</a>");
                         out.print("<a onclick=\"bookmarkAdd()\" href=\"/NoodlesWiki/article/?keyword=" + name + "&bml=abm\"><i class=\"far fa-bookmark w3-xlarge w3-button\" title=\"Bookmark\"></i></a>");
                     } else {
                         out.print("<a onclick=\"loginAlert()\"><i class=\"far fa-bookmark w3-xlarge w3-button\" title=\"Bookmark\"></i></a>");
@@ -118,13 +128,23 @@
 
             <c:forEach var="section" items="${sections}">
                 <div id="${section.title}" class="article_section w3-border-bottom">
-                    <h3>${section.title} <a class="hiding w3-hide w3-button w3-white w3-border w3-small w3-padding-small" onclick="passPara()" href="/NoodlesWiki/article/?articleID=${article.id}&paraID=${section.order}" class="w3-text-light-blue w3-small">[edit]</a></h3>
+                    <h3>${section.title} 
+                        <a class="hiding w3-hide w3-button w3-white w3-border w3-small w3-padding-small" href="/NoodlesWiki/article/?articleID=${pageid}&paraID=${section.order}" class="w3-text-light-blue w3-small">[edit]</a>
+                        <form action="/NoodlesWiki/article/" method="POST" onsubmit="return removeConfirm()"
+                              style="display:inline;">
+                            <button class="hiding w3-hide w3-padding-small w3-small w3-red w3-button"
+                                    id="removeSection" class="w3-button w3-black" type="submit">remove section</button>
+                            <input type="hidden" name="keyword" value="${name}"/>
+                            <input type="hidden" name="articleID" value="${pageid}"/>
+                            <input type="hidden" name="paraID" value="${section.order}" />
+                            <input type="hidden" name="removeSection" value="1" />
+                        </form>
+                    </h3>
                     <p>${section.content}</p>
                 </div>
             </c:forEach>
-
-            <div class="w3-container w3-padding-large w3-hide hiding">
-                <button id="newSection" class="w3-button w3-black">+</button> Add section
+            <div class="w3-margin-top w3-container w3-hide hiding">
+                <a href="/NoodlesWiki/article/?articleID=${pageid}&paraID=-1" id="newSection" class="w3-button w3-black">+</a> Add section
             </div>
 
             <h3>Comments:</h3>
@@ -170,7 +190,7 @@
         </article>
         <%@ include file="end_template.jspf" %>
         <script>
-            function openEdit() {
+            function toggleEdit() {
                 bts = document.getElementsByClassName("hiding");
                 var i;
                 for (i = 0; i < bts.length; i++) {
@@ -180,6 +200,16 @@
                         bts[i].className = bts[i].className.replace(" w3-hide", "");
                     }
                 }
+            }
+            function removeConfirm() {
+                var w = confirm("Remove this section?");
+                if (w == true) {
+                    alert("removed!");
+                    return true;
+                } else {
+                    alert("Fine.");
+                }
+                return false;
             }
         </script>
     </body>
