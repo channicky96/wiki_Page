@@ -47,17 +47,18 @@ Author     : acc16scu
                 hideIcons: ["heading"],
                 element: document.getElementById("editor")});
             function makeHtml() {
+                var content = simplemde.value();
                 // validate form
                 if (document.getElementById("title").value === '') {
                     alert("Title cannot be empty");
                     return false;
                 }
-                if (document.getElementById("editor").value === '') {
+                if(content === ''){
                     alert("Please write some content");
                     return false;
                 }
-                    document.getElementById("html").value = simplemde.options.previewRender(simplemde.value());
-                    return true;
+                document.getElementById("html").value = simplemde.options.previewRender(content);
+                return true;
             }
         </script>
         <%@include file="end_template.jspf" %>

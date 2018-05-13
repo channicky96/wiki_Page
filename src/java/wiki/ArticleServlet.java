@@ -302,7 +302,7 @@ public class ArticleServlet extends HttpServlet {
     }
 
     public ArrayList showComments(int articleid) {
-        ArrayList<Comment> cal = new ArrayList();
+        ArrayList<Comment> cal = new ArrayList<>();
         try {
             Connection connectionUrl;
             Class.forName("org.postgresql.Driver");

@@ -37,6 +37,7 @@ public class CategoriesServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        System.out.println("\t" + request + " " + response);
         try {
             Connection connectionUrl;
             Class.forName("org.postgresql.Driver");
@@ -110,7 +111,7 @@ public class CategoriesServlet extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Servlet to display categories";
     }// </editor-fold>
 
 }
