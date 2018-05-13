@@ -29,15 +29,16 @@
         <%@ include file="template.jsp" %>
         <article class="w3-white w3-container w3-padding-large">
             <h1 class="w3-serif w3-bottombar">${name}
-                <a href="javascript:void(0)" onclick="toggleEdit()" id="edit" class="w3-text-light-blue w3-large">[edit]</a>
                 <a class="w3-right" id="article_rate">Rate:<i class="far fa-star w3-button"></i><i class="far fa-star w3-button"></i><i class="far fa-star w3-button"></i><i class="far fa-star w3-button"></i><i class="far fa-star w3-button"></i></a>
                         <%  String name = (String) session.getAttribute("name");
                             int articleID = (Integer) session.getAttribute("pageid");
                             int userID = (Integer) session.getAttribute("userID");
                             int chk = (Integer) session.getAttribute("bookmark");
                             if (loginchk != null && chk == 1) {
+                                out.print("<a href=\"javascript:void(0)\" onclick=\"toggleEdit()\" id=\"edit\" class=\"w3-text-light-blue w3-large\">[edit]</a>");
                                 out.print("<a onclick=\"bookmarkRemove()\" href=\"/NoodlesWiki/article/?keyword=" + name + "&bml=rbm\"><i class=\"fas fa-bookmark w3-xlarge w3-button\" title=\"Bookmark\"></i></a>");
                             } else if (loginchk != null) {
+                                out.print("<a href=\"javascript:void(0)\" onclick=\"toggleEdit()\" id=\"edit\" class=\"w3-text-light-blue w3-large\">[edit]</a>");
                                 out.print("<a onclick=\"bookmarkAdd()\" href=\"/NoodlesWiki/article/?keyword=" + name + "&bml=abm\"><i class=\"far fa-bookmark w3-xlarge w3-button\" title=\"Bookmark\"></i></a>");
                             } else {
                                 out.print("<a onclick=\"loginAlert()\"><i class=\"far fa-bookmark w3-xlarge w3-button\" title=\"Bookmark\"></i></a>");

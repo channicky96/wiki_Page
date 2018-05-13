@@ -46,8 +46,16 @@ public class ArticleServlet extends HttpServlet {
         String editedAID = request.getParameter("articleID");
         String editorContent = request.getParameter("htmlText");
         String postComment = request.getParameter("comment");
-        ArrayList<Comment> commentList = new ArrayList<>();
+        String category = request.getParameter("category");
+        ArrayList<Comment> commentList;
 
+        // create new article
+        if (category != null) {
+            String name = request.getParameter("name");
+            userid = (Integer) session.getAttribute("userID");
+            createArticle(userid, name, category);
+            searchWord = name;
+        }
         // edit
         if (editedAID != null) {
             int order = Integer.parseInt(request.getParameter("paraID"));
@@ -372,10 +380,30 @@ public class ArticleServlet extends HttpServlet {
             Statement st = connectionUrl.createStatement();
             String q = "DELETE FROM sections WHERE article_id="
                     + articleID + " AND section_order=" + sectionOrder + ";";
-            //debug
-            System.out.println(q);
 
             st.executeUpdate(q);
+            connectionUrl.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void createArticle(int userid, String name, String category) {
+        int maxid = 0;
+        try {
+            Connection connectionUrl;
+            Class.forName("org.postgresql.Driver");
+            String url = "jdbc:postgresql://127.0.0.1/studentdb";
+            connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
+            Statement st = connectionUrl.createStatement();
+            Statement st1 = connectionUrl.createStatement();
+            ResultSet rs = st1.executeQuery("select max(id) as maxid from articles");
+            while (rs.next()) {
+                maxid = rs.getInt("maxid") + 1;
+            }
+            st.executeUpdate("insert into articles (id, name, rate, category, creator, editor)"
+                    + " values ('" + maxid + "','" + name + "', 0, '" + category + "','" + userid + "','" + userid + "')");
             connectionUrl.close();
 
         } catch (Exception e) {
