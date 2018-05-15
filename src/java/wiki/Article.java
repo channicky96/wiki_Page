@@ -104,7 +104,7 @@ public class Article {
     @Override
     public String toString(){
         StringBuilder articleContent = new StringBuilder();
-        articleContent.append("Article Title: \n").append(name).append("\n").append(sections.toString()).append("\n\n--------------------------------\n");
+        articleContent.append("Article Title: \r\n").append(name).append("\r\n").append(sections.toString()).append("\r\n");
         return articleContent.toString();
     }
 }

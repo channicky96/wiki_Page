@@ -26,7 +26,7 @@
             <!--user icon-->
             <i class="fa fa-user w3-xlarge" title="Log in/Register"></i>
         </a>
-        <a href="/NoodlesWiki/basket.jsp" class ="w3-bar-item w3-button w3-right w3-hover-white">           
+        <a href="/NoodlesWiki/article/?download=download" class ="w3-bar-item w3-button w3-right w3-hover-white">           
             <i class="fas fa-shopping-cart" title="Basket"></i>
         </a> 
         <%

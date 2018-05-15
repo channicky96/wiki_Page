@@ -36,7 +36,8 @@
     </head>
     <body class="w3-light-grey">
         <%@ include file="template.jsp" %>
-        <%            String name = (String) session.getAttribute("name");
+        <%            
+            String name = (String) session.getAttribute("name");
             int articleID = (Integer) session.getAttribute("pageid");
             int userID = (Integer) session.getAttribute("userID");
             int chk = (Integer) session.getAttribute("bookmark");
@@ -104,16 +105,18 @@
                     if (loginchk != null && chk == 1) {
                         out.print("<a href=\"javascript:void(0)\" onclick=\"toggleEdit()\" id=\"edit\" class=\"w3-text-light-blue w3-large\">[edit]</a>");
                         out.print("<a onclick=\"bookmarkRemove()\" href=\"/NoodlesWiki/article/?keyword=" + name + "&bml=rbm\"><i class=\"fas fa-bookmark w3-xlarge w3-button\" title=\"Bookmark\"></i></a>");
+                        out.print("<a href=\"/NoodlesWiki/article/?basket=basket\" onclick=\"basketalert()\" ><i class=\"fas fa-cart-plus w3-xlarge w3-button\"></i></a>");
                     } else if (loginchk != null) {
                         out.print("<a href=\"javascript:void(0)\" onclick=\"toggleEdit()\" id=\"edit\" class=\"w3-text-light-blue w3-large\">[edit]</a>");
                         out.print("<a onclick=\"bookmarkAdd()\" href=\"/NoodlesWiki/article/?keyword=" + name + "&bml=abm\"><i class=\"far fa-bookmark w3-xlarge w3-button\" title=\"Bookmark\"></i></a>");
+                        out.print("<a href=\"/NoodlesWiki/article/?basket=basket\" onclick=\"basketalert()\" ><i class=\"fas fa-cart-plus w3-xlarge w3-button\"></i></a>");
                     } else {
                         out.print("<a onclick=\"loginAlert()\"><i class=\"far fa-bookmark w3-xlarge w3-button\" title=\"Bookmark\"></i></a>");
                     }
                 %>      
-                <a href="/NoodlesWiki/article/?basket=basket" onclick="basketalert()" >
+<!--                <a href="/NoodlesWiki/article/?basket=basket" onclick="basketalert()" >
                     <i class="fas fa-cart-plus w3-xlarge w3-button"></i>
-                </a>
+                </a>-->
             </h1>
             <div id="menu" class="w3-right w3-card w3-padding-small">
                 <nav>
@@ -121,7 +124,7 @@
                     <ol class="w3-container">
                         <c:forEach var="section" items="${sections}">
                             <li><a href="#${section.title}" class="w3-hover-shadow">${section.title}</a></li>
-                            </c:forEach>
+                        </c:forEach>
                     </ol>
                 </nav>
             </div>
@@ -157,7 +160,7 @@
 
                 <c:forEach var="cmt" items="${comments}">
                     <tr>
-                        <td>${cmt.username}</td>
+                        <td><a href="/NoodlesWiki/ProfileServlet?userprofile=${cmt.username}&userprofile=${cmt.username}">${cmt.username}</a></td>
                         <td>${cmt.comment}</td>
                         <td>${cmt.timestamp}</td>
                     </tr>
@@ -173,7 +176,7 @@
                 <form action="/NoodlesWiki/article/" method="post">
                     <!--Write a Comment:--> 
                     <input class="w3-input" type="text" name="comment" placeholder="Write comment" required> <br>
-                    <input class="w3-block w3-button w3-black" type="submit" name="postComment" value="postComment" >
+                    <input class="w3-block w3-button w3-black" type="submit" name="postComment" value="Post Comment">
                 </form>
             </div>   
 
