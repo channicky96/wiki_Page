@@ -56,7 +56,7 @@
         %>
         <div class="w3-right w3-cell-top">
             <form action="/NoodlesWiki/article/" method="post">
-                <input id="search_input" class="w3-border w3-round-large w3-padding-small" type="text" name="keyword" placeholder="Search..">
+                <input id="search_input" class="w3-border w3-round-large w3-padding-small" type="text" name="keyword" placeholder="Search.." required>
                 <button class="w3-bar-item w3-button w3-black w3-right w3-round-large" type="submit" name="submit"><i class="fa fa-search"></i></button>
             </form>
         </div>
@@ -70,7 +70,12 @@
     </a>
     <h4 class="w3-bar-item"><b>Menu</b></h4>
     <a class="w3-bar-item w3-button w3-hover-black" href="/NoodlesWiki/categories">Categories</a>
-    <a class="w3-bar-item w3-button w3-hover-black" href="#">Link</a>
+    <%
+        if (loginchk1 != null) {
+    %>
+    <a class="w3-bar-item w3-button w3-hover-black" href="/NoodlesWiki/article/?newsfeed=true">Newsfeed</a>
+    <%}
+    %>
     <a class="w3-bar-item w3-button w3-hover-black" href="#">Link</a>
     <a class="w3-bar-item w3-button w3-hover-black" href="/NoodlesWiki/article/">show me 404</a>
 </nav>

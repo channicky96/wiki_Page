@@ -4,9 +4,9 @@
     Author     : acc16scu
 --%>
 
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page import="java.util.Date"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import=" java.sql.*"%>
-<%@page import=" javax.sql.*"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -18,26 +18,80 @@
         <link rel="Shortcut Icon" href="noodleswiki.ico">
         <link rel="stylesheet" href="/NoodlesWiki/pages.css" type="text/css">
     </head>
-    <body class="w3-light-grey">
+    <body onload="startTime()" class="w3-light-grey">
         <%@ include file="template.jsp" %>
-        <!-- First Photo Grid-->
+
         <div class="w3-row-padding">
-            <h3>Login success</h3>
-            <%                    String redirectURL = "index.jsp";
-                response.sendRedirect(redirectURL);
-            %>
-        </div>
-        <!-- Pagination -->
-        <div class="w3-center w3-padding-32">
-            <div class="w3-bar">
-                <a href="#" class="w3-bar-item w3-button w3-hover-black">«</a>
-                <a href="#" class="w3-bar-item w3-black w3-button">1</a>
-                <a href="#" class="w3-bar-item w3-button w3-hover-black">2</a>
-                <a href="#" class="w3-bar-item w3-button w3-hover-black">3</a>
-                <a href="#" class="w3-bar-item w3-button w3-hover-black">4</a>
-                <a href="#" class="w3-bar-item w3-button w3-hover-black">»</a>
+            <c:forEach var="bmk" items="${bkmrklist}">
+
+            <div class="w3-third w3-container w3-margin-bottom">
+                <div class="w3-container w3-white">
+                    <p><b>${bmk}</b></p>
+                    <p>Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.</p>
+                </div>
             </div>
-        </div>
+            </c:forEach>
+
+
+        <!--         Pagination 
+                <div class="w3-center w3-padding-32">
+                    <div class="w3-bar">
+                        <a href="#" class="w3-bar-item w3-button w3-hover-black">«</a>
+                        <a href="#" class="w3-bar-item w3-black w3-button">1</a>
+                        <a href="#" class="w3-bar-item w3-button w3-hover-black">2</a>
+                        <a href="#" class="w3-bar-item w3-button w3-hover-black">3</a>
+                        <a href="#" class="w3-bar-item w3-button w3-hover-black">4</a>
+                        <a href="#" class="w3-bar-item w3-button w3-hover-black">»</a>
+                    </div>
+                </div>-->
+        <h2 align="center" class="w3-container" id="clock"></h2>
+        <script>
+            function startTime() {
+                var today = new Date();
+                var h = today.getHours();
+                var m = today.getMinutes();
+                var s = today.getSeconds();
+                m = checkTime(m);
+                s = checkTime(s);
+                var month = new Array();
+                month[0] = "January";
+                month[1] = "February";
+                month[2] = "March";
+                month[3] = "April";
+                month[4] = "May";
+                month[5] = "June";
+                month[6] = "July";
+                month[7] = "August";
+                month[8] = "September";
+                month[9] = "October";
+                month[10] = "November";
+                month[11] = "December";
+
+                var weekday = new Array(7);
+                weekday[0] = "Sun";
+                weekday[1] = "Mon";
+                weekday[2] = "Tue";
+                weekday[3] = "Wed";
+                weekday[4] = "Thu";
+                weekday[5] = "Fri";
+                weekday[6] = "Sat";
+
+                var d = weekday[today.getDay()];
+                var n = month[today.getMonth()];
+                var str = d + " " + today.getDate() + " " + n + " "
+                        + h + ":" + m + ":" + s + " " + today.getFullYear();
+                document.getElementById('clock').innerHTML = str;
+
+                var t = setTimeout(startTime, 500);
+            }
+            function checkTime(i) {
+                if (i < 10) {
+                    i = "0" + i
+                }
+                ;  // add zero in front of numbers < 10
+                return i;
+            }
+        </script>
         <%@ include file="end_template.jspf" %>
     </body>
 </html>

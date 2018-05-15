@@ -1,7 +1,8 @@
 package wiki;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
+
 
 /**
  *
@@ -13,6 +14,7 @@ public class Article {
     private ArrayList<String> tags;
     private ArrayList<Section> sections;
     private double rate;
+    private Timestamp lastEditTime;
     
     public Article(){
         name = null;
@@ -106,5 +108,19 @@ public class Article {
         StringBuilder articleContent = new StringBuilder();
         articleContent.append("Article Title: \n").append(name).append("\n").append(sections.toString()).append("\n\n--------------------------------\n");
         return articleContent.toString();
+    }
+
+    /**
+     * @return the lastEditTime
+     */
+    public Timestamp getLastEditTime() {
+        return lastEditTime;
+    }
+
+    /**
+     * @param lastEditTime the lastEditTime to set
+     */
+    public void setLastEditTime(Timestamp lastEditTime) {
+        this.lastEditTime = lastEditTime;
     }
 }

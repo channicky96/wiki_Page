@@ -25,9 +25,13 @@
                 alert("Please login to rate");
                 location.reload();
             }
+//                        var imgs = document.getElementsByTag("img");
+//            for (i = 0; i < imgs.length; i++) {
+//                imgs[i].className += "w3-image";
+//            }
         </script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>displaying an article</title>
+        <title>${name}</title>
         <link rel="stylesheet" href="/NoodlesWiki/w3.css" type="text/css">
         <!--import icons-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -188,6 +192,7 @@
             <%   }
             %>
         </article>
+        <div class="w3-right-align w3-text-dark-grey" style="width:100%">last edited on ${last_edit}</div>
         <%@ include file="end_template.jspf" %>
         <script>
             function toggleEdit() {
@@ -211,6 +216,7 @@
                 }
                 return false;
             }
+
         </script>
     </body>
 </html>

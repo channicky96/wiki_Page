@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.swing.JFileChooser;
 
 /**
  *
@@ -60,6 +59,20 @@ public class ArticleServlet extends HttpServlet {
         String download = request.getParameter("download");
         basket = (ArrayList) session.getAttribute("basket");
         String star = request.getParameter("stars");
+
+        String newsfeed = request.getParameter("newsfeed");
+        if (newsfeed != null) {
+            if (newsfeed.equals("true")) {
+                userid = (Integer) session.getAttribute("userID");
+
+                ArrayList<Newsfeed> feed = showNewsfeed(userid);
+
+                session.setAttribute("bmlist", feed);
+                RequestDispatcher rd = request.getRequestDispatcher("/index.jsp");
+                rd.forward(request, response);
+                return;
+            }
+        }
 
         //Check if user already rated
         //rating
@@ -132,6 +145,7 @@ public class ArticleServlet extends HttpServlet {
             String name = request.getParameter("name");
             userid = (Integer) session.getAttribute("userID");
             createArticle(userid, name, category);
+            // Set search word and continue
             searchWord = name;
         }
         // edit
@@ -161,8 +175,6 @@ public class ArticleServlet extends HttpServlet {
                         }
                         String insertSection = "INSERT INTO sections VALUES("
                                 + editedAID + "," + (maxOrder + 1) + ",'No title','Please add content');";
-                        // debug
-                        System.out.println(insertSection);
                         rs.close();
                         st.executeUpdate(insertSection);
                         order = maxOrder + 1;
@@ -204,14 +216,17 @@ public class ArticleServlet extends HttpServlet {
         // Receive editor content ------------------------------------------------------------------------------------------------------
         if (editorContent
                 != null) {
+            Timestamp time = new Timestamp(System.currentTimeMillis());
+            userid = (Integer) session.getAttribute("userID");
+
             int aID = Integer.parseInt(request.getParameter("editedArticle"));
             int sID = Integer.parseInt(request.getParameter("editedSection"));
             String aName = request.getParameter("editedArticleName");
 
             String editedTitle = request.getParameter("editedTitle");
 
-            updateSection(aID, sID, editedTitle, editorContent);
-            ///////////////////
+            updateSection(aID, sID, editedTitle, editorContent, time, userid);
+            //set search word and continue 
             searchWord = aName;
         }
 
@@ -250,17 +265,21 @@ public class ArticleServlet extends HttpServlet {
                 int aId = 0;
                 double aRate = 3.0;
                 Article result = null;
+                Timestamp aTime = null;
 
                 while (articleRs.next()) {
                     dbArticle = articleRs.getString("name");
                     aId = articleRs.getInt("id");
                     aRate = articleRs.getDouble("rate");
+                    aTime = articleRs.getTimestamp("last_edit");
                 }
                 if (dbArticle != null) {
                     Article foundArticle = new Article();
                     foundArticle.setName(dbArticle);
                     foundArticle.setId(aId);
                     foundArticle.setRate(aRate);
+                    foundArticle.setLastEditTime(aTime);
+
                     articleRs.close();
                     ResultSet sectionRs = st.executeQuery("select * from sections where article_id ='" + aId + "' ORDER BY section_order");
                     while (sectionRs.next()) {
@@ -303,7 +322,7 @@ public class ArticleServlet extends HttpServlet {
                 String loginchk = (String) session.getAttribute("username");
                 session.setAttribute("pageid", pageid);
                 session.setAttribute("name", result.getName());
-                request.setAttribute("sections", sendSections);
+                session.setAttribute("last_edit", result.getLastEditTime());
                 session.setAttribute("sections", sendSections);
 
                 if (loginchk != null) {
@@ -395,7 +414,7 @@ public class ArticleServlet extends HttpServlet {
     }
 
     // Function to retrieve comment(s) in the database for an article
-    public ArrayList showComments(int articleid) {
+    public ArrayList<Comment> showComments(int articleid) {
         ArrayList<Comment> cal = new ArrayList<>();
         try {
             Connection connectionUrl;
@@ -440,19 +459,23 @@ public class ArticleServlet extends HttpServlet {
     }
 
     // Function to update a section of an article
-    public void updateSection(int articleID, int sectionOrder, String title, String content) {
+    public void updateSection(int articleID, int sectionOrder, String title, String content, Timestamp time, int uID) {
         try {
             Connection connectionUrl;
             Class.forName("org.postgresql.Driver");
             String url = "jdbc:postgresql://127.0.0.1/studentdb";
             connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
             Statement st = connectionUrl.createStatement();
+            Statement st2 = connectionUrl.createStatement();
+
             String q = "UPDATE sections SET title='" + title + "', content='" + content + "' WHERE article_id="
                     + articleID + " AND section_order=" + sectionOrder + ";";
-
             st.executeUpdate(q);
-            connectionUrl.close();
 
+            String articleTime = "UPDATE articles SET last_edit='" + time
+                    + "', last_editor='" + uID + "' WHERE id='" + articleID + "';";
+            st2.executeUpdate(articleTime);
+            connectionUrl.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -572,7 +595,6 @@ public class ArticleServlet extends HttpServlet {
             ResultSet rs = st.executeQuery("select rate from articles where id = '" + articleid + "'");
             while (rs.next()) {
                 rating = rs.getDouble("rate");
-                System.out.println(rating + "rating");
             }
             connectionUrl.close();
         } catch (Exception e) {
@@ -594,13 +616,60 @@ public class ArticleServlet extends HttpServlet {
             while (rs.next()) {
                 maxid = rs.getInt("maxid") + 1;
             }
-            st.executeUpdate("insert into articles (id, name, rate, category, creator, editor)"
+            st.executeUpdate("insert into articles (id, name, rate, category, creator, last_editor)"
                     + " values ('" + maxid + "','" + name + "', 0, '" + category + "','" + userid + "','" + userid + "')");
             connectionUrl.close();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static ArrayList<Newsfeed> showNewsfeed(int userid) {
+        ArrayList<Newsfeed> newsfeed = new ArrayList<>();
+        Newsfeed temp;
+        String sub;
+        int aID, firstIndex;
+//        String query = "select articles.last_edit,articles.name from articles inner join "
+//                + "bookmarks on articles.id=bookmarks.articleid where bookmarks.userid "
+//                + "= '"+userid+"' order by articles.last_edit desc";
+        String query = "select last_edit, name, content from\n"
+                + "(select * from(\n"
+                + "select articles.last_edit,articles.name,articles.id from articles \n"
+                + "right join bookmarks on articles.id=bookmarks.articleid\n"
+                + "where bookmarks.userid=" + userid
+                + ")t0\n"
+                + "inner join\n"
+                + "(\n"
+                + "select min(section_order) as first_para,article_id from sections\n"
+                + "group by article_id\n"
+                + ")t1\n"
+                + "on t0.id = t1.article_id) n\n"
+                + "inner join sections on n.first_para=sections.section_order and n.article_id = sections.article_id "
+                + "order by last_edit desc;";
+        try {
+            Connection connectionUrl;
+            Class.forName("org.postgresql.Driver");
+            String url = "jdbc:postgresql://127.0.0.1/studentdb";
+            connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
+            Statement st = connectionUrl.createStatement();
+            ResultSet nf = st.executeQuery(query);
+            while (nf.next()) {
+                temp = new Newsfeed();
+                temp.setTitle(nf.getString("name"));
+                sub = nf.getString("content");
+                // make preview
+                if (sub.length() > 150) {
+                    sub = sub.substring(0, 150);
+                }
+                temp.setPreview(sub);
+                temp.setTimestamp(nf.getTimestamp("last_edit"));
+                newsfeed.add(temp);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return newsfeed;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

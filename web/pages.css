@@ -10,7 +10,7 @@ article {
 }
 #search_input {
     height: 43px;
-    width: 15vw;
+    width: 12vw;
     max-width: 230px;
 }
 
@@ -29,7 +29,6 @@ article {
 .article_section{
     overflow: auto;
 }
-
 .rating {
     border: none;
     padding-bottom: 10px;

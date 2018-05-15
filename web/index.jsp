@@ -4,7 +4,10 @@
     Author     : noodlesEngineering
 --%>
 
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page import="java.util.Date"%>
+<%@page import="wiki.Newsfeed"%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -19,24 +22,24 @@
     </head>
     <body onload="startTime()" class="w3-light-grey">
         <%@ include file="template.jsp" %>
-
+        
         <div class="w3-row-padding">
+            <c:forEach var="bmk" items="${bmlist}">
             <div class="w3-third w3-container w3-margin-bottom">
-                <img src="https://i.imgur.com/OvMZBs9.jpg" alt="" style="width:100%" class="w3-hover-opacity">
                 <div class="w3-container w3-white">
-                    <p><b>article 1</b></p>
-                    <p>Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.</p>
+                    <p><b><a href="/NoodlesWiki/article/?keyword=${bmk.title}">${bmk.title}</a></b></p>
+                    <p>${bmk.preview}</p>
                 </div>
             </div>
+            </c:forEach>
+
             <div class="w3-third w3-container w3-margin-bottom">
-                <img src="https://i.imgur.com/OvMZBs9.jpg" alt="" style="width:100%" class="w3-hover-opacity">
                 <div class="w3-container w3-white">
                     <p><b>article 2</b></p>
                     <p>Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.</p>
                 </div>
             </div>
             <div class="w3-third w3-container w3-margin-bottom">
-                <img src="https://i.imgur.com/OvMZBs9.jpg" alt="" style="width:100%" class="w3-hover-opacity">
                 <div class="w3-container w3-white">
                     <p><b>Lorem Ipsum</b></p>
                     <p>Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.</p>
@@ -45,7 +48,7 @@
         </div>
 
 
-        <!-- Pagination -->
+<!--         Pagination 
         <div class="w3-center w3-padding-32">
             <div class="w3-bar">
                 <a href="#" class="w3-bar-item w3-button w3-hover-black">«</a>
@@ -55,7 +58,7 @@
                 <a href="#" class="w3-bar-item w3-button w3-hover-black">4</a>
                 <a href="#" class="w3-bar-item w3-button w3-hover-black">»</a>
             </div>
-        </div>
+        </div>-->
         <h2 align="center" class="w3-container" id="clock"></h2>
         <script>
             function startTime() {

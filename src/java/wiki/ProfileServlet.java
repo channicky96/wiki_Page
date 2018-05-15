@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package wiki;
 
 import java.io.IOException;
@@ -41,20 +36,19 @@ public class ProfileServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         int userid = (Integer) session.getAttribute("userID");
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            // Send bookmarked list and articles that a user has edited to userdetail so it can be viewed 
-            ArrayList<String> bkmrklist = new ArrayList<>();
-            ArrayList<String> myArticles = new ArrayList<>();
-            bkmrklist = bookmarkList(userid);
-            myArticles = showMyArticles(userid);
-            session.setAttribute("bmlist", bkmrklist);
-            session.setAttribute("myArticles", myArticles);
-            response.sendRedirect("/NoodlesWiki/userdetail.jsp");
-        }
+
+        // Send bookmarked list and articles that a user has edited to userdetail so it can be viewed 
+        ArrayList<String> bkmrklist = new ArrayList<>();
+        ArrayList<String> myArticles = new ArrayList<>();
+        bkmrklist = bookmarkList(userid);
+        myArticles = showMyArticles(userid);
+        session.setAttribute("bmlist", bkmrklist);
+        session.setAttribute("myArticles", myArticles);
+        response.sendRedirect("/NoodlesWiki/userdetail.jsp");
     }
 
     // Function to retrieve a list of bookmarked articles for a user
-    public ArrayList bookmarkList(int userid) {
+    public static ArrayList bookmarkList(int userid) {
         ArrayList<String> bkmrklist = new ArrayList<>();
         try {
             Connection connectionUrl;
@@ -72,21 +66,21 @@ public class ProfileServlet extends HttpServlet {
         }
         return bkmrklist;
     }
-     
+
     // Function to retrieve a list of articles for a user that they have contributed towards
-    public ArrayList showMyArticles (int userid){
-        ArrayList <String> myArticles = new ArrayList<>();
-        try{
+    public ArrayList showMyArticles(int userid) {
+        ArrayList<String> myArticles = new ArrayList<>();
+        try {
             Connection connectionUrl;
             Class.forName("org.postgresql.Driver");
             String url = "jdbc:postgresql://127.0.0.1/studentdb";
             connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
             Statement st = connectionUrl.createStatement();
-            ResultSet articleRs = st.executeQuery("select name from articles where creator = '"+userid+"'");
+            ResultSet articleRs = st.executeQuery("select name from articles where creator = '" + userid + "'");
             while (articleRs.next()) {
                 myArticles.add(articleRs.getString("name"));
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return myArticles;

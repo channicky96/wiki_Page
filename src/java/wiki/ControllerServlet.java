@@ -52,7 +52,6 @@ public class ControllerServlet extends HttpServlet {
 
         // Login -----------------------------------------------------------------------------------------------------------------------    
         if (button.equals("Login")) { //IF USER IS LOGGING IN
-
             User user = new User();
             user.setUsername(username);
             user.setPassword(password);
@@ -95,8 +94,14 @@ public class ControllerServlet extends HttpServlet {
                     session.setAttribute("userNickname", nicknameC);
                     session.setAttribute("userpassword", passwordD);
                     session.setAttribute("basket", basket);
+
+                    ArrayList<Newsfeed> bkmrklist = ArticleServlet.showNewsfeed(idA);
+                    
+
+                    session.setAttribute("bmlist", bkmrklist);
+
                     // Redirects to pages
-                    RequestDispatcher rd = request.getRequestDispatcher("login_success.jsp");
+                    RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
                     rd.forward(request, response);
                 } else {
                     RequestDispatcher rd = request.getRequestDispatcher("login_error.jsp");
