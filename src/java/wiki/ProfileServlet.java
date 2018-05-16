@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,10 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- *
- * @author acc16scu
- */
 @WebServlet(name = "ProfileServlet", urlPatterns = {"/ProfileServlet"})
 public class ProfileServlet extends HttpServlet {
 
@@ -36,6 +33,7 @@ public class ProfileServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         int userid = (Integer) session.getAttribute("userID");
         response.setContentType("text/html;charset=UTF-8");
+        String userprofile = request.getParameter("userprofile");
 
         // Send bookmarked list and articles that a user has edited to userdetail so it can be viewed 
         ArrayList<String> bkmrklist = new ArrayList<>();
@@ -44,11 +42,27 @@ public class ProfileServlet extends HttpServlet {
         myArticles = showMyArticles(userid);
         session.setAttribute("bmlist", bkmrklist);
         session.setAttribute("myArticles", myArticles);
-        response.sendRedirect("/NoodlesWiki/userdetail.jsp");
+        String nickname = (String) session.getAttribute("userNickname");
+        if (userprofile != null) {
+            System.out.println("userprofile:" + userprofile);
+            System.out.println("nickname:" + nickname);
+            if (userprofile.equals(nickname)) {
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/userdetail.jsp");
+                dispatcher.forward(request, response);
+            }
+            Profile P = showUserProfile(userprofile);
+            session.setAttribute("userprofile", P);
+            String checkR = checkRating(P.getName(),userid);
+            session.setAttribute("checkR", checkR);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/userProfile.jsp");
+            dispatcher.forward(request, response);
+        }
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/userdetail.jsp");
+        dispatcher.forward(request, response);
     }
 
     // Function to retrieve a list of bookmarked articles for a user
-    public static ArrayList bookmarkList(int userid) {
+    public ArrayList bookmarkList(int userid) {
         ArrayList<String> bkmrklist = new ArrayList<>();
         try {
             Connection connectionUrl;
@@ -80,11 +94,98 @@ public class ProfileServlet extends HttpServlet {
             while (articleRs.next()) {
                 myArticles.add(articleRs.getString("name"));
             }
+            connectionUrl.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return myArticles;
     }
+
+    public Profile showUserProfile(String nickname) {
+        String upQuery = "select users.email, users.rating, articles.name from users inner join articles on users.id=articles.creator where nickname = '" + nickname + "'";
+        String upEmail = null;
+        int upRate = 0;
+        ArrayList<Article> upArticle = new ArrayList<>();
+        Article test = new Article();
+        try {
+            Connection connectionUrl;
+            Class.forName("org.postgresql.Driver");
+            String url = "jdbc:postgresql://127.0.0.1/studentdb";
+            connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
+            Statement st = connectionUrl.createStatement();
+            ResultSet up = st.executeQuery(upQuery);
+            while (up.next()) {
+                upEmail = up.getString("email");
+                upRate = up.getInt("rating");
+                test.setName(up.getString("name"));
+                upArticle.add(test);
+            }
+            connectionUrl.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Profile userProfile = new Profile(nickname, upEmail, upRate, upArticle);
+        return userProfile;
+    }
+    
+    public String checkRating(String usernickname, int raterid){
+        String checkRate = null;
+        try {
+            Connection connectionUrl;
+            Class.forName("org.postgresql.Driver");
+            String url = "jdbc:postgresql://127.0.0.1/studentdb";
+            connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
+            Statement st = connectionUrl.createStatement();
+            ResultSet crRs = st.executeQuery("select vote from user_rating where raterid = '" + raterid + "' and editornickname = '"+usernickname+"'");
+            while (crRs.next()) {
+                int result = crRs.getInt("vote");
+                switch (result) {
+                    case 1:
+                        checkRate = "POSITIVE";
+                        break;
+                    case -1:
+                        checkRate = "NEGATIVE";
+                        break;
+                    default:
+                        checkRate = "NR";
+                        break;
+                }
+            }
+            connectionUrl.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return checkRate;
+    }
+    
+    public void rateUser(String usernickname, int raterid, int vote){
+        try {
+            Connection connectionUrl;
+            Class.forName("org.postgresql.Driver");
+            String url = "jdbc:postgresql://127.0.0.1/studentdb";
+            connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
+            Statement st = connectionUrl.createStatement();
+            st.executeUpdate("insert into user_rating (editornickname, raterid, vote) values ('"+usernickname+"','"+raterid+"','"+vote+"')");
+            connectionUrl.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void updateRating(String usernickname, int raterid, int vote){
+        try {
+            Connection connectionUrl;
+            Class.forName("org.postgresql.Driver");
+            String url = "jdbc:postgresql://127.0.0.1/studentdb";
+            connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
+            Statement st = connectionUrl.createStatement();
+            st.executeUpdate("insert into user_rating (editornickname, raterid, vote) values ('"+usernickname+"','"+raterid+"','"+vote+"')");
+            connectionUrl.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

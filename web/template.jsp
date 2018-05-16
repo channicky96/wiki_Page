@@ -26,7 +26,7 @@
             <!--user icon-->
             <i class="fa fa-user w3-xlarge" title="Log in/Register"></i>
         </a>
-        <a href="/NoodlesWiki/basket.jsp" class ="w3-bar-item w3-button w3-right w3-hover-white">           
+        <a href="/NoodlesWiki/article/?download=download" class ="w3-bar-item w3-button w3-right w3-hover-white">           
             <i class="fas fa-shopping-cart" title="Basket"></i>
         </a> 
         <%
@@ -74,10 +74,9 @@
         if (loginchk1 != null) {
     %>
     <a class="w3-bar-item w3-button w3-hover-black" href="/NoodlesWiki/article/?newsfeed=true">Newsfeed</a>
+    <a class="w3-bar-item w3-button w3-hover-black" href="#">Link</a>
     <%}
     %>
-    <a class="w3-bar-item w3-button w3-hover-black" href="#">Link</a>
-    <a class="w3-bar-item w3-button w3-hover-black" href="/NoodlesWiki/article/">show me 404</a>
 </nav>
 <!-- Overlay effect when opening sidebar on small screens -->
 <div class="w3-overlay w3-hide-large" onclick="closeBar()" style="cursor:pointer" title="close side menu" id="overlay"></div>

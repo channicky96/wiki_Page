@@ -69,6 +69,7 @@ public class ControllerServlet extends HttpServlet {
                     String emailB = null;
                     String nicknameC = null;
                     String passwordD = null;
+                    int ratingE = 0;
                     session.setAttribute("username", username);
                     try {
                         // Connect to postgreSQL to get the desired data
@@ -83,6 +84,7 @@ public class ControllerServlet extends HttpServlet {
                             emailB = rsA.getString("email");
                             nicknameC = rsA.getString("nickname");
                             passwordD = rsA.getString("userpassword");
+                            ratingE = rsA.getInt("rating");
                         }
                         connectionUrlA.close();
                     } catch (ClassNotFoundException e) {
@@ -96,9 +98,8 @@ public class ControllerServlet extends HttpServlet {
                     session.setAttribute("basket", basket);
 
                     ArrayList<Newsfeed> bkmrklist = ArticleServlet.showNewsfeed(idA);
-                    
-
-                    session.setAttribute("bmlist", bkmrklist);
+                    request.setAttribute("bmlist", bkmrklist);
+                    session.setAttribute("rating", ratingE);
 
                     // Redirects to pages
                     RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
@@ -152,7 +153,7 @@ public class ControllerServlet extends HttpServlet {
                     while (checkUsername(newusername) == false) {
                         newusername = nickname + rand.nextInt(99999);
                     }
-                    String query4 = "insert into users(id,username,userpassword,email,nickname) values('" + id + "','" + newusername + "','" + password + "','" + email + "','" + nickname + "')";
+                    String query4 = "insert into users(id,username,userpassword,email,nickname,rating) values('" + id + "','" + newusername + "','" + password + "','" + email + "','" + nickname + "',0)";
                     try {
                         // Insert a user's detail to register them
                         Connection connectionUrl2;
@@ -168,12 +169,14 @@ public class ControllerServlet extends HttpServlet {
                         e.printStackTrace();
                     }
                     // Create a new User object
-                    User nuser = new User(newusername, id, nickname, password, email);
+                    ArrayList<Article> newR = new ArrayList<>();
+                    User nuser = new User(newusername, id, nickname, password, email,0,newR);
                     session.setAttribute("username", newusername);
                     session.setAttribute("userID", id);
                     session.setAttribute("userEmail", email);
                     session.setAttribute("userNickname", nickname);
                     session.setAttribute("userpassword", password);
+                    session.setAttribute("rating",0);
                 } else {
                     // If password and comfrmed password is not identical, alert is displayed
                     try (PrintWriter out = response.getWriter()) {

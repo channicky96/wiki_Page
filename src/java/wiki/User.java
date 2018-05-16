@@ -20,9 +20,9 @@ public class User {
         
     }
     
-    public User(String userName,int iD,String nickName, String uPassword, String uEmail) throws SQLException{
+    public User(String userName,int iD,String nickName, String uPassword, String uEmail, int rating, ArrayList<Article> a) throws SQLException{
         
-        Profile newU = new Profile(nickName, uEmail);
+        Profile newU = new Profile(nickName, uEmail,rating,a);
         
         username = userName;
         id = iD;

@@ -39,6 +39,8 @@
                 out.print("<tr><td><b><h3>Email :</h3></b></td><td><h3>" + userEmail + "</h3></td></tr>");
                 String userNickname = (String) session.getAttribute("userNickname");
                 out.print("<tr><td><b><h3>Nickname :</h3></b></td><td><h3>" + userNickname + "</h3></td></tr>");
+//                String userNickname = (String) session.getAttribute("userNickname");
+                out.print("<tr><td><b><h3>Rating :</h3></b></td><td><h3>" + username + "</h3></td></tr>");
                 out.print("</table>");
                 out.print("</div>");
                 out.print("<div id=\"UA\" class=\"w3-container w3-border account\" style=\"display:none\">");

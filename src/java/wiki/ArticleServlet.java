@@ -3,8 +3,11 @@ package wiki;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -61,13 +64,14 @@ public class ArticleServlet extends HttpServlet {
         String star = request.getParameter("stars");
 
         String newsfeed = request.getParameter("newsfeed");
+        // show newsfeed
         if (newsfeed != null) {
             if (newsfeed.equals("true")) {
                 userid = (Integer) session.getAttribute("userID");
 
                 ArrayList<Newsfeed> feed = showNewsfeed(userid);
 
-                session.setAttribute("bmlist", feed);
+                request.setAttribute("bmlist", feed);
                 RequestDispatcher rd = request.getRequestDispatcher("/index.jsp");
                 rd.forward(request, response);
                 return;
@@ -117,27 +121,37 @@ public class ArticleServlet extends HttpServlet {
                 for (Article a : basket) {
                     if (a.getId() == pageid) {
                         added = true;
-                        System.out.println(" in basket");
                     }
                 }
                 if (added == false) {
                     basket.add(getArticle(pageid));
                     session.setAttribute("basket", basket);
-                    System.out.println(" not in basket");
                 }
             }
             RequestDispatcher dispatcher = request.getRequestDispatcher("/displayArticle.jsp");
             dispatcher.forward(request, response);
         }
 
-        // Generate offline version
+        // Generate offline readable file
         if (download != null) {
             if (basket != null) {
-                for (Article a : basket) {
-                    String temp = a.toString().replaceAll("<[^>]*>", "");
-                    System.out.println(temp);
+                String fileAddress = "\\\\ueahome4\\stusci1\\acc16scu\\data\\Documents\\main\\web\\test.txt";
+                try {
+                    PrintWriter writer = new PrintWriter(new FileOutputStream(fileAddress, false));
+
+                    for (Article a : basket) {
+                        String temp = a.toString().replaceAll("<[^>]*>", "");
+                        temp = temp.replaceAll("[\\[\\]]", "");
+                        System.out.println(temp);
+                        writer.write(temp + "\r\n");
+                    }
+                    writer.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/basket.jsp");
+            dispatcher.forward(request, response);
         }
 
         // create new article
@@ -629,10 +643,7 @@ public class ArticleServlet extends HttpServlet {
         ArrayList<Newsfeed> newsfeed = new ArrayList<>();
         Newsfeed temp;
         String sub;
-        int aID, firstIndex;
-//        String query = "select articles.last_edit,articles.name from articles inner join "
-//                + "bookmarks on articles.id=bookmarks.articleid where bookmarks.userid "
-//                + "= '"+userid+"' order by articles.last_edit desc";
+
         String query = "select last_edit, name, content from\n"
                 + "(select * from(\n"
                 + "select articles.last_edit,articles.name,articles.id from articles \n"
@@ -658,9 +669,9 @@ public class ArticleServlet extends HttpServlet {
                 temp = new Newsfeed();
                 temp.setTitle(nf.getString("name"));
                 sub = nf.getString("content");
-                // make preview
-                if (sub.length() > 150) {
-                    sub = sub.substring(0, 150);
+                // preview length limit
+                if (sub.length() > 200) {
+                    sub = sub.substring(0, 200);
                 }
                 temp.setPreview(sub);
                 temp.setTimestamp(nf.getTimestamp("last_edit"));

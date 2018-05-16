@@ -211,9 +211,7 @@
                 if (w == true) {
                     alert("removed!");
                     return true;
-                } else {
-                    alert("Fine.");
-                }
+                } 
                 return false;
             }
 

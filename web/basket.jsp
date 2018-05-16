@@ -11,6 +11,11 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script>
+            function downloadedAlert() {
+                alert("Text file generated");
+            }
+        </script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Noodles Wiki</title>
         <link rel="stylesheet" href="/NoodlesWiki/w3.css" type="text/css">
@@ -23,22 +28,21 @@
         <%@ include file="template.jsp" %>
         <div style="align-content: center;" class="w3-margin-left w3-left ">
             <h1>Basket items:  </h1>
-            <%                
-                out.print("<div id=\"AD\" class=\"w3-container w3-border account\">");
+            <%                out.print("<div id=\"AD\" class=\"w3-container w3-border account\">");
                 out.print("<table class=\"w3-table w3-bordered\">");
             %>
-                <c:forEach var="basket" items="${basket}">
-                    <table class="w3-table w3-bordered">        
-                        <tr><td><b><h3><a href="/NoodlesWiki/article/?keyword=${basket.name}">${basket.name}</a></h3></b></td></tr><br>
-                    </table>
-                </c:forEach>
-            <%                
+            <c:forEach var="basket" items="${basket}">
+                <table class="w3-table w3-bordered">        
+                    <tr><td><b><h3><a href="/NoodlesWiki/article/?keyword=${basket.name}">${basket.name}</a></h3></b></td></tr><br>
+                </table>
+            </c:forEach>
+            <%
                 out.print("</table></div><br><br>");
             %>
-            <a href="/NoodlesWiki/article/?download=download">
-                <i class="fas fa-download" title="Download">Download</i>
+            <a href="/NoodlesWiki/article/?download=download" onclick="downloadedAlert()">
+                <i class="fas fa-download" title="Download"> Download</i>
             </a>
-            
+
         </div>
     </body>
 </html>

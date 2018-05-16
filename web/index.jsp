@@ -26,7 +26,7 @@
         <div class="w3-row-padding">
             <c:forEach var="bmk" items="${bmlist}">
             <div class="w3-third w3-container w3-margin-bottom">
-                <div class="w3-container w3-white">
+                <div style="max-height: 12em; overflow: hidden; background-image: linear-gradient(180deg,hsla(255,0%,100%,0),#fff);" class="w3-container w3-white">
                     <p><b><a href="/NoodlesWiki/article/?keyword=${bmk.title}">${bmk.title}</a></b></p>
                     <p>${bmk.preview}</p>
                 </div>
@@ -35,30 +35,18 @@
 
             <div class="w3-third w3-container w3-margin-bottom">
                 <div class="w3-container w3-white">
-                    <p><b>article 2</b></p>
-                    <p>Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.</p>
+                    <p><b><a href="/NoodlesWiki/article/?keyword=Java">Java</a></b></p>
+                    <p>Java is object oriented. Unchanged C++ or C code will not work in Java, in most cases, though Java looks much like C and C++.</p>
                 </div>
             </div>
             <div class="w3-third w3-container w3-margin-bottom">
                 <div class="w3-container w3-white">
-                    <p><b>Lorem Ipsum</b></p>
-                    <p>Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.</p>
+                    <p><b><a href="/NoodlesWiki/article/?keyword=JavaServer Pages">JavaServer Pages</a></b></p>
+                    <p>JavaServer Pages (JSP) is a technology that helps software developers create dynamically generated web pages based on HTML, XML, or other document types. </p>
                 </div>
             </div>
         </div>
 
-
-<!--         Pagination 
-        <div class="w3-center w3-padding-32">
-            <div class="w3-bar">
-                <a href="#" class="w3-bar-item w3-button w3-hover-black">«</a>
-                <a href="#" class="w3-bar-item w3-black w3-button">1</a>
-                <a href="#" class="w3-bar-item w3-button w3-hover-black">2</a>
-                <a href="#" class="w3-bar-item w3-button w3-hover-black">3</a>
-                <a href="#" class="w3-bar-item w3-button w3-hover-black">4</a>
-                <a href="#" class="w3-bar-item w3-button w3-hover-black">»</a>
-            </div>
-        </div>-->
         <h2 align="center" class="w3-container" id="clock"></h2>
         <script>
             function startTime() {
