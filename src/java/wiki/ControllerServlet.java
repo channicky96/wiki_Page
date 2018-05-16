@@ -109,6 +109,7 @@ public class ControllerServlet extends HttpServlet {
         } // Register a new user --------------------------------------------------------------------------------------------------------
         else if (button.equals("Register")) {
             String emailcheck = null;
+            String nicknamecheck = null;
             try {
                 // Connect to postgreSQL to get the desired data
                 Connection connectionUrl = null;
@@ -121,11 +122,23 @@ public class ControllerServlet extends HttpServlet {
                 while (rs.next()) {
                     emailcheck = rs.getString("username");
                 }
+                Statement stt = connectionUrl.createStatement();
+                ResultSet rss = stt.executeQuery("Select nickname from users where nickname = '" + nickname + "'");
+                while (rss.next()) {
+                    nicknamecheck = rss.getString("nickname");
+                }
+                System.out.println(nicknamecheck);
+
                 connectionUrl.close();
                 // If email is already used to register
                 if (emailcheck != null) {
                     try (PrintWriter out = response.getWriter()) {
                         out.println("<script>alert(\"Email already registered\");</script>");
+                        out.println("<meta http-equiv=\"refresh\" content=\"0; url=register.jsp\" />");
+                    }
+                } else if (nicknamecheck != null) {
+                    try (PrintWriter out = response.getWriter()) {
+                        out.println("<script>alert(\"Nickname already used\");</script>");
                         out.println("<meta http-equiv=\"refresh\" content=\"0; url=register.jsp\" />");
                     }
                 } else if (password.equals(confirmpassword)) {
@@ -167,13 +180,13 @@ public class ControllerServlet extends HttpServlet {
                     }
                     // Create a new User object
                     ArrayList<Article> newR = new ArrayList<>();
-                    User nuser = new User(newusername, id, nickname, password, email,0,newR);
+                    User nuser = new User(newusername, id, nickname, password, email, 0, newR);
                     session.setAttribute("username", newusername);
                     session.setAttribute("userID", id);
                     session.setAttribute("userEmail", email);
                     session.setAttribute("userNickname", nickname);
                     session.setAttribute("userpassword", password);
-                    session.setAttribute("rating",0);
+                    session.setAttribute("rating", 0);
                 } else {
                     // If password and comfrmed password is not identical, alert is displayed
                     try (PrintWriter out = response.getWriter()) {
@@ -226,10 +239,31 @@ public class ControllerServlet extends HttpServlet {
         else if (button.equals("Change Nickname")) {
             String getNickname = request.getParameter("newNickname");
             String getUsername = (String) session.getAttribute("username");
+            String checknickname = null;
             String queryC = ("UPDATE users SET nickname = '" + getNickname + "' WHERE username ='" + getUsername + "'");
-//            Pattern p = Pattern.compile("[\\p{Punct}]");
             Pattern p = Pattern.compile("^[a-zA-Z0-9 ]*$");
-
+            try {
+                Connection connectionUrlG;
+                Class.forName("org.postgresql.Driver");
+                String urlG = "jdbc:postgresql://127.0.0.1/studentdb";
+                connectionUrlG = DriverManager.getConnection(urlG, dbUsername, dbpassword);
+                Statement stG = connectionUrlG.createStatement();
+                ResultSet rsG = stG.executeQuery("select nickname from users where nickname = '" + getNickname + "'");
+                while (rsG.next()) {
+                    checknickname = rsG.getString("nickname");
+                }
+                connectionUrlG.close();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            if (checknickname != null) {
+                try (PrintWriter out = response.getWriter()) {
+                    out.println("<script>alert(\"Nickname already used\");</script>");
+                    out.println("<meta http-equiv=\"refresh\" content=\"0; url=userdetail.jsp\" />");
+                }
+                String redirectToUserDetail1 = "userdetail.jsp";
+                response.sendRedirect(redirectToUserDetail1);
+            }
             Matcher m = p.matcher(getNickname);
             if (m.find()) {
                 try {

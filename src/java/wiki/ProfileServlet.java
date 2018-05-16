@@ -48,17 +48,56 @@ public class ProfileServlet extends HttpServlet {
         session.setAttribute("bmlist", bkmrklist);
         session.setAttribute("myArticles", myArticles);
         String nickname = (String) session.getAttribute("userNickname");
+
         if (userprofile != null) {
-            System.out.println("userprofile:" + userprofile);
-            System.out.println("nickname:" + nickname);
             if (userprofile.equals(nickname)) {
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/userdetail.jsp");
                 dispatcher.forward(request, response);
+            } else {
+                //tmp = other users total rating
+                int tmp = sumTotalRating(userprofile);
+                System.out.println(tmp + "sum totalt rating");
+                //updateTotalRating = setting latest rating from user we are rating as previous sum (temp)
+                updateTotalRating(userprofile, tmp);
+                //P gets profile of rating
+                Profile P = showUserProfile(userprofile);
+                //Set "current profile" as P
+                session.setAttribute("userprofile", P);
+                //Check our current rating of them
+                String checkR = checkRating(P.getName(), userid);
+                //vote is a new variable of the new rating
+                String vote = request.getParameter("vote");
+                //Setting current profile's
+                session.setAttribute("checkR", checkR);
+
+//                System.out.println("OLD total rating: "+tmp);
+//                System.out.println("my prev rating: "+);
+//                System.out.println("New upvote: "+newupvote);
+//                System.out.println("If new vote==oldvote");
+                if (vote != null) {
+                    System.out.println("vote" + vote);
+                    System.out.println("checkR" + checkR);
+                    if (checkR.equals("NR")) {
+                        if (vote.equals("up")) {
+                            newRate(userprofile, userid, 1);
+                        } else if (vote.equals("down")) {
+                            newRate(userprofile, userid, -1);
+                        }
+                    } else if (checkR.equals("POSITIVE") && vote.equals("down")) {
+                        System.out.println("POSOTIVE");
+                        updatePrevRating(userprofile, userid, -1);
+                        session.setAttribute("checkR", "NEGATIVE");
+
+                    } else if (checkR.equals("NEGATIVE") && vote.equals("up")) {
+                        System.out.println("NEGATIVE");
+                        updatePrevRating(userprofile, userid, 1);
+                        session.setAttribute("checkR", "POSITIVE");
+                    }
+                    tmp = sumTotalRating(userprofile);
+                    updateTotalRating(userprofile, tmp);
+                }
+                session.setAttribute("TotalVote", tmp);
             }
-            Profile P = showUserProfile(userprofile);
-            session.setAttribute("userprofile", P);
-            String checkR = checkRating(P.getName(),userid);
-            session.setAttribute("checkR", checkR);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/userProfile.jsp");
             dispatcher.forward(request, response);
         }
@@ -111,7 +150,6 @@ public class ProfileServlet extends HttpServlet {
         String upEmail = null;
         int upRate = 0;
         ArrayList<Article> upArticle = new ArrayList<>();
-        Article test = new Article();
         try {
             Connection connectionUrl;
             Class.forName("org.postgresql.Driver");
@@ -120,6 +158,7 @@ public class ProfileServlet extends HttpServlet {
             Statement st = connectionUrl.createStatement();
             ResultSet up = st.executeQuery(upQuery);
             while (up.next()) {
+                Article test = new Article();
                 upEmail = up.getString("email");
                 upRate = up.getInt("rating");
                 test.setName(up.getString("name"));
@@ -132,16 +171,16 @@ public class ProfileServlet extends HttpServlet {
         Profile userProfile = new Profile(nickname, upEmail, upRate, upArticle);
         return userProfile;
     }
-    
-    public String checkRating(String usernickname, int raterid){
-        String checkRate = null;
+
+    public String checkRating(String usernickname, int raterid) {
+        String checkRate = "NR";
         try {
             Connection connectionUrl;
             Class.forName("org.postgresql.Driver");
             String url = "jdbc:postgresql://127.0.0.1/studentdb";
             connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
             Statement st = connectionUrl.createStatement();
-            ResultSet crRs = st.executeQuery("select vote from user_rating where raterid = '" + raterid + "' and editornickname = '"+usernickname+"'");
+            ResultSet crRs = st.executeQuery("select vote from user_rating where raterid = '" + raterid + "' and editornickname = '" + usernickname + "'");
             while (crRs.next()) {
                 int result = crRs.getInt("vote");
                 switch (result) {
@@ -162,35 +201,68 @@ public class ProfileServlet extends HttpServlet {
         }
         return checkRate;
     }
-    
-    public void rateUser(String usernickname, int raterid, int vote){
+
+    public void newRate(String usernickname, int raterid, int vote) {
         try {
             Connection connectionUrl;
             Class.forName("org.postgresql.Driver");
             String url = "jdbc:postgresql://127.0.0.1/studentdb";
             connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
             Statement st = connectionUrl.createStatement();
-            st.executeUpdate("insert into user_rating (editornickname, raterid, vote) values ('"+usernickname+"','"+raterid+"','"+vote+"')");
+            st.executeUpdate("insert into user_rating (editornickname, raterid, vote) values ('" + usernickname + "','" + raterid + "','" + vote + "')");
+
             connectionUrl.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
-    public void updateRating(String usernickname, int raterid, int vote){
+
+    public void updatePrevRating(String usernickname, int raterid, int vote) {
         try {
             Connection connectionUrl;
             Class.forName("org.postgresql.Driver");
             String url = "jdbc:postgresql://127.0.0.1/studentdb";
             connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
             Statement st = connectionUrl.createStatement();
-            st.executeUpdate("insert into user_rating (editornickname, raterid, vote) values ('"+usernickname+"','"+raterid+"','"+vote+"')");
+            st.executeUpdate("update user_rating set vote = '" + vote + "' where editornickname = '" + usernickname + "' AND raterid = '" + raterid + "'");
             connectionUrl.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+
+    public void updateTotalRating(String usernickname, int totalvote) {
+        try {
+            Connection connectionUrl;
+            Class.forName("org.postgresql.Driver");
+            String url = "jdbc:postgresql://127.0.0.1/studentdb";
+            connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
+            Statement st = connectionUrl.createStatement();
+            st.executeUpdate("update users set rating = '" + totalvote + "' where nickname = '" + usernickname + "'");
+            connectionUrl.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int sumTotalRating(String nickname) {
+        int totalRating = 0;
+        try {
+            Connection connectionUrl;
+            Class.forName("org.postgresql.Driver");
+            String url = "jdbc:postgresql://127.0.0.1/studentdb";
+            connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
+            Statement st = connectionUrl.createStatement();
+            ResultSet str = st.executeQuery("select SUM(vote) as totalRate from user_rating where editornickname = '" + nickname + "'");
+            while (str.next()) {
+                totalRating = str.getInt("totalRate");
+            }
+            connectionUrl.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return totalRating;
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -232,5 +304,3 @@ public class ProfileServlet extends HttpServlet {
     }// </editor-fold>
 
 }
-
-

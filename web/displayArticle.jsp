@@ -16,11 +16,6 @@
             function bookmarkRemove() {
                 alert("Bookmark Removed");
             }
-
-            function basketalert() {
-                alert("Article added into Basket");
-            }
-
             function ratingAlert() {
                 alert("Please login to rate");
                 location.reload();
@@ -110,13 +105,8 @@
                         out.print("<a href=\"javascript:void(0)\" onclick=\"toggleEdit()\" id=\"edit\" class=\"w3-text-light-blue w3-large\">[edit]</a>");
                         out.print("<a onclick=\"bookmarkAdd()\" href=\"/NoodlesWiki/article/?keyword=" + name + "&bml=abm\"><i class=\"far fa-bookmark w3-xlarge w3-button\" title=\"Bookmark\"></i></a>");
                         out.print("<a href=\"/NoodlesWiki/article/?basket=basket\" onclick=\"basketalert()\" ><i class=\"fas fa-cart-plus w3-xlarge w3-button\"></i></a>");
-                    } else {
-                        out.print("<a onclick=\"loginAlert()\"><i class=\"far fa-bookmark w3-xlarge w3-button\" title=\"Bookmark\"></i></a>");
-                    }
+                    } 
                 %>      
-<!--                <a href="/NoodlesWiki/article/?basket=basket" onclick="basketalert()" >
-                    <i class="fas fa-cart-plus w3-xlarge w3-button"></i>
-                </a>-->
             </h1>
             <div id="menu" class="w3-right w3-card w3-padding-small">
                 <nav>
@@ -160,7 +150,7 @@
 
                 <c:forEach var="cmt" items="${comments}">
                     <tr>
-                        <td><a href="/NoodlesWiki/ProfileServlet?userprofile=${cmt.username}&userprofile=${cmt.username}">${cmt.username}</a></td>
+                        <td><a href="/NoodlesWiki/ProfileServlet?userprofile=${cmt.username}">${cmt.username}</a></td>
                         <td>${cmt.comment}</td>
                         <td>${cmt.timestamp}</td>
                     </tr>

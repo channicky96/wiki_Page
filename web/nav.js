@@ -52,7 +52,3 @@ function loginAlert() {
 function basketalert() {
     alert("Added to Basket");
 }
-
-function rating() {
-
-}
