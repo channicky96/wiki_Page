@@ -4,6 +4,14 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script>
+            function alreadyVote() {
+                alert("Already Voted");
+            }
+            function newVote() {
+                alert("Vote Added");
+            }
+        </script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title></title>
         <link rel="stylesheet" href="/NoodlesWiki/w3.css" type="text/css">
@@ -18,24 +26,36 @@
             <% //
                 String checkR = (String) session.getAttribute("checkR");
                 Profile userA = (Profile) session.getAttribute("userprofile");
+                Integer total = (Integer) session.getAttribute("TotalVote");
                 out.print("<table class=\"w3-table w3-bordered\">");
                 out.print("<tr><td><b><h3>Nickname :</h3></b></td><td><h3>" + userA.getName() + "</h3></td></tr>");
                 out.print("<tr><td><b><h3>Email :</h3></b></td><td><h3>" + userA.getEmail() + "</h3></td></tr>");
                 out.print("<tr><td><b><h3>Rating :</h3></b></td>");
-                out.print("<td><h3><a onclick=\"bookmarkRemove()\" href=\"/NoodlesWiki/\">");
-                if(checkR.equals("NR") || checkR.equals("NEGATIVE")){
-                out.print("<i class=\"far fa-thumbs-up w3-xlarge w3-button\"></i>");
-                }else if(checkR.equals("POSITIVE")){
-                    out.print("<i class=\"fas fa-thumbs-up w3-xlarge w3-button\"></i>");
+                out.print("<td><h3>");
+
+                //thumbs up icon
+                if (checkR.equals("NR")) {
+                    out.print("<a onclick=\"newVote()\" href=\"/NoodlesWiki/ProfileServlet?vote=up&userprofile=" + userA.getName() + "\"><i class=\"far fa-thumbs-up w3-xlarge w3-button\"></i></a>");
+                } else if (checkR.equals("NEGATIVE")) {
+                    out.print("<a onclick=\"newVote()\" href=\"/NoodlesWiki/ProfileServlet?vote=up&userprofile=" + userA.getName() + "\"><i class=\"far fa-thumbs-up w3-xlarge w3-button\"></i></a>");
+                } else if (checkR.equals("POSITIVE")) {
+                    out.print("<a onclick=\"alreadyVote()\"><i class=\"fas fa-thumbs-up w3-xlarge w3-button\"></i></a>");
                 }
-                out.print("</a> " + userA.getRate() + "");
-                out.print("<a onclick=\"bookmarkRemove()\" href=\"/NoodlesWiki/\">");
-                if(checkR.equals("NR") || checkR.equals("POSITIVE")){
-                out.print("<i class=\"far fa-thumbs-down w3-xlarge w3-button\"></i>");
-                }else if (checkR.equals("NEGATIVE")){
-                    out.print("<i class=\"far fa-thumbs-down w3-xlarge w3-button\"></i>");
+
+                if(total != null){
+                    out.print("" + total + "");
+                }else{
+                    out.print("0");
                 }
-                out.print("</a></h3></td></tr>");
+                
+                // thumbs down icon
+                if (checkR.equals("NR") || checkR.equals("POSITIVE")) {
+                    out.print("<a onclick=\"newVote()\" href=\"/NoodlesWiki/ProfileServlet?vote=down&userprofile=" + userA.getName() + "\"><i class=\"far fa-thumbs-down w3-xlarge w3-button\"></i></a>");
+                } else if (checkR.equals("NEGATIVE")) {
+                    out.print("<a onclick=\"alreadyVote()\"><i class=\"fas fa-thumbs-down w3-xlarge w3-button\"></i></a>");
+                }
+
+                out.print("</h3></td></tr>");
                 out.print("<tr><td><h3>Contribution: ");
             %>
 

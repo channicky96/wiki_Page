@@ -161,7 +161,7 @@
 
                 <c:forEach var="cmt" items="${comments}">
                     <tr>
-                        <td>${cmt.username}</td>
+                        <td><a href="/NoodlesWiki/ProfileServlet?userprofile=${cmt.username}">${cmt.username}</a></td>
                         <td>${cmt.comment}</td>
                         <td>${cmt.timestamp}</td>
                     </tr>
