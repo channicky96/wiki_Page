@@ -49,6 +49,7 @@ function loginAlert() {
     alert("Please Login First");
 }
 
+// Function to display an alert for when an article is added to basket
 function basketalert() {
     alert("Added to Basket");
 }

@@ -53,7 +53,7 @@
                     alert("Title cannot be empty");
                     return false;
                 }
-                if(content === ''){
+                if (content === '') {
                     alert("Please write some content");
                     return false;
                 }

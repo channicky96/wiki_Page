@@ -22,15 +22,15 @@
     </head>
     <body onload="startTime()" class="w3-light-grey">
         <%@ include file="template.jsp" %>
-        
+
         <div class="w3-row-padding">
             <c:forEach var="bmk" items="${bmlist}">
-            <div class="w3-third w3-container w3-margin-bottom">
-                <div style="max-height: 12em; overflow: hidden; background-image: linear-gradient(180deg,hsla(255,0%,100%,0),#fff);" class="w3-container w3-white">
-                    <p><b><a href="/NoodlesWiki/article/?keyword=${bmk.title}">${bmk.title}</a></b></p>
-                    <p>${bmk.preview}</p>
+                <div class="w3-third w3-container w3-margin-bottom">
+                    <div style="max-height: 12em; overflow: hidden; background-image: linear-gradient(180deg,hsla(255,0%,100%,0),#fff);" class="w3-container w3-white">
+                        <p><b><a href="/NoodlesWiki/article/?keyword=${bmk.title}">${bmk.title}</a></b></p>
+                        <p>${bmk.preview}</p>
+                    </div>
                 </div>
-            </div>
             </c:forEach>
 
             <div class="w3-third w3-container w3-margin-bottom">
@@ -90,7 +90,8 @@
             function checkTime(i) {
                 if (i < 10) {
                     i = "0" + i
-                };  // add zero in front of numbers < 10
+                }
+                ;  // add zero in front of numbers < 10
                 return i;
             }
         </script>

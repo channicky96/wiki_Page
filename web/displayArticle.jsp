@@ -25,10 +25,6 @@
                 alert("Please login to rate");
                 location.reload();
             }
-//                        var imgs = document.getElementsByTag("img");
-//            for (i = 0; i < imgs.length; i++) {
-//                imgs[i].className += "w3-image";
-//            }
         </script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>${name}</title>
@@ -161,7 +157,7 @@
 
                 <c:forEach var="cmt" items="${comments}">
                     <tr>
-                        <td><a href="/NoodlesWiki/ProfileServlet?userprofile=${cmt.username}">${cmt.username}</a></td>
+                        <td><a <%if(loginchk!=null){%>href="/NoodlesWiki/ProfileServlet?userprofile=${cmt.username}"<%}%>>${cmt.username}</a></td>
                         <td>${cmt.comment}</td>
                         <td>${cmt.timestamp}</td>
                     </tr>
@@ -211,7 +207,7 @@
                 if (w == true) {
                     alert("removed!");
                     return true;
-                } 
+                }
                 return false;
             }
 

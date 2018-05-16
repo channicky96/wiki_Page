@@ -35,11 +35,6 @@ public class ControllerServlet extends HttpServlet {
         String dbUsername = "student";
         String dbpassword = "dbpassword";
 
-        // Prepared query statements ---------------------------------------------------------------------------------------------------
-        String query = "select * from users where username ='" + username + "'";
-        String query2 = "select username from users where email ='" + email + "'";
-        String query3 = "select max(id) as maxid from users";
-
         // Session to store a user's informations --------------------------------------------------------------------------------------
         HttpSession session = request.getSession();
 
@@ -77,8 +72,9 @@ public class ControllerServlet extends HttpServlet {
                         Class.forName("org.postgresql.Driver");
                         String urlA = "jdbc:postgresql://127.0.0.1/studentdb";
                         connectionUrlA = DriverManager.getConnection(urlA, dbUsername, dbpassword);
-                        Statement stA = connectionUrlA.createStatement();
-                        ResultSet rsA = stA.executeQuery(query);
+                        PreparedStatement stmt = connectionUrlA.prepareStatement("select * from users where username = ?");
+                        stmt.setString(1, username);
+                        ResultSet rsA = stmt.executeQuery();
                         while (rsA.next()) {
                             idA = rsA.getInt("id");
                             emailB = rsA.getString("email");
@@ -119,18 +115,19 @@ public class ControllerServlet extends HttpServlet {
                 Class.forName("org.postgresql.Driver");
                 String url = "jdbc:postgresql://127.0.0.1/studentdb";
                 connectionUrl = DriverManager.getConnection(url, dbUsername, dbpassword);
-                Statement st = connectionUrl.createStatement();
-                ResultSet rs = st.executeQuery(query2);
+                PreparedStatement stmt = connectionUrl.prepareStatement("select username from users where email = ?");
+                stmt.setString(1, email);
+                ResultSet rs = stmt.executeQuery();
 
                 while (rs.next()) {
                     emailcheck = rs.getString("username");
                 }
-                Statement stt = connectionUrl.createStatement();
-                ResultSet rss = stt.executeQuery("Select nickname from users where nickname = '" + nickname + "'");
+                PreparedStatement stmt1 = connectionUrl.prepareStatement("Select nickname from users where nickname = ?");
+                stmt1.setString(1, nickname);
+                ResultSet rss = stmt1.executeQuery();
                 while (rss.next()) {
                     nicknamecheck = rss.getString("nickname");
                 }
-                System.out.println(nicknamecheck);
 
                 connectionUrl.close();
                 // If email is already used to register
@@ -152,7 +149,7 @@ public class ControllerServlet extends HttpServlet {
                         String url1 = "jdbc:postgresql://127.0.0.1/studentdb";
                         connectionUrl1 = DriverManager.getConnection(url1, dbUsername, dbpassword);
                         Statement st1 = connectionUrl1.createStatement();
-                        ResultSet rs1 = st1.executeQuery(query3);
+                        ResultSet rs1 = st1.executeQuery("select max(id) as maxid from users");
                         while (rs1.next()) {
                             id = rs1.getInt("maxid") + 1;
                         }
@@ -166,7 +163,6 @@ public class ControllerServlet extends HttpServlet {
                     while (checkUsername(newusername) == false) {
                         newusername = nickname + rand.nextInt(99999);
                     }
-                    String query4 = "insert into users(id,username,userpassword,email,nickname,rating) values('" + id + "','" + newusername + "','" + password + "','" + email + "','" + nickname + "',0)";
                     try {
                         // Insert a user's detail to register them
                         Connection connectionUrl2;
@@ -175,8 +171,14 @@ public class ControllerServlet extends HttpServlet {
 
                         connectionUrl2 = DriverManager.getConnection(url2, dbUsername, dbpassword);
 
-                        Statement st2 = connectionUrl2.createStatement();
-                        st2.executeUpdate(query4);
+                        PreparedStatement stmt2 = connectionUrl2.prepareStatement("insert into users(id,username,userpassword,email,nickname,rating) values(?,?,?,?,?,?)");
+                        stmt2.setInt(1,id);
+                        stmt2.setString(2,newusername);
+                        stmt2.setString(3,password);
+                        stmt2.setString(4,email);
+                        stmt2.setString(5,nickname);
+                        stmt2.setInt(6,0);
+                        stmt2.executeUpdate();
                         connectionUrl2.close();
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace();
@@ -208,16 +210,17 @@ public class ControllerServlet extends HttpServlet {
             String newPassword = request.getParameter("newPassword");
             String confirmPassword = request.getParameter("confirmNewPassword");
             String getUsername = (String) session.getAttribute("username");
-            String queryA = ("UPDATE users SET userpassword = '" + newPassword + "' WHERE username = '" + getUsername + "'");
-            String queryB = ("SELECT userpassword FROM users WHERE username = '" + getUsername + "'");
             try {
                 Connection connectionUrl5;
                 Class.forName("org.postgresql.Driver");
                 String url5 = "jdbc:postgresql://127.0.0.1/studentdb";
                 connectionUrl5 = DriverManager.getConnection(url5, dbUsername, dbpassword);
-                Statement st5 = connectionUrl5.createStatement();
-                Statement st6 = connectionUrl5.createStatement();
-                ResultSet rs6 = st6.executeQuery(queryB);
+                PreparedStatement stmt5 = connectionUrl5.prepareStatement("UPDATE users SET userpassword = ? WHERE username = ?");
+                stmt5.setString(1, newPassword);
+                stmt5.setString(2, getUsername);
+                PreparedStatement stmt6 = connectionUrl5.prepareStatement("SELECT userpassword FROM users WHERE username = ?");
+                stmt6.setString(1, getUsername);
+                ResultSet rs6 = stmt6.executeQuery();
                 while (rs6.next()) {
                     if ((rs6.getString("userpassword")).equals(oldPassword) && newPassword.equals(confirmPassword)) {
                         try (PrintWriter out = response.getWriter()) {
@@ -225,11 +228,12 @@ public class ControllerServlet extends HttpServlet {
                             out.println("<meta http-equiv=\"refresh\" content=\"0; url=userdetail.jsp\" />");
                         }
                         String redirectToUserDetail = "userdetail.jsp";
+                        stmt5.executeUpdate();
                         response.sendRedirect(redirectToUserDetail);
-                        st5.executeUpdate(queryA);
+                        
                     } else {
                         try (PrintWriter out = response.getWriter()) {
-                            out.print("<script>alert(\"Passwords are not the same\");</script>");
+                            out.print("<script>alert(\"Passwords are not the same or old password is incorrect!\");</script>");
                             out.println("<meta http-equiv=\"refresh\" content=\"0; url=userdetail.jsp\" />");
                         }
                     }
@@ -243,15 +247,15 @@ public class ControllerServlet extends HttpServlet {
             String getNickname = request.getParameter("newNickname");
             String getUsername = (String) session.getAttribute("username");
             String checknickname = null;
-            String queryC = ("UPDATE users SET nickname = '" + getNickname + "' WHERE username ='" + getUsername + "'");
             Pattern p = Pattern.compile("^[a-zA-Z0-9 ]*$");
             try {
                 Connection connectionUrlG;
                 Class.forName("org.postgresql.Driver");
                 String urlG = "jdbc:postgresql://127.0.0.1/studentdb";
                 connectionUrlG = DriverManager.getConnection(urlG, dbUsername, dbpassword);
-                Statement stG = connectionUrlG.createStatement();
-                ResultSet rsG = stG.executeQuery("select nickname from users where nickname = '" + getNickname + "'");
+                PreparedStatement stmtG = connectionUrlG.prepareStatement("select nickname from users where nickname = ?");
+                stmtG.setString(1, getNickname);
+                ResultSet rsG = stmtG.executeQuery();
                 while (rsG.next()) {
                     checknickname = rsG.getString("nickname");
                 }
@@ -274,8 +278,10 @@ public class ControllerServlet extends HttpServlet {
                     Class.forName("org.postgresql.Driver");
                     String url7 = "jdbc:postgresql://127.0.0.1/studentdb";
                     connectionUrl7 = DriverManager.getConnection(url7, dbUsername, dbpassword);
-                    Statement st7 = connectionUrl7.createStatement();
-                    st7.executeUpdate(queryC);
+                    PreparedStatement stmt7 = connectionUrl7.prepareStatement("UPDATE users SET nickname = ? WHERE username =?");
+                    stmt7.setString(1,getNickname);
+                    stmt7.setString(2, getUsername);
+                    stmt7.executeUpdate();
                     session.setAttribute("userNickname", getNickname);
                     String redirectToUserDetail1 = "userdetail.jsp";
                     response.sendRedirect(redirectToUserDetail1);
@@ -297,14 +303,14 @@ public class ControllerServlet extends HttpServlet {
         String tun = null;
         String dbUsername = "student";
         String dbpassword = "dbpassword";
-        String query = "select username from users where username ='" + tUsername + "'";
         try {
             Connection connectionUrl3;
             Class.forName("org.postgresql.Driver");
             String url3 = "jdbc:postgresql://127.0.0.1/studentdb";
             connectionUrl3 = DriverManager.getConnection(url3, dbUsername, dbpassword);
-            Statement st3 = connectionUrl3.createStatement();
-            ResultSet rs3 = st3.executeQuery(query);
+            PreparedStatement stmt3 = connectionUrl3.prepareStatement("select username from users where username =?");
+            stmt3.setString(1, tUsername);
+            ResultSet rs3 = stmt3.executeQuery();
 
             while (rs3.next()) {
                 tun = rs3.getString("username");
@@ -323,7 +329,6 @@ public class ControllerServlet extends HttpServlet {
     public boolean validate(String username, String password) throws SQLException {
         String dbUsername = "student";
         String dbpassword = "dbpassword";
-        String query = "select userpassword from users where username ='" + username + "'";
         try {
             Connection connectionUrl4;
             Class.forName("org.postgresql.Driver");
@@ -331,8 +336,9 @@ public class ControllerServlet extends HttpServlet {
 
             connectionUrl4 = DriverManager.getConnection(url4, dbUsername, dbpassword);
 
-            Statement st4 = connectionUrl4.createStatement();
-            ResultSet rs4 = st4.executeQuery(query);
+            PreparedStatement stmt4 = connectionUrl4.prepareStatement("select userpassword from users where username =?");
+            stmt4.setString(1, username);
+            ResultSet rs4 = stmt4.executeQuery();
             while (rs4.next()) {
                 String passw = rs4.getString("userpassword");
                 return password.equals(passw);

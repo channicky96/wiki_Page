@@ -3,6 +3,7 @@ package wiki;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -32,7 +33,6 @@ public class CategoriesServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        System.out.println("\t" + request + " " + response);
         try {
             Connection connectionUrl;
             Class.forName("org.postgresql.Driver");
@@ -40,6 +40,7 @@ public class CategoriesServlet extends HttpServlet {
             connectionUrl = DriverManager.getConnection(url, "student", "dbpassword");
             Statement st = connectionUrl.createStatement();
             ResultSet categories = st.executeQuery("select * from categories ORDER BY name;");
+            PreparedStatement st1 = connectionUrl.prepareStatement("select name from articles WHERE category = ? ORDER BY name;");
 
             // To retrieve a list of all avialble catergories
             ArrayList<Category> categoryList = new ArrayList<>();
@@ -50,11 +51,13 @@ public class CategoriesServlet extends HttpServlet {
                 categoryList.add(cat);
             }
             categories.close();
+            
+            // To get a list of articles under a category
             ArrayList<String> sublist = new ArrayList<>();
             String q;
             for (Category each : categoryList) {
-                q = "select name from articles WHERE category='" + each.getName() + "' ORDER BY name;";
-                ResultSet articles = st.executeQuery(q);
+                st1.setString(1, each.getName());
+                ResultSet articles = st1.executeQuery();
                 while (articles.next()) {
                     sublist.add(articles.getString("name"));
                 }

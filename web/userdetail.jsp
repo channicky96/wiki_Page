@@ -4,6 +4,7 @@
     Author     : acc16scu
 --%>
 
+<%@page import="wiki.Profile"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
@@ -22,7 +23,7 @@
         <div style="align-content: center;" class="w3-margin-left w3-left ">
             <h1>Your account details</h1>
 
-            <%                    
+            <%  //              
                 out.print("<div class=\"w3-bar w3-white\">");
                 out.print("<button class=\"w3-bar-item w3-button tablink w3-blue w3-leftbar w3-round-xxlarge\" onclick=\"accountChange(event,'AD')\">Account Details</button>");
                 out.print("<button class=\"w3-bar-item w3-button tablink w3-round-xxlarge\" onclick=\"accountChange(event,'UA')\">My Articles</button>");
@@ -39,8 +40,11 @@
                 out.print("<tr><td><b><h3>Email :</h3></b></td><td><h3>" + userEmail + "</h3></td></tr>");
                 String userNickname = (String) session.getAttribute("userNickname");
                 out.print("<tr><td><b><h3>Nickname :</h3></b></td><td><h3>" + userNickname + "</h3></td></tr>");
-//                String userNickname = (String) session.getAttribute("userNickname");
-                out.print("<tr><td><b><h3>Rating :</h3></b></td><td><h3>" + username + "</h3></td></tr>");
+
+                Profile p = (Profile) session.getAttribute("userprofile");
+                Integer newrating = (Integer) session.getAttribute("TotalVote");
+
+                out.print("<tr><td><b><h3>Rating :</h3></b></td><td><h3>" + newrating + "</h3></td></tr>");
                 out.print("</table>");
                 out.print("</div>");
                 out.print("<div id=\"UA\" class=\"w3-container w3-border account\" style=\"display:none\">");
@@ -64,7 +68,7 @@
                 </c:forEach>
             </div>
 
-            <%                
+            <%
                 out.print("<div id=\"AS\" class=\"w3-container w3-border account\" style=\"display:none\">");
                 out.print("<table class=\"w3-table \">");
                 out.print("<form class=\"w3-container\" action=\"ControllerServlet\" method=\"post\">");

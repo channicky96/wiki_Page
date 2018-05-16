@@ -42,12 +42,12 @@
                     out.print("<a onclick=\"alreadyVote()\"><i class=\"fas fa-thumbs-up w3-xlarge w3-button\"></i></a>");
                 }
 
-                if(total != null){
+                if (total != null) {
                     out.print("" + total + "");
-                }else{
+                } else {
                     out.print("0");
                 }
-                
+
                 // thumbs down icon
                 if (checkR.equals("NR") || checkR.equals("POSITIVE")) {
                     out.print("<a onclick=\"newVote()\" href=\"/NoodlesWiki/ProfileServlet?vote=down&userprofile=" + userA.getName() + "\"><i class=\"far fa-thumbs-down w3-xlarge w3-button\"></i></a>");

@@ -28,7 +28,8 @@
         <%@ include file="template.jsp" %>
         <div style="align-content: center;" class="w3-margin-left w3-left ">
             <h1>Basket items:  </h1>
-            <%                out.print("<div id=\"AD\" class=\"w3-container w3-border account\">");
+            <%                
+                out.print("<div id=\"AD\" class=\"w3-container w3-border account\">");
                 out.print("<table class=\"w3-table w3-bordered\">");
             %>
             <c:forEach var="basket" items="${basket}">
